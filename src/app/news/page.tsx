@@ -59,11 +59,11 @@ export default async function News() {
 
                       <TabsContent value="Regional">
                           {filterArticlesByScope("regional").length > 0 ? (
-                              filterArticlesByScope("regional").map((article) => (
-                                  <ArticleCard article={article} />
-                              ))
+                            filterArticlesByScope("regional").map((article) => (
+                              <ArticleCard article={article} />
+                            ))
                           ) : (
-                              <p>No regional news available.</p>
+                            <p>No regional news available.</p>
                           )}
                       </TabsContent>
 
