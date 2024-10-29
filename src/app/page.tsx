@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Logo from "./public/images/logo_Flare.png";
+import Logo from "../../public/images/logo_Flare.png";
 import { Button } from "@/components/ui/button";
 import BottomNavBar from "../components/BottomNavBar";
 
