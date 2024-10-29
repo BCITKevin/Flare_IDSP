@@ -1,9 +1,8 @@
-//path: src/components/BottomNavBar.tsx
+// src/components/BottomNavBar.tsx
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-//import { FaHome, FaSearch, FaBell, FaUser } from "react-icons/fa";
 import styles from "./css/BottomNavBar.module.css";
 import Image from "next/image";
 
@@ -17,15 +16,18 @@ const BottomNavBar: React.FC = () => {
   const pathname = usePathname();
 
   const navItems: NavItem[] = [
-    { href: "/", icon: "/icons/home.png", label: "home" },
-    { href: "/news", icon: "/icons/news.png", label: "news" },
-    { href: "/weather", icon: "/icons/weather.png", label: "weather" },
-    { href: "/safety", icon: "/icons/safety.png", label: "safety" },
-    { href: "/settings", icon: "/icons/settings.png", label: "setting" },
+    { href: "/", icon: "/icons/Home.png", label: "home" },
+    { href: "/news", icon: "/icons/News.png", label: "news" },
+    { href: "/weather", icon: "/icons/Weather.png", label: "weather" },
+    { href: "/safety", icon: "/icons/Safety.png", label: "safety" },
+    { href: "/settings", icon: "/icons/Settings.png", label: "setting" },
   ];
 
   return (
-    <nav className={styles.bottomNav} aria-label="하단 네비게이션">
+    <nav
+      className={`${styles.bottomNav} font-sans`}
+      aria-label="bottom navigation"
+    >
       {navItems.map((item) => (
         <Link
           key={item.href}
@@ -48,5 +50,4 @@ const BottomNavBar: React.FC = () => {
     </nav>
   );
 };
-
 export default BottomNavBar;

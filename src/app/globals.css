@@ -2,8 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/* src/app/globals.css 파일 */
+
+@font-face {
+  font-family: 'PPMori';
+  src: url('/fonts/PPMori-Extralight.otf') format('opentype');
+  font-weight: 200; /* Extralight */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PPMori';
+  src: url('/fonts/PPMori-ExtralightItalic.otf') format('opentype');
+  font-weight: 200; /* Extralight Italic */
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'PPMori';
+  src: url('/fonts/PPMori-Regular.otf') format('opentype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PPMori';
+  src: url('/fonts/PPMori-RegularItalic.otf') format('opentype');
+  font-weight: 400; /* Regular Italic */
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'PPMori';
+  src: url('/fonts/PPMori-SemiBold.otf') format('opentype');
+  font-weight: 600; /* SemiBold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PPMori';
+  src: url('/fonts/PPMori-SemiBoldItalic.otf') format('opentype');
+  font-weight: 600; /* SemiBold Italic */
+  font-style: italic;
+}
+
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  @apply font-sans; /* Tailwind의 유틸리티 클래스를 사용해 PPMori 폰트를 기본으로 적용 */
 }
 
 @layer utilities {

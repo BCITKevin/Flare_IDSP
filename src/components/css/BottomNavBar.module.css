@@ -1,16 +1,19 @@
+/* src/components/css/BottomNavBar.module.css */
 .bottomNav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   height: 60px;
-  background-color: #ffffff;
-  border-top: 1px solid #eaeaea;
+  background-color: #3b3b3b;
+  border-top: 1px solid #3b3b3b;
   display: flex;
   justify-content: space-around;
   align-items: center;
   z-index: 1000;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  /*box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);*/
+  overflow: hidden;
+  
 }
 
 .navItem {
@@ -32,9 +35,9 @@
 }
 
 .active {
-  color: #0070f3; /* 활성화 시 색상 */
+  color: grey; /* 활성화 시 색상 */
   transform: scale(1.1);
-  background-color: #e0f7ff;
+  background-color: #2b2b2b;
 }
 
 .label {
