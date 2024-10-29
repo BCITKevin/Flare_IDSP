@@ -25,3 +25,29 @@ body {
     text-wrap: balance;
   }
 }
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.custom-popup .leaflet-popup-tip {
+  background-color: white;
+}
+
+@media (max-width: 640px) {
+  .leaflet-control-layers {
+    font-size: 14px;
+  }
+  
+  .leaflet-control-layers-list {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+}
