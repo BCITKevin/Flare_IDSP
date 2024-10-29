@@ -72,6 +72,8 @@ h4 {
     padding-right: 6px;
     justify-content: center;
     align-items: center;
+
+    object-fit: cover;
 }
 
 .articleDescription,

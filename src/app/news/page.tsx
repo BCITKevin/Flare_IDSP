@@ -86,7 +86,7 @@ export default function News() {
             image: "https://images.unsplash.com/photo-1683009427666-340595e57e43?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmlvZGl2ZXJzaXR5fGVufDB8fDB8fHww"
         },
     ];
-    
+
 
     // Filter articles by scope
     const filterArticlesByScope = (scope) =>
@@ -119,11 +119,12 @@ export default function News() {
                                 src={'https://picsum.photos/200/300'}
                                 alt="news article"
                                 className="rounded-lg articleHighlightImage" />
-                            <div>
+                            <div className="indent-6">
                                 <h5 className="text-xl font-bold articleHighlightTitle mt-6">{articles[1].title}</h5>
 
-                                <div className="flex space-x-3">
+                                <div className="flex pb-6 space-x-0 > * + *">
                                     <p className="text-gray-500" >{new Date(articles[1].date).toLocaleDateString()}</p>
+                                    <p className="text-gray-500" > |</p>
                                     <p className="text-gray-500" >{articles[0].author}</p>
                                 </div>
                             </div>
