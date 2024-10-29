@@ -12,7 +12,7 @@ export default async function News() {
 
   const filterArticlesByScope = (scope: any) =>
     articles.filter((article) => article.scope === scope);
-
+ 
   return (
       <body>
           <div className="appLayout">
