@@ -1,0 +1,26 @@
+.appLayout {
+    height: 100%;
+    padding: 20px;
+}
+
+.divider {
+    width: 400px;
+    height: 0px;
+
+    stroke-width: 4px;
+    stroke: var(--Secondary-Complementary, #00838F);
+}
+
+.TabsList {
+    flex-shrink: 0;
+    display: flex;
+    border-bottom: 1px solid var(--mauve-6);
+}
+
+
+/* reset */
+button,
+fieldset,
+input {
+    all: unset;
+}
