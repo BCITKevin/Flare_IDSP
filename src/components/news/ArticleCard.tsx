@@ -1,17 +1,19 @@
-import Image from "next/image";
 import "../../app/news/news.css"
 
 export default function articleCard({ article }) {
     return (
-        <div key={article.id} className="border p-4 rounded-lg mb-4 bg-gray-100 flex">
+        <div key={article.id} className=" articleCardContainer">
             <img
-                src={'https://picsum.photos/200/300'}
+                src={article.image}
                 alt="news article"
-                className="rounded-lg mb-2 articleImage" />
+                className="rounded-lg articleImage" />
             <div>
-                <h2 className="text-xl font-bold">{article.title}</h2>
-                <p className="text-gray-500">{new Date(article.date).toLocaleDateString()}</p>
-                <p>{article.description}</p>
+                <h2 className="text-xl font-bold articleTitle">{article.title}</h2>
+                <div className="flex space-x-0.5">
+                    <p className="text-gray-500" >{new Date(article.date).toLocaleDateString()}</p>
+                    <p className="text-gray-500">|</p>
+                    <p className="text-gray-500">{article.author}</p>
+                </div>
             </div>
         </div>
     );

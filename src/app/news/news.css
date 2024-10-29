@@ -11,10 +11,58 @@
     stroke: var(--Secondary-Complementary, #00838F);
 }
 
-.TabsList {
-    flex-shrink: 0;
+h1 {
+    color: var(--P-Highlight, var(--highlight, #F45D01));
+    /* HIFI/h1 Hifi */
+    font-family: Inter;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 48px;
+    /* 100% */
+    letter-spacing: -0.576px;
+}
+
+h4 {
+    color: var(--Text_White, #F9F9F9);
+    /* HIFI/body copy */
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+    /* 175% */
+}
+
+.tabTriggerContainer {
+    background-color: var(--n-black);
+}
+
+.tabTrigger {
     display: flex;
-    border-bottom: 1px solid var(--mauve-6);
+    padding: 6px 12px;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 0;
+
+    border-radius: 12px;
+    background: var(--White, #EBEBEB);
+
+    margin: 6px;
+}
+
+/*Article Card*/
+.articleCardContainer {
+    display: flex;
+    height: 90px;
+    padding: 6px;
+    flex-shrink: 0;
+    align-self: stretch;
+    margin-top: 6px;
+
+    border-radius: 8px;
+    background: var(--black, #000);
+
+    color: var(--Text_White);
 }
 
 .articleImage {
@@ -26,10 +74,51 @@
     align-items: center;
 }
 
+.articleDescription,
+.articleTitle {
+    color: var(--white);
+}
 
-/* reset */
-button,
-fieldset,
-input {
-    all: unset;
+/*Top article*/
+
+.articleHighlight {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-shrink: 0;
+    align-self: stretch;
+
+    border-radius: 0px 0px 8px 8px;
+    background: var(--Light-Ink, #000);
+}
+
+.articleHighlightImage {
+    display: flex;
+    width: 400px;
+    height: 251px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    object-fit: cover;
+}
+
+.articleHighlightTitle {
+    display: flex;
+    width: 391px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+
+    overflow: hidden;
+    color: var(--White, #EBEBEB);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.TabsList {
+    flex-shrink: 0;
+    display: flex;
+    border-bottom: 1px solid;
 }
