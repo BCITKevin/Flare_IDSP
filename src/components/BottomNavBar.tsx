@@ -1,3 +1,4 @@
+//path: src/components/BottomNavBar.tsx
 "use client";
 
 import Link from "next/link";
@@ -20,7 +21,7 @@ const BottomNavBar: React.FC = () => {
     { href: "/news", icon: "/icons/news.png", label: "news" },
     { href: "/weather", icon: "/icons/weather.png", label: "weather" },
     { href: "/safety", icon: "/icons/safety.png", label: "safety" },
-    { href: "/settings", icon: "/icons/setting.png", label: "setting" },
+    { href: "/settings", icon: "/icons/settings.png", label: "setting" },
   ];
 
   return (
