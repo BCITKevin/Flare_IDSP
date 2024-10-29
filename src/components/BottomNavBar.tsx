@@ -16,11 +16,11 @@ const BottomNavBar: React.FC = () => {
   const pathname = usePathname();
 
   const navItems: NavItem[] = [
-    { href: "/", icon: "/icons/Home.png", label: "home" },
-    { href: "/news", icon: "/icons/News.png", label: "news" },
-    { href: "/weather", icon: "/icons/Weather.png", label: "weather" },
-    { href: "/safety", icon: "/icons/Safety.png", label: "safety" },
-    { href: "/settings", icon: "/icons/Settings.png", label: "setting" },
+    { href: "/", icon: "/icons/Home.png", label: "Home" },
+    { href: "/news", icon: "/icons/News.png", label: "News" },
+    { href: "/map", icon: "/icons/Weather.png", label: "Map" },
+    { href: "/safety", icon: "/icons/Safety.png", label: "Safety" },
+    { href: "/settings", icon: "/icons/Settings.png", label: "Settings" },
   ];
 
   return (

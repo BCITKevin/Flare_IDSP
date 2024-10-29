@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Loader2, Info } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import styles from './WeatherMap.module.css';
 
 const FWI_SCALE = [
   { range: '0-5.2', level: 'Low', color: '#44BB44' },
@@ -120,18 +121,15 @@ const WeatherMap = () => {
       L.control.scale().addTo(newMap);
 
       // Add legend
-      const legend = L.control({ position: 'bottomright' });
+      const legend = L.control({ position: isMobile ? 'bottomleft' : 'bottomright' });
       legend.onAdd = () => {
-        const div = L.DomUtil.create('div', 'info legend');
-        div.style.backgroundColor = 'white';
-        div.style.padding = '10px';
-        div.style.borderRadius = '5px';
-        div.innerHTML = '<h4>Fire Weather Index</h4>';
+        const div = L.DomUtil.create('div', `${styles.legend}`);
+        div.innerHTML = `<h4 class="${styles.legendTitle}">Fire Weather Index</h4>`;
         
         FWI_SCALE.forEach(({ range, level, color }) => {
           div.innerHTML += `
-            <div style="display: flex; align-items: center; margin: 5px 0;">
-              <div style="width: 20px; height: 20px; background: ${color}; margin-right: 5px;"></div>
+            <div class="${styles.legendItem}">
+              <div class="${styles.legendColor}" style="background: ${color}"></div>
               <span>${level} (${range})</span>
             </div>
           `;
@@ -169,7 +167,7 @@ const WeatherMap = () => {
           attribution: '© OpenWeatherMap'
         }
       ).addTo(map);
-      
+     //@ts-ignore
       setLayers(prev => ({
         ...prev,
         fwi: newFwiLayer
@@ -295,24 +293,24 @@ const handleSearch = async (e: React.FormEvent) => {
     }
   };
   return (
-    <Card className="w-full max-w-4xl">
+    <Card className={styles.mapContainer}>
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle>Vancouver Weather Map</CardTitle>
         </div>
       </CardHeader>
       <CardContent>
-        <div className="flex gap-4 mb-6">
-          <form onSubmit={handleSearch} className="flex gap-2 flex-1">
-            <div className="relative flex-1">
+        <div className={styles.searchContainer}>
+          <form onSubmit={handleSearch} className={styles.searchForm}>
+            <div className={styles.searchInputWrapper}>
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search locations in Vancouver..."
-                className="w-full p-2 pr-10 border rounded-md"
+                className={styles.searchInput}
               />
-              <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />
+              <Search className={styles.searchIcon} size={20} />
             </div>
             <button
               type="submit"
@@ -331,7 +329,7 @@ const handleSearch = async (e: React.FormEvent) => {
             type="date"
             onChange={handleDateChange}
             defaultValue={new Date().toISOString().split('T')[0]}
-            className="p-2 border rounded-md"
+            className={styles.dateInput}
           />
         </div>
 
@@ -341,7 +339,7 @@ const handleSearch = async (e: React.FormEvent) => {
           </Alert>
         )}
 
-        <div id="map" className="h-96 w-full rounded-lg overflow-hidden" />
+        <div id="map" className={styles.mapWrapper} />
       </CardContent>
     </Card>
   );
