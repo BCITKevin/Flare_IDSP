@@ -4,12 +4,7 @@
 
 :root {
 
-  font-size: 12px;
-  --h1: 48px;
-  --h2: 30px;
-  --h3: 24px;
-  --h4: 20px;
-  --h5: 18px;
+  font-size: 14px;
 
   --white: #EBEBEB;
   --black: #0F0F0F;
@@ -30,9 +25,40 @@ body {
 
   width: 440px;
   height: 990px;
-
-  margin: auto;
+  margin: 0 auto;
   overflow: hidden;
+
+  background-color: var(--d-grey);
+}
+
+h1 {
+  font-size: 48px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+.landingContainer {
+  background-color: var(--black);
+}
+
+.landingLogo {
+  font-size: 4rem;
+  margin: auto;
+  color: var(--white);
 }
 
 @layer utilities {
