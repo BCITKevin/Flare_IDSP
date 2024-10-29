@@ -44,14 +44,14 @@ export default function News() {
                 </svg>
                 <div className="mt-8">
                     <Tabs defaultValue="Local" className="w-full flex flex-col">
-                        <TabsList clas>
+                        <TabsList>
                             <TabsTrigger value="Local" className="">Local</TabsTrigger>
                             <TabsTrigger value="Regional">Regional</TabsTrigger>
                             <TabsTrigger value="National">National</TabsTrigger>
                             <TabsTrigger value="Global">Global</TabsTrigger>
                         </TabsList>
 
-                        {/** TEMPORARY CODE TO DISPLAY NEWS ARTICLES. MEANT FOR SHOWCASE PURPOSES ONLY */}
+                        {/** TEMPORARY CODE TO DISPLAY NEWS ARTICLES. MEANT FOR SHOWCASE PURPOSES ONLY IT DOES NOT WORK WITH THE API */}
 
                         <TabsContent value="Local">
                             {filterArticlesByScope("local").map((article) => (

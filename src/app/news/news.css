@@ -17,6 +17,15 @@
     border-bottom: 1px solid var(--mauve-6);
 }
 
+.articleImage {
+    display: flex;
+    width: 90px;
+    height: 90px;
+    padding-right: 6px;
+    justify-content: center;
+    align-items: center;
+}
+
 
 /* reset */
 button,
