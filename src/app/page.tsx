@@ -1,6 +1,6 @@
 // src/app/page.tsx
 "use client";
-
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
@@ -15,8 +15,27 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 
+
+//날ㅆㅣ죵뵤 가Zㅕ Oㅓ는 햠슈
+import { fetchWeatherData, WeatherData } from "@/utils/fetchWeatherData";
+
 export default function Home() {
   const router = useRouter();
+  const [cityName, setCityName] = useState("Vancouver");
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+
+  useEffect(() => {
+    const loadWeatherData = async () => {
+      try {
+        const data = await fetchWeatherData(cityName);
+        setWeatherData(data);
+      } catch (error) {
+        console.error("Failed to load weather data", error);
+      }
+    };
+
+    loadWeatherData();
+  }, [cityName]);
 
   const handleCard1Click = () => {
     router.push("/map");
@@ -42,10 +61,19 @@ export default function Home() {
           <h1 className="text-white self-start">Wildfire Risk:<b>Low</b></h1>
 </div>
           <section className="grid grid-cols-2 gap-6 w-full max-w-6xl mx-auto">
-            <Card onClick={handleCard1Click} className="cursor-pointer shadow-2xl rounded-sm bg-fuchsia-900 border-none flex flex-col justify-center items-center aspect-square">
+          <Card onClick={handleCard1Click} className="cursor-pointer shadow-2xl rounded-sm bg-fuchsia-900 border-none flex flex-col justify-center items-center aspect-square">
               <CardContent>
-                <CardTitle className="text-white text-lg font-semibold">Card 1</CardTitle>
-                <CardDescription className="text-white">Click to view map</CardDescription>
+                <CardTitle className="text-white text-lg font-semibold">
+                  {weatherData ? `${weatherData.cityName} Weather` : "Loading..."}
+                </CardTitle>
+                {weatherData ? (
+                  <div className="text-white">
+                    <p>Temperature: {weatherData.current.temp.toFixed(1)}°C</p>
+                    <p>Weather: {weatherData.current.weather[0].description}</p>
+                  </div>
+                ) : (
+                  <CardDescription className="text-white">Loading...</CardDescription>
+                )}
               </CardContent>
             </Card>
             <div className="shadow-2xl p-6 rounded-sm bg-fuchsia-800 flex flex-col justify-center items-center row-span-2">
@@ -64,8 +92,7 @@ export default function Home() {
                 </CarouselContent>
               </Carousel>
             </div>
-            {/* Shadcn 카드 3 */}
-            <Card className="shadow-2xl rounded-sm bg-fuchsia-600 border-none flex flex-col justify-center items-center aspect-square">
+            <Card className="shadow-2xl rounded-sm bg-flare-gradienttr border-none flex flex-col justify-center items-center aspect-square">
               <CardContent>
                 <CardTitle className="text-white text-lg font-semibold">Card 3</CardTitle>
                 <CardDescription className="text-white">This is the third card.</CardDescription>

@@ -70,7 +70,7 @@ const WeatherMap = () => {
         `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&date=${today}`,
         { opacity: 0.7, attribution: '© OpenWeatherMap' }
       );
-
+      console.log(fwiLayer);
       osmLayer.addTo(newMap);
       fwiLayer.addTo(newMap);
 
