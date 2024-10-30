@@ -1,0 +1,67 @@
+.appLayout{
+    background:var(--black);
+    height: 100vh;
+    overflow-y: auto;
+    padding: 3.75rem 2.5rem 2.44rem 2.5rem;
+}
+
+.stickyNav {
+    position: sticky; 
+    top: -3.8rem;
+    z-index: 10;
+    background: var(--black); 
+}
+
+
+.headColor{
+    color: var(--white);
+}
+
+.headerContainer{
+    width: 100%;
+    padding: 0.625rem 0rem;
+}
+
+.arrow{
+    width: 40px;
+    height: 40px;
+
+    margin:  0.63rem 2.19rem 0.63rem 0;
+}
+
+.newsOrg{
+    color: var(--p-highlight, #00BCD4);
+}
+
+.area{
+    color: var(--p-highlight);
+}
+
+.articleTitle{
+    color: var(--white);
+}
+
+.author{
+    color: var(--white);
+}
+
+.org{
+    color: var(--p-compliment);
+}
+
+.heroLayout{
+}
+
+.image{
+}
+
+.caption{
+    color: var(--l-grey);
+    border-bottom: 1px solid var(--l-grey, #A1A1A1);
+}
+
+.content{
+    color: var(--white);
+    font-weight: 400;
+    line-height: 1.75rem;
+}
