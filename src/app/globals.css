@@ -33,22 +33,42 @@ body {
 
 h1 {
   font-size: 48px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 3rem; /* 100% */
+  letter-spacing: -0.036rem;
 }
 
 h2 {
   font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2.25rem; /* 120% */
+  letter-spacing: -0.01406rem;
 }
 
 h3 {
   font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2rem; /* 133.333% */
+  letter-spacing: -0.009rem;
 }
 
 h4 {
   font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.6875rem; /* 135% */
+  letter-spacing: -0.00625rem;
 }
 
 h5 {
   font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.00563rem;
 }
 
 .landingContainer {
