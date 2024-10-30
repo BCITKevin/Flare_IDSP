@@ -4,6 +4,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Search, Loader2, Info } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { CalendarIcon } from 'lucide-react';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import styles from './WeatherMap.module.css';
 
 const FWI_SCALE = [
@@ -22,10 +27,11 @@ const getFWILevel = (fwiValue) => {
   return { level: 'Extreme', color: '#B71C1C' };
 };
 
-const fetchWeatherData = async (lat, lon) => {
+const fetchWeatherData = async (lat, lon, date) => {
+  const formattedDate = date.toISOString().split('T')[0];
   try {
     const response = await fetch(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&units=metric&date=${formattedDate}`
     );
     return await response.json();
   } catch (error) {
@@ -35,12 +41,13 @@ const fetchWeatherData = async (lat, lon) => {
 };
 
 const WeatherMap = () => {
-  const mapRef = useRef(null); // Ref to store map instance
+  const mapRef = useRef(null);
   const [marker, setMarker] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [error, setError] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [layers, setLayers] = useState({
     fwi: null,
     temperature: null,
@@ -49,10 +56,10 @@ const WeatherMap = () => {
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -112,24 +119,24 @@ const WeatherMap = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
-  
+
     try {
       const response = await fetch(
         `https://api.openweathermap.org/geo/1.0/direct?q=${searchQuery},CA&limit=1&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`
       );
       const data = await response.json();
-      
+
       if (!data.length) throw new Error('Location not found');
-  
+
       const { lat, lon, name } = data[0];
-      const weatherData = await fetchWeatherData(lat, lon);
-      
+      const weatherData = await fetchWeatherData(lat, lon, selectedDate);
+
       if (marker) mapRef.current.removeLayer(marker);
-      
+
       const L = window.L;
-      const fwiValue = weatherData.current?.fire_weather_index || 0;
+      const fwiValue = weatherData.daily[0].fwi || 0;
       const { level, color } = getFWILevel(fwiValue);
-      
+
       const popupContent = `
         <div class="p-2">
           <h3 class="text-lg font-bold mb-2">${name}</h3>
@@ -139,24 +146,25 @@ const WeatherMap = () => {
               Fire Danger: ${level}
             </div>
             <div>FWI Value: ${fwiValue.toFixed(1)}</div>
+            <div>Date: ${selectedDate.toLocaleDateString()}</div>
           </div>
           <div class="grid gap-1 text-sm">
-            <div>Temperature: ${weatherData.current.temp.toFixed(1)}°C</div>
-            <div>Humidity: ${weatherData.current.humidity}%</div>
-            <div>Wind: ${(weatherData.current.wind_speed * 3.6).toFixed(1)} km/h</div>
-            <div>Weather: ${weatherData.current.weather[0].description}</div>
+            <div>Temperature: ${weatherData.daily[0].temp.day.toFixed(1)}°C</div>
+            <div>Humidity: ${weatherData.daily[0].humidity}%</div>
+            <div>Wind: ${(weatherData.daily[0].wind_speed * 3.6).toFixed(1)} km/h</div>
+            <div>Weather: ${weatherData.daily[0].weather[0].description}</div>
           </div>
         </div>
       `;
-      
+
       const newMarker = L.marker([lat, lon])
         .addTo(mapRef.current)
         .bindPopup(popupContent, { maxWidth: 300, className: 'custom-popup' })
         .openPopup();
-      
+
       setMarker(newMarker);
       mapRef.current.setView([lat, lon], 11);
-      
+
     } catch (err) {
       console.error('Error:', err);
       setError(err.message || 'Failed to fetch location data');
@@ -173,16 +181,32 @@ const WeatherMap = () => {
       <CardContent>
         <div className={styles.searchContainer}>
           <form onSubmit={handleSearch} className={styles.searchForm}>
-            <input
+            <Input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search locations in Vancouver..."
               className={styles.searchInput}
             />
-            <button type="submit" disabled={loading || !searchQuery} className="px-4 py-2 bg-neutral-500 text-white rounded-md hover:bg-neutral-600 disabled:bg-neutral-300">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="ml-2">
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {selectedDate.toLocaleDateString()}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0 z-[1000]">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            <Button type="submit" disabled={loading || !searchQuery} className="ml-2">
               {loading ? <Loader2 className="animate-spin" size={20} /> : 'Search'}
-            </button>
+            </Button>
           </form>
         </div>
 
