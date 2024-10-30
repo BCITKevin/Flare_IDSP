@@ -4,9 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
-import Logo from "./public/images/flare_logo.svg";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+// import Link from "next/link";
+// import { Button } from "@/components/ui/button";
 import Logo from "../../public/images/logo_Flare.png";
 import BottomNavBar from "../components/BottomNavBar";
 import Flare from "../../public/images/FLARE.png";
@@ -16,8 +15,12 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
-
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
 
 //날ㅆㅣ죵뵤 가Zㅕ Oㅓ는 햠슈
 import { fetchWeatherData, WeatherData } from "@/utils/fetchWeatherData";
@@ -61,13 +64,20 @@ export default function Home() {
         <main>
           <Image src={Flare} alt="Flare" className="mb-6" />
           <div className="shadow-xl p-10 rounded-sm flex flex-col justify-between bg-flare-gradientlow gap-4 mb-6">
-          <h1 className="text-white self-start">Wildfire Risk:<b>Low</b></h1>
-</div>
+            <h1 className="text-white self-start">
+              Wildfire Risk:<b>Low</b>
+            </h1>
+          </div>
           <section className="grid grid-cols-2 gap-6 w-full max-w-6xl mx-auto">
-          <Card onClick={handleCard1Click} className="cursor-pointer shadow-2xl rounded-sm bg-fuchsia-900 border-none flex flex-col justify-center items-center aspect-square">
+            <Card
+              onClick={handleCard1Click}
+              className="cursor-pointer shadow-2xl rounded-sm bg-fuchsia-900 border-none flex flex-col justify-center items-center aspect-square"
+            >
               <CardContent>
                 <CardTitle className="text-white text-lg font-semibold">
-                  {weatherData ? `${weatherData.cityName} Weather` : "Loading..."}
+                  {weatherData
+                    ? `${weatherData.cityName} Weather`
+                    : "Loading..."}
                 </CardTitle>
                 {weatherData ? (
                   <div className="text-white">
@@ -75,7 +85,9 @@ export default function Home() {
                     <p>Weather: {weatherData.current.weather[0].description}</p>
                   </div>
                 ) : (
-                  <CardDescription className="text-white">Loading...</CardDescription>
+                  <CardDescription className="text-white">
+                    Loading...
+                  </CardDescription>
                 )}
               </CardContent>
             </Card>
@@ -97,8 +109,12 @@ export default function Home() {
             </div>
             <Card className="shadow-2xl rounded-sm bg-flare-gradienttr border-none flex flex-col justify-center items-center aspect-square">
               <CardContent>
-                <CardTitle className="text-white text-lg font-semibold">Card 3</CardTitle>
-                <CardDescription className="text-white">This is the third card.</CardDescription>
+                <CardTitle className="text-white text-lg font-semibold">
+                  Card 3
+                </CardTitle>
+                <CardDescription className="text-white">
+                  This is the third card.
+                </CardDescription>
               </CardContent>
             </Card>
           </section>
