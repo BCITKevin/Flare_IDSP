@@ -1,8 +1,9 @@
 import type { Config } from "tailwindcss";
+/* eslint-disable @typescript-eslint/no-require-imports */
 
 const config: Config = {
-    darkMode: ["class"],
-    content: [
+  darkMode: ["class"],
+  content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -12,7 +13,7 @@ const config: Config = {
     extend: {
       backgroundImage: {
         "flare-gradient": "linear-gradient(to bottom, #111111, #3b3b3b)",
-        "flare-gradianttr" : "linear-gradient(to top right, #111111, #3b3b3b)",
+        "flare-gradianttr": "linear-gradient(to top right, #111111, #3b3b3b)",
         "flare-gradientlow": "linear-gradient(to top right, #173124, #2ba669)",
       },
 
@@ -68,7 +69,7 @@ const config: Config = {
       },
     },
   },
-  //   plugins: [require("tailwindcss-animate")],
-  plugins: [],
+  //   plugins:
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/line-clamp")],
 };
 export default config;
