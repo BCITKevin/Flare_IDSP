@@ -1,0 +1,77 @@
+/* src/components/css/BottomNavBar.module.css */
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #3b3b3b;
+  border-top: 1px solid #3b3b3b;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+  /*box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);*/
+  overflow: hidden;
+  
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #888888;
+  text-decoration: none;
+  font-size: 12px;
+  transition: color 0.3s, transform 0.3s, background-color 0.3s;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.navItem:hover {
+  color: #000000;
+  transform: translateY(-2px);
+  background-color: #f0f0f0;
+}
+
+.active {
+  color: grey; /* 활성화 시 색상 */
+  transform: scale(1.1);
+  background-color: #2b2b2b;
+}
+
+.label {
+  margin-top: 4px;
+}
+
+/* 데스크탑 화면에서의 추가 스타일링 */
+@media (min-width: 768px) {
+  .bottomNav {
+    height: 80px; /* 데스크탑에서 높이 조정 */
+    flex-direction: row; /* 데스크탑에서 가로 배치 */
+    padding: 0 20px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .navItem {
+    font-size: 14px; /* 데스크탑에서 폰트 크기 조정 */
+    padding: 10px 16px;
+  }
+
+  .label {
+    margin-top: 6px;
+  }
+}
+
+/* 기본적으로 모든 화면에서 PNG 아이콘 크기 설정 */
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+@media (min-width: 768px) {
+  .icon {
+    width: 28px;
+    height: 28px;
+  }
+}
