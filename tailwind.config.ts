@@ -12,6 +12,7 @@ const config: Config = {
     extend: {
       backgroundImage: {
         "flare-gradient": "linear-gradient(to bottom, #111111, #3b3b3b)",
+        "flare-gradianttr" : "linear-gradient(to top right, #111111, #3b3b3b)",
         "flare-gradientlow": "linear-gradient(to top right, #173124, #2ba669)",
       },
 
