@@ -1,4 +1,13 @@
 .appLayout {
-    height: 100%;
+    height: 100vh;
     padding: 20px;
 }
+
+.articleBody {
+    color: var(--text-black);
+}
+
+.articleBody *{
+    color: var(--text-black);
+}
+
