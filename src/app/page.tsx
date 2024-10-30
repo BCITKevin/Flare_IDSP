@@ -27,7 +27,7 @@ import { fetchWeatherData, WeatherData } from "@/utils/fetchWeatherData";
 
 export default function Home() {
   const router = useRouter();
-  const [cityName, setCityName] = useState("Vancouver");
+  const [cityName] = useState("Vancouver");
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
   useEffect(() => {
