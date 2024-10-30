@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+
+  font-size: 14px;
+
+  --white: #EBEBEB;
+  --black: #0F0F0F;
+  --l-grey: #A1A1A1;
+  --d-grey: #202020;
+
+  --p-highlight: #F45D01;
+  --s-highlight: #FFD035;
+  --p-compliment: #00BCD4;
+  --s-compliment: #00838F;
+
+  width: 100vw;
+  height: 100vh;
+  
 /* src/app/globals.css 파일 */
 
 @font-face {
@@ -48,8 +65,45 @@
 
 
 body {
-  @apply font-sans; /* Tailwind의 유틸리티 클래스를 사용해 PPMori 폰트를 기본으로 적용 */
+  font-family: Arial, Helvetica, sans-serif;
+
+  width: 440px;
+  height: 990px;
+  margin: 0 auto;
+  overflow: hidden;
+
+  background-color: var(--d-grey);
 }
+
+h1 {
+  font-size: 48px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+.landingContainer {
+  background-color: var(--black);
+}
+
+.landingLogo {
+  font-size: 4rem;
+  margin: auto;
+  color: var(--white);
+  @apply font-sans; 
 
 @layer utilities {
   .text-balance {
@@ -57,6 +111,12 @@ body {
   }
 }
 
+@layer base {
+  :root {
+
+    --radius: 0.5rem;
+  }
+}
 
 @layer base {
   :root {
