@@ -122,7 +122,7 @@ export default function News() {
                             <div className="indent-6">
                                 <h5 className="text-xl font-bold articleHighlightTitle mt-6">{articles[1].title}</h5>
 
-                                <div className="flex pb-6 space-x-0 > * + *">
+                                <div className="flex pb-6s">
                                     <p className="text-gray-500" >{new Date(articles[1].date).toLocaleDateString()}</p>
                                     <p className="text-gray-500" > |</p>
                                     <p className="text-gray-500" >{articles[0].author}</p>
