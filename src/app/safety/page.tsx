@@ -12,6 +12,7 @@ import { Backpack, Map, Flag, Car } from "lucide-react";
 import prepareHero from "../public/images/prepareHero.png"
 import evacHero from "../public/images/EvacHero.png"
 import emergencyHero from "../public/images/EmergencyHero.png"
+import BottomNavBar from "@/components/BottomNavBar";
 
 
 import Image from "next/image";
@@ -124,6 +125,7 @@ export default function Safety() {
 
 
             </div>
+            <BottomNavBar/>
         </body>
     )
 }
