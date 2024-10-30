@@ -1,8 +1,10 @@
+"use client"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import './news.css'
 import ArticleCard from "@/components/news/ArticleCard";
 import Link from "next/link";
 import { useState } from "react";
+import ArticleHighlight from "@/components/news/ArticleHighlight";
 
 export default function News() {
     //dummy data
@@ -90,6 +92,8 @@ export default function News() {
         },
     ];
     
+    const [tabState, setTabState] = useState("Local")
+
     // Filter articles by scope
     const filterArticlesByScope = (scope) =>
         articles.filter((article) => article.scope === scope);
@@ -108,37 +112,53 @@ export default function News() {
                 <div className="mt-8">
                     <Tabs defaultValue="Local" className="w-full flex flex-col">
                         <TabsList className="grid-cols-4 tabTriggerContainer">
-                            <TabsTrigger value="Local" className="tabTrigger">Local</TabsTrigger>
-                            <TabsTrigger value="Regional" className="tabTrigger">Regional</TabsTrigger>
-                            <TabsTrigger value="National" className="tabTrigger">National</TabsTrigger>
-                            <TabsTrigger value="Global" className="tabTrigger">Global</TabsTrigger>
+                            <TabsTrigger value="Local" className="tabTrigger" onClick={() => setTabState("Local")}>Local</TabsTrigger>
+                            <TabsTrigger value="Regional" className="tabTrigger" onClick={() => setTabState("Regional")}>Regional</TabsTrigger>
+                            <TabsTrigger value="National" className="tabTrigger" onClick={() => setTabState("National")}>National</TabsTrigger>
+                            <TabsTrigger value="Global" className="tabTrigger" onClick={() => setTabState("Global")}>Global</TabsTrigger>
                         </TabsList>
 
-                        <h2 className="mt-3">Local</h2>
+                        <h2 className="mt-3">{tabState}</h2>
 
                         {/** TEMPORARY CODE TO DISPLAY NEWS ARTICLES. MEANT FOR SHOWCASE PURPOSES ONLY IT DOES NOT WORK WITH THE API */}
-                        <Link href="/article" key={articles.id} className="articleHighlight mt-6">
-                            <img
-                                src={'https://picsum.photos/200/300'}
-                                alt="news article"
-                                className="rounded-lg articleHighlightImage" />
-                            <div className="indent-6">
-                                <h5 className="articleHighlightTitle text-xl font-bold m-auto p-3">{articles[0].title}</h5>
-                                <div className="flex pb-3 text-gray-500">
-                                    <p>{articles[0].author}</p>
-                                    <p>{new Date(articles[0].date).toLocaleDateString()}</p>
-                                    <Link href="https://vancouversun.com">Coastal Daily News</Link>
-                                </div>
-                            </div>
-                        </Link>
-
+                      
                         <TabsContent value="Local">
+                            <Link href="/article" key={articles.id} className="articleHighlight mt-6">
+                                <img
+                                    src={articles[0].image}
+                                    alt="news article"
+                                    className="rounded-lg articleHighlightImage" />
+                                <div className="indent-6">
+                                    <h5 className="articleHighlightTitle text-xl font-bold m-auto p-3">{articles[0].title}</h5>
+                                    <div className="flex pb-3 text-gray-500">
+                                        <p>{articles[0].author}</p>
+                                        <p>{new Date(articles[0].date).toLocaleDateString()}</p>
+                                        <Link href="https://vancouversun.com">Coastal Daily News</Link>
+                                    </div>
+                                </div>
+                            </Link>
+
                             {filterArticlesByScope("local").map((article) => (
                                 <ArticleCard article={article} />
                             ))}
                         </TabsContent>
 
                         <TabsContent value="Regional">
+                            <Link href="/article" key={articles.id} className="articleHighlight mt-6">
+                                <img
+                                    src={articles[1].image}
+                                    alt="news article"
+                                    className="rounded-lg articleHighlightImage" />
+                                <div className="indent-6">
+                                    <h5 className="articleHighlightTitle text-xl font-bold m-auto p-3">{articles[0].title}</h5>
+                                    <div className="flex pb-3 text-gray-500">
+                                        <p>{articles[0].author}</p>
+                                        <p>{new Date(articles[0].date).toLocaleDateString()}</p>
+                                        <Link href="https://vancouversun.com">Coastal Daily News</Link>
+                                    </div>
+                                </div>
+                            </Link>
+
                             {filterArticlesByScope("regional").length > 0 ? (
                                 filterArticlesByScope("regional").map((article) => (
                                     <ArticleCard article={article} />
@@ -148,7 +168,23 @@ export default function News() {
                             )}
                         </TabsContent>
 
+
                         <TabsContent value="National">
+                             <Link href="/article" key={articles.id} className="articleHighlight mt-6">
+                                <img
+                                    src={articles[2].image}
+                                    alt="news article"
+                                    className="rounded-lg articleHighlightImage" />
+                                <div className="indent-6">
+                                    <h5 className="articleHighlightTitle text-xl font-bold m-auto p-3">{articles[0].title}</h5>
+                                    <div className="flex pb-3 text-gray-500">
+                                        <p>{articles[0].author}</p>
+                                        <p>{new Date(articles[0].date).toLocaleDateString()}</p>
+                                        <Link href="https://vancouversun.com">Coastal Daily News</Link>
+                                    </div>
+                                </div>
+                            </Link>
+
                             {filterArticlesByScope("national").map((article) => (
                                 <ArticleCard article={article} />
 
@@ -156,6 +192,21 @@ export default function News() {
                         </TabsContent>
 
                         <TabsContent value="Global">
+                             <Link href="/article" key={articles.id} className="articleHighlight mt-6">
+                                <img
+                                    src={articles[4].image}
+                                    alt="news article"
+                                    className="rounded-lg articleHighlightImage" />
+                                <div className="indent-6">
+                                    <h5 className="articleHighlightTitle text-xl font-bold m-auto p-3">{articles[0].title}</h5>
+                                    <div className="flex pb-3 text-gray-500">
+                                        <p>{articles[0].author}</p>
+                                        <p>{new Date(articles[0].date).toLocaleDateString()}</p>
+                                        <Link href="https://vancouversun.com">Coastal Daily News</Link>
+                                    </div>
+                                </div>
+                            </Link>
+
                             {filterArticlesByScope("global").map((article) => (
                                 <ArticleCard article={article} />
                             ))}
