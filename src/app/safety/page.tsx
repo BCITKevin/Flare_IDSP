@@ -8,8 +8,12 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import "./safety.css"
-import { Backpack } from "lucide-react";
+import { Backpack, Map, Flag, Car } from "lucide-react";
 import prepareHero from "../public/images/prepareHero.png"
+import evacHero from "../public/images/EvacHero.png"
+import emergencyHero from "../public/images/EmergencyHero.png"
+
+
 import Image from "next/image";
 
 // Card can be reformatted into a reusable component
@@ -76,11 +80,15 @@ export default function Safety() {
     return (
         <body>
             <div className="appLayout">
-                <h1>Safety</h1>
-                <h3>AI Insight</h3>
+                <h1 className="">Safety</h1>
+                <h3 className="mt-32">AI Insight</h3>
+                <Card className="p-5 mt-3">
+                    <strong>Based on your Location and Recent Weather:</strong>
+                    <p>Consider bringing extra water and cooling supplies to prevent heatstroke while outside</p>
+                </Card>
                 <div></div>
-                <h3>Safety Tips</h3>
-                <div className="mt-8">
+                <h3 className="mt-8">Safety Tips</h3>
+                <div className="mt-2">
                     <Tabs defaultValue="account" className="w-full flex flex-col">
                         <TabsList className="space-x-8">
                             <TabsTrigger value="Prepare" className="w-full">Prepare</TabsTrigger>
@@ -91,21 +99,21 @@ export default function Safety() {
                         <TabsContent value="Prepare">
                             <Card className="p-6 flex flex-col items-center">
                                 <Image src={prepareHero} width={340} height={189} alt="a rescue worker looking towards a wildfire"/>
-                                <Backpack color="black" className="m-6"/>
+                                <Flag color="black" className="m-6"/>
                                 <p dangerouslySetInnerHTML={{ __html: prepareText }} className="articleBody"/>
                             </Card>
                         </TabsContent>
                         <TabsContent value="Emergency">
                             <Card className="p-6 flex flex-col items-center">
-                                <Image src={prepareHero} width={340} height={189} alt="a rescue worker looking towards a wildfire"/>
+                                <Image src={emergencyHero} width={340} height={189} alt="a rescue worker looking towards a wildfire"/>
                                 <Backpack color="black" className="m-6"/>
                                 <p dangerouslySetInnerHTML={{ __html: emergencyText }} className="articleBody"/>
                             </Card>
                         </TabsContent>
                         <TabsContent value="Evacuation">
                             <Card className="p-6 flex flex-col items-center">
-                                <Image src={prepareHero} width={340} height={189} alt="a rescue worker looking towards a wildfire"/>
-                                <Backpack color="black" className="m-6"/>
+                                <Image src={evacHero} width={340} height={189} alt="a rescue worker looking towards a wildfire"/>
+                                <Map color="black" className="m-6"/>
                                 <p dangerouslySetInnerHTML={{ __html: evacuationText }} className="articleBody"/>
                             </Card>
                         </TabsContent>

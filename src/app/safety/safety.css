@@ -1,6 +1,7 @@
 .appLayout {
     height: 100vh;
     padding: 20px;
+
 }
 
 .articleBody {
@@ -11,3 +12,38 @@
     color: var(--text-black);
 }
 
+h1 {
+    display: flex;
+    width: 232px;
+    height: 50px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+
+    color: #FFF;
+    /* HIFI/h1 Hifi */
+    font-family: Inter;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 48px; /* 100% */
+    letter-spacing: -0.576px;
+}
+
+h3 {
+    color: var(--highlight, #F45D01);
+    /* HIFI/h2 Hifi */
+    font-family: Inter;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 36px; /* 120% */
+    letter-spacing: -0.225px;
+}
+
+@media only screen and (max-width: 600px) {
+    .appLayout {
+      overflow-y: scroll;
+      padding-bottom: 8rem;
+  }
+}
