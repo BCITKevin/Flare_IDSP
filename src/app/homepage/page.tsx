@@ -1,4 +1,4 @@
-import Logo from "../public/images/flare_logo.svg";
+import Logo from "../public/images/logo_Flaire.png";
 import Image from "next/image";
 import "./homepage.css"
 import { Circle, CircleHelp, Wind, Bell } from "lucide-react"
@@ -6,7 +6,6 @@ import Link from "next/link";
 
 export default function HomePage() {
 
-    //text will be replaced with imported data
     return (
         <>
             <body>

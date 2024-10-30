@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
-import Logo from "./public/images/flare_logo.svg";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Logo from "../../public/images/logo_Flare.png";
