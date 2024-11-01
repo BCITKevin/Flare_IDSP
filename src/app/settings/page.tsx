@@ -10,23 +10,25 @@ function Settings() {
     return (
       <div className="settings-container">
         <h3 style={{
-            color: "var(--white)",
             marginBottom: "1.5rem",
-        }}
+            }}
+            className="headerz"
         >Settings</h3>
         
         <section>
           <h4 style={{
             color: "var(--white)",
             // marginBottom: "1.5rem",
-        }}>App Preferences</h4>
+            }}
+            className="headerz"
+        >App Preferences</h4>
           
           <Accordion type="single" collapsible>
             <AccordionItem value="appearance">
               <AccordionTrigger>
                 <div className="accordion-trigger">
                   <Sun className="icon-gray" />
-                  <span>Appearance</span>
+                  <span className="theSpan">Appearance</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -41,7 +43,7 @@ function Settings() {
               <AccordionTrigger>
                 <div className="accordion-trigger">
                   <Bell className="icon-gray" />
-                  <span>Notifications</span>
+                  <span className="theSpan">Notifications</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -70,7 +72,7 @@ function Settings() {
               <AccordionTrigger>
                 <div className="accordion-trigger">
                   <Languages className="icon-gray" />
-                  <span>Language</span>
+                  <span className="theSpan">Language</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -84,17 +86,27 @@ function Settings() {
         </section>
         
         <section>
-          <h2>App Details</h2>
+            <h4 
+                style={{
+                    marginTop:"9rem"
+                }}
+                className="headerz"
+            >App Details</h4>
           <Accordion type="single" collapsible>
             <AccordionItem value="about">
               <AccordionTrigger>
                 <div className="accordion-trigger">
                   <Info className="icon-gray" />
-                  <span>About Flare</span>
+                  <span className="theSpan">About Flare</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                <p>Information about the Flare app...</p>
+              <div className="accordion-contentAbout">
+                <span>Version: 1.01</span>
+                <span className="underlineSpan">Terms of Service</span>
+                <span className="underlineSpan">Privacy Policy</span>
+                <span className="underlineSpan">Contact Us</span>
+              </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -106,3 +118,4 @@ function Settings() {
   
   export default Settings;
   
+

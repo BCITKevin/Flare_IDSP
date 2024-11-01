@@ -1,17 +1,12 @@
 
-span{
-    font-family: 'PPMori';
+.theSpan{
+    font-family:'PPMori';
+    padding-left: 1rem;
 }
 
-.settingsStyle{
-    font-family: 'PPMori';
-    font-weight: 600;
-    margin-bottom: 1.5rem;
+.headerz{
     color: var(--white);
-}
-
-.settingsAppPrefrences{
-    font-family: 'PPMori';
+    font-family:'PPMori';
     font-weight: 600;
 }
 
@@ -43,13 +38,6 @@ span{
 
   }
 
-.languageBOX{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width:100%;
-    
-}
   
   .icon-gray {
     color: var(--black); /* Equivalent to text-gray-400 */
@@ -68,3 +56,19 @@ span{
     flex-direction: column;
     justify-content: space-between;
   }
+
+.accordion-contentAbout{
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family:'PPMori';
+}
+
+.underlineSpan{
+    text-decoration: underline;
+}
+
+.underlineSpan:hover{
+    cursor: pointer;
+}
