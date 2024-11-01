@@ -1,6 +1,7 @@
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Switch } from "@/components/ui/switch";
 import { Sun, Bell, Languages, Info } from 'lucide-react';
+import { Combobox } from "@/components/ui/combobox";
 import './Settings.css';
 import BottomNavBar from "@/components/BottomNavBar";
 
@@ -73,7 +74,10 @@ function Settings() {
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                <p>Change Language</p>
+                <div className="accordion-content">
+                    <p>Change Language</p>
+                    <Combobox/>
+                </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
