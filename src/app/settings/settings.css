@@ -1,0 +1,40 @@
+.settings-container {
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+    padding: 1.5rem;
+  }
+  
+  .settings-container h1 {
+    font-size: 1.5rem; /* Equivalent to text-2xl */
+    margin-bottom: 1rem;
+  }
+  
+  .settings-container section {
+    margin-bottom: 1rem;
+  }
+  
+  .settings-container h2 {
+    font-size: 1.125rem; /* Equivalent to text-lg */
+    margin-bottom: 0.5rem;
+  }
+  
+  .accordion-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Equivalent to gap-2 */
+  }
+  
+  .icon-gray {
+    color: #9ca3af; /* Equivalent to text-gray-400 */
+  }
+  
+  .accordion-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .accordion-content.space-y-2 {
+    gap: 0.5rem; /* Equivalent to space-y-2 */
+  }
