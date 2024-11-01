@@ -1,16 +1,24 @@
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Switch } from "@/components/ui/switch";
-import { Sun, Bell, Earth, Info } from 'lucide-react';
+import { Sun, Bell, Languages, Info } from 'lucide-react';
 import './Settings.css';
+import BottomNavBar from "@/components/BottomNavBar";
 
 
 function Settings() {
     return (
       <div className="settings-container">
-        <h1>Settings</h1>
+        <h3 style={{
+            color: "var(--white)",
+            marginBottom: "1.5rem",
+        }}
+        >Settings</h3>
         
         <section>
-          <h2>App Preferences</h2>
+          <h4 style={{
+            color: "var(--white)",
+            // marginBottom: "1.5rem",
+        }}>App Preferences</h4>
           
           <Accordion type="single" collapsible>
             <AccordionItem value="appearance">
@@ -60,12 +68,12 @@ function Settings() {
             <AccordionItem value="language">
               <AccordionTrigger>
                 <div className="accordion-trigger">
-                  <Earth className="icon-gray" />
+                  <Languages className="icon-gray" />
                   <span>Language</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                <p>Select Language Options Here...</p>
+                <p>Change Language</p>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -87,8 +95,10 @@ function Settings() {
             </AccordionItem>
           </Accordion>
         </section>
+        <BottomNavBar/>
       </div>
     );
   }
   
   export default Settings;
+  

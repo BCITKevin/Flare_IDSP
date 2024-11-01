@@ -1,8 +1,25 @@
+
+span{
+    font-family: 'PPMori';
+}
+
+.settingsStyle{
+    font-family: 'PPMori';
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+}
+
+.settingsAppPrefrences{
+    font-family: 'PPMori';
+    font-weight: 600;
+}
+
 .settings-container {
-    background-color: black;
-    color: white;
-    min-height: 100vh;
+    height: 100vh;
     padding: 1.5rem;
+    padding-top: 120px;
+    background-color: var(--black);
   }
   
   .settings-container h1 {
@@ -22,19 +39,24 @@
   .accordion-trigger {
     display: flex;
     align-items: center;
-    gap: 0.5rem; /* Equivalent to gap-2 */
+    gap: 0.5rem;
+
   }
   
   .icon-gray {
-    color: #9ca3af; /* Equivalent to text-gray-400 */
+    color: var(--black); /* Equivalent to text-gray-400 */
   }
   
   .accordion-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width:100%;
   }
   
   .accordion-content.space-y-2 {
-    gap: 0.5rem; /* Equivalent to space-y-2 */
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+    justify-content: space-between;
   }
