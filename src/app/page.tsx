@@ -158,7 +158,7 @@ export default function Home() {
                 )}
               </CardContent>
             </Card>
-            <div className="shadow-2xl rounded-sm bg-fuchsia-800 flex flex-col justify-center items-center row-span-2">
+            <div className="shadow-2xl rounded-sm flare-gradient flex flex-col justify-center items-center row-span-2">
               <Carousel
                 className="w-full h-full"
                 plugins={[
