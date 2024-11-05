@@ -32,9 +32,8 @@ const BottomNavBar: React.FC = () => {
         <Link
           key={item.href}
           href={item.href}
-          className={`${styles.navItem} ${
-            pathname === item.href ? styles.active : ""
-          }`}
+          className={`${styles.navItem} ${pathname === item.href ? styles.active : ""
+            }`}
           aria-current={pathname === item.href ? "page" : undefined}
         >
           <Image
