@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Loader2, Info } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -9,31 +9,48 @@ import { Input } from '@/components/ui/input';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import Image from 'next/image';
+import { Loader } from '@googlemaps/js-api-loader';
 import styles from './WeatherMap.module.css';
 
 const FWI_SCALE = [
-  { range: '0-5.2', level: 'Low', color: '#44BB44' },
-  { range: '5.2-11.2', level: 'Moderate', color: '#FFEB3B' },
-  { range: '11.2-21.3', level: 'High', color: '#FF9800' },
-  { range: '21.3-38.0', level: 'Very High', color: '#FF5722' },
-  { range: '38.0+', level: 'Extreme', color: '#B71C1C' }
+  { range: '0-5.2', level: 'Very Low', color: '#126E00' },
+  { range: '5.2-11.2', level: 'Low', color: '#FFEB3B' },
+  { range: '11.2-21.3', level: 'Moderate', color: '#ED8E3E' },
+  { range: '21.3-38.0', level: 'High', color: '#FF0000' },
+  { range: '38.0-50.0', level: 'Very High', color: '#890000' },
+  { range: '50+', level: 'Extreme', color: '#FF00FB' }
 ];
 
 const getFWILevel = (fwiValue) => {
-  if (fwiValue < 5.2) return { level: 'Low', color: '#44BB44' };
-  if (fwiValue < 11.2) return { level: 'Moderate', color: '#FFEB3B' };
-  if (fwiValue < 21.3) return { level: 'High', color: '#FF9800' };
-  if (fwiValue < 38.0) return { level: 'Very High', color: '#FF5722' };
-  return { level: 'Extreme', color: '#B71C1C' };
+  if (fwiValue < 5.2) return { level: 'Very Low', color: '#126E00' };
+  if (fwiValue < 11.2) return { level: 'Low', color: '#FFEB3B' };
+  if (fwiValue < 21.3) return { level: 'Moderate', color: '#ED8E3E' };
+  if (fwiValue < 38.0) return { level: 'High', color: '#FF0000' };
+  if (fwiValue < 50.0) return { level: 'Very High', color: '#890000' };
+  return { level: 'Extreme', color: '#FF00FB' };
 };
 
 const fetchWeatherData = async (lat, lon, date) => {
-  const formattedDate = date.toISOString().split('T')[0];
+  const timestamp = Math.floor(date.getTime() / 1000);
+  
   try {
-    const response = await fetch(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&units=metric&date=${formattedDate}`
+    // Fetch regular weather data
+    const weatherResponse = await fetch(
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&units=metric`
     );
-    return await response.json();
+    const weatherData = await weatherResponse.json();
+
+    // Fetch FWI data
+    const fwiResponse = await fetch(
+      `https://api.openweathermap.org/data/2.5/fwi?lat=${lat}&lon=${lon}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`
+    );
+    const fwiData = await fwiResponse.json();
+
+    return {
+      ...weatherData,
+      fwi: fwiData.fwi || 0
+    };
   } catch (error) {
     console.error('Error fetching weather data:', error);
     throw error;
@@ -42,78 +59,120 @@ const fetchWeatherData = async (lat, lon, date) => {
 
 const WeatherMap = () => {
   const mapRef = useRef(null);
-  const [marker, setMarker] = useState(null);
+  const googleMapRef = useRef(null);
+  const markerRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [error, setError] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [layers, setLayers] = useState({
-    fwi: null,
-    temperature: null,
-    precipitation: null
-  });
+  const [weatherOverlay, setWeatherOverlay] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
-
     checkMobile();
     window.addEventListener('resize', checkMobile);
-
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && mapRef.current === null) {
-      const L = window.L;
-      const newMap = L.map('map').setView([49.2827, -123.1207], isMobile ? 10 : 11);
-
-      const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
+    const initializeMap = async () => {
+      const loader = new Loader({
+        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+        version: 'weekly',
       });
 
-      const today = new Date().toISOString().split('T')[0];
-      const fwiLayer = L.tileLayer(
-        `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&date=${today}`,
-        { opacity: 0.7, attribution: '© OpenWeatherMap' }
-      );
-      console.log(fwiLayer);
-      osmLayer.addTo(newMap);
-      fwiLayer.addTo(newMap);
-
-      const baseMaps = { "OpenStreetMap": osmLayer };
-      const overlayMaps = { "Fire Weather Index": fwiLayer };
-
-      L.control.layers(baseMaps, overlayMaps, { collapsed: isMobile, position: 'topright' }).addTo(newMap);
-      L.control.scale({ metric: true, imperial: false }).addTo(newMap);
-
-      const legend = L.control({ position: isMobile ? 'bottomleft' : 'bottomright' });
-      legend.onAdd = () => {
-        const div = L.DomUtil.create('div', `${styles.legend}`);
-        div.innerHTML = `<h4 class="${styles.legendTitle}">Fire Weather Index</h4>`;
-        FWI_SCALE.forEach(({ range, level, color }) => {
-          div.innerHTML += `
-            <div class="${styles.legendItem}">
-              <div class="${styles.legendColor}" style="background: ${color}"></div>
-              <span>${level}${isMobile ? '' : ` (${range})`}</span>
-            </div>
-          `;
+      try {
+        const google = await loader.load();
+        const map = new google.maps.Map(mapRef.current, {
+          center: { lat: 49.2827, lng: -123.1207 }, // Vancouver coordinates
+          zoom: isMobile ? 10 : 11,
+          styles: [
+            {
+              featureType: 'poi',
+              elementType: 'labels',
+              stylers: [{ visibility: 'off' }]
+            }
+          ]
         });
-        return div;
-      };
-      legend.addTo(newMap);
 
-      mapRef.current = newMap;
-      setLayers({ fwi: fwiLayer });
+        googleMapRef.current = map;
 
-      return () => {
-        if (mapRef.current) {
-          mapRef.current.remove();
-          mapRef.current = null;
-        }
-      };
+        const legendDiv = document.createElement('div');
+        legendDiv.className = styles.legend;
+        
+        const titleElem = document.createElement('h4');
+        titleElem.className = styles.legendTitle;
+        titleElem.textContent = 'Fire Weather Index';
+        legendDiv.appendChild(titleElem);
+        
+        FWI_SCALE.forEach(({ range, level, color }) => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = styles.legendItem;
+        
+          const colorDiv = document.createElement('div');
+          colorDiv.className = styles.legendColor;
+          colorDiv.style.background = color;
+        
+          const textSpan = document.createElement('span');
+          textSpan.textContent = `${level}${isMobile ? '' : ` (${range})`}`;
+        
+          itemDiv.appendChild(colorDiv);
+          itemDiv.appendChild(textSpan);
+          legendDiv.appendChild(itemDiv);
+        });
+        
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legendDiv);
+
+        // Add the weather overlay
+        const timestamp = Math.floor(selectedDate.getTime() / 1000);
+        const weatherMapUrl = `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&date=${timestamp}`;
+        
+        const newOverlay = new google.maps.ImageMapType({
+          getTileUrl: function(coord, zoom) {
+            return weatherMapUrl
+              .replace('{z}', zoom)
+              .replace('{x}', coord.x)
+              .replace('{y}', coord.y);
+          },
+          tileSize: new google.maps.Size(256, 256),
+          opacity: 0.7
+        });
+
+        map.overlayMapTypes.push(newOverlay);
+        setWeatherOverlay(newOverlay);
+      } catch (error) {
+        console.error('Error loading Google Maps:', error);
+        setError('Failed to load map');
+      }
+    };
+
+    if (typeof window !== 'undefined' && !googleMapRef.current) {
+      initializeMap();
     }
-  }, [isMobile]);
+  }, [isMobile, selectedDate]);
+
+  useEffect(() => {
+    if (googleMapRef.current && weatherOverlay) {
+      const timestamp = Math.floor(selectedDate.getTime() / 1000);
+      const weatherMapUrl = `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&date=${timestamp}`;
+      
+      const newOverlay = new google.maps.ImageMapType({
+        getTileUrl: function(coord, zoom) {
+          return weatherMapUrl
+            .replace('{z}', zoom)
+            .replace('{x}', coord.x)
+            .replace('{y}', coord.y);
+        },
+        tileSize: new google.maps.Size(256, 256),
+        opacity: 0.7
+      });
+
+      googleMapRef.current.overlayMapTypes.clear();
+      googleMapRef.current.overlayMapTypes.push(newOverlay);
+      setWeatherOverlay(newOverlay);
+    }
+  }, [selectedDate]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -131,39 +190,63 @@ const WeatherMap = () => {
       const { lat, lon, name } = data[0];
       const weatherData = await fetchWeatherData(lat, lon, selectedDate);
 
-      if (marker) mapRef.current.removeLayer(marker);
+      if (markerRef.current) {
+        markerRef.current.setMap(null);
+      }
 
-      const L = window.L;
-      const fwiValue = weatherData.daily[0].fwi || 0;
-      const { level, color } = getFWILevel(fwiValue);
+      const { level, color } = getFWILevel(weatherData.fwi);
 
-      const popupContent = `
-        <div class="p-2">
-          <h3 class="text-lg font-bold mb-2">${name}</h3>
-          <div class="mb-3">
-            <div style="background-color: ${color}; color: ${color === '#FFEB3B' ? 'black' : 'white'};
-              padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px;">
-              Fire Danger: ${level}
+      const infowindow = new google.maps.InfoWindow({
+        content: `
+          <div style="padding: 16px;">
+            <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">${name}</h3>
+            <div style="margin-bottom: 12px;">
+              <div style="background-color: ${color}; color: ${color === '#FFEB3B' ? 'black' : 'white'};
+                padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px;">
+                Fire Danger: ${level}
+              </div>
+              <div>FWI Value: ${weatherData.fwi.toFixed(1)}</div>
             </div>
-            <div>FWI Value: ${fwiValue.toFixed(1)}</div>
-            <div>Date: ${selectedDate.toLocaleDateString()}</div>
+            <div style="display: grid; gap: 4px; font-size: 14px;">
+              <div>Temperature: ${weatherData.current.temp.toFixed(1)}°C</div>
+              <div>Feels Like: ${weatherData.current.feels_like.toFixed(1)}°C</div>
+              <div>Humidity: ${weatherData.current.humidity}%</div>
+              <div>Wind: ${(weatherData.current.wind_speed * 3.6).toFixed(1)} km/h</div>
+              <div>UV Index: ${weatherData.current.uvi}</div>
+              <div>Weather: ${weatherData.current.weather[0].description}</div>
+              ${weatherData.alerts && weatherData.alerts.length > 0 ? weatherData.alerts.map(alert => `
+                <div style="margin-top: 8px; padding: 8px; background-color: #FEE2E2; border: 1px solid #DC2626; border-radius: 4px;">
+                  <strong style="color: #DC2626;">${alert.event}</strong>
+                  <div style="font-size: 12px; margin-top: 4px;">
+                    ${alert.description ? 
+                      alert.description.split('\n')[0] : // Just take the first line of description if it's too long
+                      'No additional details available'
+                    }
+                  </div>
+                  <div style="font-size: 11px; color: #666; margin-top: 4px;">
+                    ${new Date(alert.start * 1000).toLocaleString()} - 
+                    ${new Date(alert.end * 1000).toLocaleString()}
+                  </div>
+                </div>
+              `).join('') : ''}
+            </div>
           </div>
-          <div class="grid gap-1 text-sm">
-            <div>Temperature: ${weatherData.daily[0].temp.day.toFixed(1)}°C</div>
-            <div>Humidity: ${weatherData.daily[0].humidity}%</div>
-            <div>Wind: ${(weatherData.daily[0].wind_speed * 3.6).toFixed(1)} km/h</div>
-            <div>Weather: ${weatherData.daily[0].weather[0].description}</div>
-          </div>
-        </div>
-      `;
+        `
+      });
+    
+      const marker = new google.maps.Marker({
+        position: { lat, lng: lon },
+        map: googleMapRef.current
+      });
 
-      const newMarker = L.marker([lat, lon])
-        .addTo(mapRef.current)
-        .bindPopup(popupContent, { maxWidth: 300, className: 'custom-popup' })
-        .openPopup();
+      marker.addListener('click', () => {
+        infowindow.open(googleMapRef.current, marker);
+      });
 
-      setMarker(newMarker);
-      mapRef.current.setView([lat, lon], 11);
+      markerRef.current = marker;
+      googleMapRef.current.panTo({ lat, lng: lon });
+      googleMapRef.current.setZoom(13);
+      infowindow.open(googleMapRef.current, marker);
 
     } catch (err) {
       console.error('Error:', err);
@@ -175,8 +258,17 @@ const WeatherMap = () => {
 
   return (
     <Card className={styles.mapContainer}>
-      <CardHeader>
-        <CardTitle>Vancouver Weather Map</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle className="flex items-center gap-2">
+          <Image 
+            src="/icons/Weather.png" 
+            alt="Weather Icon" 
+            width={24} 
+            height={24} 
+            priority={true}
+          />
+          Vancouver Weather Map
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className={styles.searchContainer}>
@@ -216,7 +308,7 @@ const WeatherMap = () => {
           </Alert>
         )}
 
-        <div id="map" className={styles.mapWrapper} />
+        <div ref={mapRef} className={styles.mapWrapper} />
       </CardContent>
     </Card>
   );
