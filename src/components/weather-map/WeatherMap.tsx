@@ -87,6 +87,7 @@ const WeatherMap = () => {
         const map = new google.maps.Map(mapRef.current, {
           center: { lat: 49.2827, lng: -123.1207 }, // Vancouver coordinates
           zoom: isMobile ? 10 : 11,
+          streetViewControl: false,
           styles: [
             {
               featureType: 'poi',
