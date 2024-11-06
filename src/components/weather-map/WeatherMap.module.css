@@ -23,47 +23,131 @@
   overflow: hidden;
 }
 
-/* Google Maps custom styles */
-.legend {
-  background-color: white;
-  padding: 10px;
+/* Legend Control Styles */
+.legendControl {
   margin: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mapButton {
+  background-color: rgba(0, 0, 0, 0.8);
+  border: none;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-  font-family: system-ui, -apple-system, sans-serif;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mapButton svg {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
+.legendContent {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 12px;
+  padding: 16px;
+  min-width: 300px;
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+}
+
+.legendContent.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .legendTitle {
-  margin: 0 0 8px 0;
-  font-size: 14px;
+  color: #ff6b35;
+  font-size: 18px;
   font-weight: 600;
+  margin-bottom: 16px;
 }
 
 .legendItem {
+  background-color: white;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.legendMarker {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 12px;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.legendText {
+  flex: 1;
+}
+
+.legendLevel {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.legendDescription {
+  font-size: 12px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .legendContent {
+    min-width: unset;
+    width: calc(100vw - 20px);
+    max-width: 300px;
+  }
+
+  .legendDescription {
+    font-size: 11px;
+  }
+}
+
+/* Weather Widget Styles */
+.weatherWidget {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  color: white;
+  padding: 8px 12px;
+  margin: 10px;
   display: flex;
   align-items: center;
-  margin-bottom: 4px;
-  font-size: 12px;
+  gap: 8px;
 }
 
-.legendColor {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-  border-radius: 2px;
+.weatherTemp {
+  font-size: 20px;
+  font-weight: 600;
 }
 
-/* Custom InfoWindow styles - these will be applied globally in the JavaScript */
-[class*="gm-style"] .gm-style-iw-c {
-  padding: 0 !important;
-  max-width: 300px !important;
-}
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .legendContent {
+    min-width: unset;
+    width: calc(100vw - 20px);
+    max-width: 300px;
+  }
 
-[class*="gm-style"] .gm-style-iw-d {
-  overflow: hidden !important;
-  padding: 0 !important;
-}
+  .legendDescription {
+    font-size: 11px;
+  }
 
-[class*="gm-style"] .gm-style-iw-t::after {
-  background: linear-gradient(45deg, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 51%, rgba(255,255,255,0) 100%) !important;
+  .weatherWidget {
+    padding: 6px 10px;
+  }
 }

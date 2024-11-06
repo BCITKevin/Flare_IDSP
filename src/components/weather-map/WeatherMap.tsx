@@ -1,7 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Loader2 } from 'lucide-react';
+import { Search, Loader2, Info, Cloud } from 'lucide-react';
+import { WeatherWidget } from './WeatherWidget';
+import { MapLegend } from './Legend';
+import { createRoot } from 'react-dom/client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -13,22 +16,14 @@ import Image from 'next/image';
 import { Loader } from '@googlemaps/js-api-loader';
 import styles from './WeatherMap.module.css';
 
-const FWI_SCALE = [
-  { range: '0-5.2', level: 'Very Low', color: '#126E00' },
-  { range: '5.2-11.2', level: 'Low', color: '#FFEB3B' },
-  { range: '11.2-21.3', level: 'Moderate', color: '#ED8E3E' },
-  { range: '21.3-38.0', level: 'High', color: '#FF0000' },
-  { range: '38.0-50.0', level: 'Very High', color: '#890000' },
-  { range: '50+', level: 'Extreme', color: '#FF00FB' }
-];
 
 const getFWILevel = (fwiValue) => {
-  if (fwiValue < 5.2) return { level: 'Very Low', color: '#126E00' };
-  if (fwiValue < 11.2) return { level: 'Low', color: '#FFEB3B' };
-  if (fwiValue < 21.3) return { level: 'Moderate', color: '#ED8E3E' };
-  if (fwiValue < 38.0) return { level: 'High', color: '#FF0000' };
-  if (fwiValue < 50.0) return { level: 'Very High', color: '#890000' };
-  return { level: 'Extreme', color: '#FF00FB' };
+  if (fwiValue < 5.2) return { class: 0, level: 'Very Low', color: '#126E00' };
+  if (fwiValue < 11.2) return { class: 1, level: 'Low', color: '#FFEB3B' };
+  if (fwiValue < 21.3) return { class: 2, level: 'Moderate', color: '#ED8E3E' };
+  if (fwiValue < 38.0) return { class: 3, level: 'High', color: '#FF0000' };
+  if (fwiValue < 50.0) return { class: 4, level: 'Very High', color: '#890000' };
+  return { class: 5, level: 'Extreme', color: '#4A0404' };
 };
 
 const fetchWeatherData = async (lat, lon, date) => {
@@ -67,6 +62,8 @@ const WeatherMap = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [weatherOverlay, setWeatherOverlay] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [showLegend, setShowLegend] = useState(false);
+  
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -80,51 +77,82 @@ const WeatherMap = () => {
       const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
         version: 'weekly',
+        libraries: ['marker']
       });
-
+    
       try {
         const google = await loader.load();
         const map = new google.maps.Map(mapRef.current, {
-          center: { lat: 49.2827, lng: -123.1207 }, // Vancouver coordinates
-          zoom: isMobile ? 10 : 11,
+          center: { lat: 54.5, lng: -125.5 }, // Center of BC
+          zoom: isMobile ? 5 : 6,
           streetViewControl: false,
+          mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
+          mapTypeControl: false, // Remove map type control completely
           styles: [
             {
               featureType: 'poi',
               elementType: 'labels',
               stylers: [{ visibility: 'off' }]
+            },
+            {
+              featureType: 'transit',
+              elementType: 'labels',
+              stylers: [{ visibility: 'off' }]
+            },
+            {
+              featureType: 'water',
+              elementType: 'geometry',
+              stylers: [{ color: '#b3d1ff' }]
+            },
+            {
+              featureType: 'landscape',
+              elementType: 'geometry',
+              stylers: [{ color: '#f5f5f5' }]
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry',
+              stylers: [{ color: '#ffffff' }]
+            },
+            {
+              featureType: 'road',
+              elementType: 'labels',
+              stylers: [{ visibility: 'on' }]
+            },
+            {
+              featureType: 'administrative',
+              elementType: 'geometry',
+              stylers: [{ visibility: 'off' }]
+            },
+            {
+              featureType: 'administrative.province',
+              elementType: 'geometry',
+              stylers: [{ visibility: 'on' }]
             }
           ]
         });
-
+    
         googleMapRef.current = map;
-
-        const legendDiv = document.createElement('div');
-        legendDiv.className = styles.legend;
-        
-        const titleElem = document.createElement('h4');
-        titleElem.className = styles.legendTitle;
-        titleElem.textContent = 'Fire Weather Index';
-        legendDiv.appendChild(titleElem);
-        
-        FWI_SCALE.forEach(({ range, level, color }) => {
-          const itemDiv = document.createElement('div');
-          itemDiv.className = styles.legendItem;
-        
-          const colorDiv = document.createElement('div');
-          colorDiv.className = styles.legendColor;
-          colorDiv.style.background = color;
-        
-          const textSpan = document.createElement('span');
-          textSpan.textContent = `${level}${isMobile ? '' : ` (${range})`}`;
-        
-          itemDiv.appendChild(colorDiv);
-          itemDiv.appendChild(textSpan);
-          legendDiv.appendChild(itemDiv);
-        });
-        
-        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legendDiv);
-
+    
+        // Create Legend Container
+        const legendContainer = document.createElement('div');
+        const legendRoot = createRoot(legendContainer);
+        legendRoot.render(
+          <MapLegend 
+            show={showLegend} 
+            onToggle={() => setShowLegend(!showLegend)} 
+          />
+        );
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legendContainer);
+    
+        // Create Weather Widget Container
+        const weatherContainer = document.createElement('div');
+        const weatherRoot = createRoot(weatherContainer);
+        weatherRoot.render(
+          <WeatherWidget temperature={26} />
+        );
+        map.controls[google.maps.ControlPosition.LEFT_TOP].push(weatherContainer);
+    
         // Add the weather overlay
         const timestamp = Math.floor(selectedDate.getTime() / 1000);
         const weatherMapUrl = `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&date=${timestamp}`;
@@ -139,7 +167,7 @@ const WeatherMap = () => {
           tileSize: new google.maps.Size(256, 256),
           opacity: 0.7
         });
-
+    
         map.overlayMapTypes.push(newOverlay);
         setWeatherOverlay(newOverlay);
       } catch (error) {
@@ -147,7 +175,6 @@ const WeatherMap = () => {
         setError('Failed to load map');
       }
     };
-
     if (typeof window !== 'undefined' && !googleMapRef.current) {
       initializeMap();
     }
@@ -197,6 +224,14 @@ const WeatherMap = () => {
 
       const { level, color } = getFWILevel(weatherData.fwi);
 
+      const pin = new google.maps.marker.PinElement({
+        background: color,
+        scale: 1.2,
+        borderColor: color === '#FFEB3B' ? '#000000' : color, // Black border for yellow pin
+        glyphColor: color === '#FFEB3B' ? '#000000' : '#FFFFFF' // Black glyph for yellow pin
+      });
+  
+
       const infowindow = new google.maps.InfoWindow({
         content: `
           <div style="padding: 16px;">
@@ -235,20 +270,27 @@ const WeatherMap = () => {
         `
       });
     
-      const marker = new google.maps.Marker({
+      const markerElement = new google.maps.marker.AdvancedMarkerElement({
+        map: googleMapRef.current,
         position: { lat, lng: lon },
-        map: googleMapRef.current
+        title: name
       });
-
-      marker.addListener('click', () => {
-        infowindow.open(googleMapRef.current, marker);
+  
+      markerElement.addListener('click', () => {
+        infowindow.open({
+          anchor: markerElement,
+          map: googleMapRef.current
+        });
       });
-
-      markerRef.current = marker;
+  
+      markerRef.current = markerElement;
       googleMapRef.current.panTo({ lat, lng: lon });
       googleMapRef.current.setZoom(13);
-      infowindow.open(googleMapRef.current, marker);
-
+      infowindow.open({
+        anchor: markerElement,
+        map: googleMapRef.current
+      });
+  
     } catch (err) {
       console.error('Error:', err);
       setError(err.message || 'Failed to fetch location data');
@@ -267,6 +309,7 @@ const WeatherMap = () => {
             width={24} 
             height={24} 
             priority={true}
+            style={{ width: '24px', height: '24px' }}
           />
           Vancouver Weather Map
         </CardTitle>
