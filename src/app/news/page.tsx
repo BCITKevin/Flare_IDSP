@@ -120,6 +120,7 @@ export default function News() {
                         </TabsList>
                         <h2 className={`mt-3 ${styles.newsHeading}`}>{tabState}</h2>
                         <TabsContent value="Local">
+                            {/** ALL OF ARTICLE HIGHLIGHT NEEDS TO BE A COMPONENT */}
                             <Link href="/article" className={`${styles.articleHighlight}`}>
                                 <img
                                     src={articles[0].image}
