@@ -1,11 +1,11 @@
 "use client"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import getSignedURL, { getNewsFromDB } from "./actions";
-import './news.css'
+import styles from './news.module.css'
 import ArticleCard from "@/components/news/ArticleCard";
 import Link from "next/link";
 import { useState } from "react";
-import BottomNavBar  from "@/components/BottomNavBar"
+import BottomNavBar from "@/components/BottomNavBar"
 export default function News() {
     //dummy data
     const articles = [
@@ -91,7 +91,7 @@ export default function News() {
             image: "https://images.unsplash.com/photo-1683009427666-340595e57e43?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmlvZGl2ZXJzaXR5fGVufDB8fDB8fHww"
         },
     ];
-    
+
     const [tabState, setTabState] = useState("Local")
 
     // Filter articles by scope
@@ -99,10 +99,10 @@ export default function News() {
         articles.filter((article) => article.scope === scope);
 
     return (
-        <body>
-            <div className="appLayout">
-                <header className="mt-24">
-                    <h1>News</h1>
+        <div className="appLayout">
+            <div className={`newsLayout`}>
+                <header className="">
+                    <h1 className={`${styles.newsHeading}`}>News</h1>
                     <h4 className="mt-5">Get the latest Information</h4>
                     <h4 className="mb-5">Oct 20, 2024</h4>
                 </header>
@@ -111,29 +111,25 @@ export default function News() {
                 </svg>
                 <div className="mt-8">
                     <Tabs defaultValue="Local" className="w-full flex flex-col">
-                        <TabsList className="grid-cols-4 tabTriggerContainer">
-                            <TabsTrigger value="Local" className="tabTrigger" onClick={() => setTabState("Local")}>Local</TabsTrigger>
-                            <TabsTrigger value="Regional" className="tabTrigger" onClick={() => setTabState("Regional")}>Regional</TabsTrigger>
-                            <TabsTrigger value="National" className="tabTrigger" onClick={() => setTabState("National")}>National</TabsTrigger>
-                            <TabsTrigger value="Global" className="tabTrigger" onClick={() => setTabState("Global")}>Global</TabsTrigger>
+                        <TabsList className={`grid-cols-4 ${styles.tabTriggerContainer}`}>
+                            <TabsTrigger value="Local" className={styles.tabTrigger} onClick={() => setTabState("Local")}>Local</TabsTrigger>
+                            <TabsTrigger value="Regional" className={styles.tabTrigger} onClick={() => setTabState("Regional")}>Regional</TabsTrigger>
+                            <TabsTrigger value="National" className={styles.tabTrigger} onClick={() => setTabState("National")}>National</TabsTrigger>
+                            <TabsTrigger value="Global" className={styles.tabTrigger} onClick={() => setTabState("Global")}>Global</TabsTrigger>
                         </TabsList>
-
-                        <h2 className="mt-3">{tabState}</h2>
-
-                        {/** TEMPORARY CODE TO DISPLAY NEWS ARTICLES. MEANT FOR SHOWCASE PURPOSES ONLY IT DOES NOT WORK WITH THE API */}
-                      
+                        <h2 className={`mt-3 ${styles.newsHeading}`}>{tabState}</h2>
                         <TabsContent value="Local">
-                            <Link href="/article" key={articles[0].id} className="articleHighlight mt-6">
+                            <Link href="/article" key={articles.id} className={`${styles.articleHighlight}`}>
                                 <img
                                     src={articles[0].image}
                                     alt="news article"
-                                    className="rounded-lg articleHighlightImage" />
+                                    className={`rounded-lg ${styles.articleHighlightImage}`} />
                                 <div className="indent-6">
-                                    <h5 className="articleHighlightTitle text-xl font-bold m-auto p-3">{articles[0].title}</h5>
+                                    <h5 className={`${styles.articleHighlightTitle} text-xl font-bold m-auto p-3`}>{articles[0].title}</h5>
                                     <div className="flex pb-3 text-gray-500">
                                         <p>{articles[0].author}</p>
                                         <p>{new Date(articles[0].date).toLocaleDateString()}</p>
-                                        <Link href="https://vancouversun.com">Coastal Daily News</Link>
+                                        <p>Coastal Daily News</p>
                                     </div>
                                 </div>
                             </Link>
@@ -144,17 +140,17 @@ export default function News() {
                         </TabsContent>
 
                         <TabsContent value="Regional">
-                            <Link href="/article" key={articles[0].id} className="articleHighlight mt-6">
+                            <Link href="/article" key={articles[0].id} className={`${styles.articleHighlight} mt-6`}>
                                 <img
                                     src={articles[1].image}
                                     alt="news article"
-                                    className="rounded-lg articleHighlightImage" />
+                                    className={`rounded-lg ${styles.articleHighlightImage}`} />
                                 <div className="indent-6">
-                                    <h5 className="articleHighlightTitle text-xl font-bold m-auto p-3">{articles[0].title}</h5>
+                                    <h5 className={`${styles.articleHighlightTitle} text-xl font-bold m-auto p-3`}>{articles[0].title}</h5>
                                     <div className="flex pb-3 text-gray-500">
                                         <p>{articles[0].author}</p>
                                         <p>{new Date(articles[0].date).toLocaleDateString()}</p>
-                                        <Link href="https://vancouversun.com">Coastal Daily News</Link>
+                                        <p>Coastal Daily News</p>
                                     </div>
                                 </div>
                             </Link>
@@ -168,41 +164,39 @@ export default function News() {
                             )}
                         </TabsContent>
 
-
                         <TabsContent value="National">
-                             <Link href="/article" key={articles[0].id} className="articleHighlight mt-6">
+                            <Link href="/article" key={articles[0].id} className={`${styles.articleHighlight} mt-6`}>
                                 <img
                                     src={articles[2].image}
                                     alt="news article"
-                                    className="rounded-lg articleHighlightImage" />
+                                    className={`rounded-lg ${styles.articleHighlightImage}`} />
                                 <div className="indent-6">
-                                    <h5 className="articleHighlightTitle text-xl font-bold m-auto p-3">{articles[0].title}</h5>
+                                    <h5 className={`${styles.articleHighlightTitle} text-xl font-bold m-auto p-3`}>{articles[0].title}</h5>
                                     <div className="flex pb-3 text-gray-500">
                                         <p>{articles[0].author}</p>
                                         <p>{new Date(articles[0].date).toLocaleDateString()}</p>
-                                        <Link href="https://vancouversun.com">Coastal Daily News</Link>
+                                        <p>Coastal Daily News</p>
                                     </div>
                                 </div>
                             </Link>
 
                             {filterArticlesByScope("national").map((article) => (
                                 <ArticleCard article={article} />
-
                             ))}
                         </TabsContent>
 
                         <TabsContent value="Global">
-                             <Link href="/article" key={articles[0].id} className="articleHighlight mt-6">
+                            <Link href="/article" key={articles[0].id} className={`${styles.articleHighlight} mt-6`}>
                                 <img
                                     src={articles[4].image}
                                     alt="news article"
-                                    className="rounded-lg articleHighlightImage" />
+                                    className={`rounded-lg ${styles.articleHighlightImage}`} />
                                 <div className="indent-6">
-                                    <h5 className="articleHighlightTitle text-xl font-bold m-auto p-3">{articles[0].title}</h5>
+                                    <h5 className={`${styles.articleHighlightTitle} text-xl font-bold m-auto p-3`}>{articles[0].title}</h5>
                                     <div className="flex pb-3 text-gray-500">
                                         <p>{articles[0].author}</p>
                                         <p>{new Date(articles[0].date).toLocaleDateString()}</p>
-                                        <Link href="https://vancouversun.com">Coastal Daily News</Link>
+                                        <p>Coastal Daily News</p>
                                     </div>
                                 </div>
                             </Link>
@@ -213,8 +207,8 @@ export default function News() {
                         </TabsContent>
                     </Tabs>
                 </div>
+                <BottomNavBar />
             </div>
-            <BottomNavBar/>
-        </body>
+        </div>
     )
 }

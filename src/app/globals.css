@@ -19,6 +19,7 @@
   width: 100vw;
   height: 100vh;
   --radius: 0.5rem;
+
 }
 
 /* Font-face definitions */
@@ -214,4 +215,21 @@ h5 {
   background: white;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* App Sizing to Mobile */
+
+.appLayout {
+  height: 100vh;
+  padding: 20px;
+}
+
+.newsLayout {
+  width: 440px;
+  height: 100vh;
+  background-color: var(--black);
+
+  padding: 20px;
+  color: var(--white);
+
 }

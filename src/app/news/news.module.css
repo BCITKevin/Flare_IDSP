@@ -1,0 +1,60 @@
+
+
+.divider {
+    width: 400px;
+    height: 0px;
+
+    stroke-width: 4px;
+    stroke: var(--Secondary-Complementary, #00838F);
+}
+
+.tabTriggerContainer {
+    display: flex;
+    width: 400px;
+    height: 70px;
+    padding: 8px 12px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 6px;
+
+    border-radius: 8px;
+    background: var(--d-grey);
+}
+
+.tabTrigger {
+    display: flex;
+    padding: 12px 12px;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 0;
+
+    border-radius: 12px;
+    background: var(--White, #EBEBEB);
+
+    margin: 6px;
+}
+
+.tabTrigger:active {
+    display: flex;
+    width: 100px;
+    height: 50px;
+    padding: 6px 12px;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 12px;
+    background: var( --s-compliment, #00838F);
+
+    margin: 6px;
+}
+
+.newsHeading {
+    color: var(--p-highlight);
+}
+
+/* @media only screen and (max-width: 600px) {
+    .appLayout {
+       overflow-y: scroll;
+       padding-bottom: 10rem;
+    }
+  } */
