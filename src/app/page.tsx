@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-
 export default function Page() {
 
     return (
@@ -23,6 +22,7 @@ export default function Page() {
                 <Link href={"/homepage"} >
                     <Button className="bg-gray-300 text-neutral-800">Placeholder Start</Button>
                 </Link>
+
             </div>
         </>
     )
