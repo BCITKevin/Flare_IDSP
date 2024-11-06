@@ -1,11 +1,14 @@
-
-
 .divider {
     width: 400px;
     height: 0px;
 
     stroke-width: 4px;
     stroke: var(--Secondary-Complementary, #00838F);
+}
+
+.newsContent {
+    display: flex;
+
 }
 
 .tabTriggerContainer {
@@ -16,6 +19,7 @@
     justify-content: center;
     align-items: flex-start;
     gap: 6px;
+    margin: 1rem auto;
 
     border-radius: 8px;
     background: var(--d-grey);
@@ -43,7 +47,7 @@
     align-items: center;
 
     border-radius: 12px;
-    background: var( --s-compliment, #00838F);
+    background: var(--s-compliment, #00838F);
 
     margin: 6px;
 }
@@ -52,9 +56,37 @@
     color: var(--p-highlight);
 }
 
-/* @media only screen and (max-width: 600px) {
-    .appLayout {
-       overflow-y: scroll;
-       padding-bottom: 10rem;
-    }
-  } */
+/*COMPONENTS (SHOULD BE MOVED)*/
+
+.articleHighlight {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-shrink: 0;
+    align-self: stretch;
+
+    border-radius: 0px 0px 8px 8px;
+    background: var(--Light-Ink, #000);
+}
+
+.articleHighlightImage {
+    display: flex;
+    width: 400px;
+    height: 251px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    object-fit: cover;
+}
+
+.articleHighlightTitle {   
+    color: var(--White, #EBEBEB);
+}
+
+.TabsList {
+    flex-shrink: 0;
+    display: flex;
+    border-bottom: 1px solid;
+}

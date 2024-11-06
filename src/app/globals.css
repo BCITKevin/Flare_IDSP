@@ -225,7 +225,8 @@ h5 {
 }
 
 .newsLayout {
-  width: 440px;
+  height: 100vh;
+  padding: 20px;
   background-color: var(--black);
   
   color: var(--white);

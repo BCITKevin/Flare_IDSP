@@ -6,6 +6,8 @@ import ArticleCard from "@/components/news/ArticleCard";
 import Link from "next/link";
 import { useState } from "react";
 import BottomNavBar from "@/components/BottomNavBar"
+import ArticleHighlight from "@/components/news/ArticleHighlight";
+
 export default function News() {
     //dummy data
     const articles = [
@@ -99,16 +101,16 @@ export default function News() {
         articles.filter((article) => article.scope === scope);
 
     return (
-            <div className={`newsLayout`}>
-                <header className="">
-                    <h1 className={`${styles.newsHeading}`}>News</h1>
-                    <h4 className="mt-5">Get the latest Information</h4>
-                    <h4 className="mb-5">Oct 20, 2024</h4>
-                </header>
-                <svg xmlns="http://www.w3.org/2000/svg" width="404" height="4" viewBox="0 0 404 4" fill="none">
-                    <path d="M2 2H402" stroke="#00838F" strokeWidth="4" strokeLinecap="round" />
-                </svg>
-                <div className="mt-8">
+        <div >
+            <div className="newsLayout">
+                    <header className="">
+                        <h1 className={`${styles.newsHeading}`}>News</h1>
+                        <h4 className="mt-5">Get the latest Information</h4>
+                        <h4 className="mb-5">Oct 20, 2024</h4>
+                    </header>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="404" height="4" viewBox="0 0 404 4" fill="none">
+                        <path d="M2 2H402" stroke="#00838F" strokeWidth="4" strokeLinecap="round" />
+                    </svg>
                     <Tabs defaultValue="Local" className="w-full flex flex-col">
                         <TabsList className={`grid-cols-4 ${styles.tabTriggerContainer}`}>
                             <TabsTrigger value="Local" className={styles.tabTrigger} onClick={() => setTabState("Local")}>Local</TabsTrigger>
@@ -118,7 +120,7 @@ export default function News() {
                         </TabsList>
                         <h2 className={`mt-3 ${styles.newsHeading}`}>{tabState}</h2>
                         <TabsContent value="Local">
-                            <Link href="/article" key={articles.id} className={`${styles.articleHighlight}`}>
+                            <Link href="/article" className={`${styles.articleHighlight}`}>
                                 <img
                                     src={articles[0].image}
                                     alt="news article"
@@ -205,8 +207,8 @@ export default function News() {
                             ))}
                         </TabsContent>
                     </Tabs>
-                    <BottomNavBar />
                 </div>
-            </div>
+            <BottomNavBar />
+        </div>
     )
 }
