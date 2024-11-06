@@ -79,47 +79,46 @@ export default function Safety() {
 
 
     return (
-        <body>
-            <div className="appLayout">
-                <h1 className={styles.safetyTitle}>Safety</h1>
-                <h3 className={`${styles.aiInsight} mt-32`}>AI Insight</h3>
-                <Card className={`${styles.card} p-5 mt-3`}>
-                    <strong className={styles.articleBody}>Based on your Location and Recent Weather:</strong>
-                    <p className={styles.articleBody}>Consider bringing extra water and cooling supplies to prevent heatstroke while outside</p>
-                </Card>
-                <div></div>
-                <h3 className="mt-8">Safety Tips</h3>
-                <div className="mt-2">
-                    <Tabs defaultValue="account" className="w-full flex flex-col">
-                        <TabsList className="space-x-8">
-                            <TabsTrigger value="Prepare" className="w-full">Prepare</TabsTrigger>
-                            <TabsTrigger value="Emergency" className="w-full">Emergency</TabsTrigger>
-                            <TabsTrigger value="Evacuation" className="w-full">Evacuation</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="Prepare">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center`}>
-                                <Image src={prepareHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
-                                <Flag color="black" className="m-6" />
-                                <p dangerouslySetInnerHTML={{ __html: prepareText }} className={styles.articleBody} />
-                            </Card>
-                        </TabsContent>
-                        <TabsContent value="Emergency">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center`}>
-                                <Image src={emergencyHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
-                                <Backpack color="black" className="m-6" />
-                                <p dangerouslySetInnerHTML={{ __html: emergencyText }} className={styles.articleBody} />
-                            </Card>
-                        </TabsContent>
-                        <TabsContent value="Evacuation">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center`}>
-                                <Image src={evacHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
-                                <Map color="black" className="m-6" />
-                                <p dangerouslySetInnerHTML={{ __html: evacuationText }} className={styles.articleBody} />
-                            </Card>
-                        </TabsContent>
-                    </Tabs>
-                </div>
-                <BottomNavBar />
-        </body>
+        <div className="">
+            <h1 className={styles.safetyTitle}>Safety</h1>
+            <h3 className={`${styles.aiInsight} mt-32`}>AI Insight</h3>
+            <Card className={`${styles.card} p-5 mt-3`}>
+                <strong className={styles.articleBody}>Based on your Location and Recent Weather:</strong>
+                <p className={styles.articleBody}>Consider bringing extra water and cooling supplies to prevent heatstroke while outside</p>
+            </Card>
+            <div></div>
+            <h3 className="mt-8">Safety Tips</h3>
+            <div className="mt-2">
+                <Tabs defaultValue="account" className="w-full flex flex-col">
+                    <TabsList className="space-x-8">
+                        <TabsTrigger value="Prepare" className="w-full">Prepare</TabsTrigger>
+                        <TabsTrigger value="Emergency" className="w-full">Emergency</TabsTrigger>
+                        <TabsTrigger value="Evacuation" className="w-full">Evacuation</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="Prepare">
+                        <Card className={`${styles.card} p-6 flex flex-col items-center`}>
+                            <Image src={prepareHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
+                            <Flag color="black" className="m-6" />
+                            <p dangerouslySetInnerHTML={{ __html: prepareText }} className={styles.articleBody} />
+                        </Card>
+                    </TabsContent>
+                    <TabsContent value="Emergency">
+                        <Card className={`${styles.card} p-6 flex flex-col items-center`}>
+                            <Image src={emergencyHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
+                            <Backpack color="black" className="m-6" />
+                            <p dangerouslySetInnerHTML={{ __html: emergencyText }} className={styles.articleBody} />
+                        </Card>
+                    </TabsContent>
+                    <TabsContent value="Evacuation">
+                        <Card className={`${styles.card} p-6 flex flex-col items-center`}>
+                            <Image src={evacHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
+                            <Map color="black" className="m-6" />
+                            <p dangerouslySetInnerHTML={{ __html: evacuationText }} className={styles.articleBody} />
+                        </Card>
+                    </TabsContent>
+                </Tabs>
+            </div>
+            <BottomNavBar />
+        </div>
     )
 }

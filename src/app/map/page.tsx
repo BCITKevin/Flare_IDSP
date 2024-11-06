@@ -4,7 +4,7 @@
 import BottomNavBar from "@/components/BottomNavBar";
 import dynamic from "next/dynamic";
 import { Loader2 } from "lucide-react";
-import './map.css'
+import styles from './map.module.css'
 
 const WeatherMap = dynamic(
   () => import("@/components/weather-map/WeatherMap"),

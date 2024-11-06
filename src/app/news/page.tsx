@@ -99,7 +99,6 @@ export default function News() {
         articles.filter((article) => article.scope === scope);
 
     return (
-        <div className="appLayout">
             <div className={`newsLayout`}>
                 <header className="">
                     <h1 className={`${styles.newsHeading}`}>News</h1>
@@ -206,9 +205,8 @@ export default function News() {
                             ))}
                         </TabsContent>
                     </Tabs>
+                    <BottomNavBar />
                 </div>
-                <BottomNavBar />
             </div>
-        </div>
     )
 }
