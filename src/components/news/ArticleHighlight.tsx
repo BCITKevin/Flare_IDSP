@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styles from "./ArticleHighlight.module.css"
 
-export default function ArticleHighlight({ article }) {
+export default function ArticleHighlight({ }) {
   return (
     <div>
       <Link href="/article" key={article.id} className={`${styles.articleHighlight} mt-6`}>
