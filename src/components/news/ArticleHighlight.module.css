@@ -1,0 +1,35 @@
+
+/*Top article*/
+
+.articleHighlight {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-shrink: 0;
+    align-self: stretch;
+
+    border-radius: 0px 0px 8px 8px;
+    background: var(--Light-Ink, #000);
+}
+
+.articleHighlightImage {
+    display: flex;
+    width: 400px;
+    height: 251px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    object-fit: cover;
+}
+
+.articleHighlightTitle {   
+    color: var(--White, #EBEBEB);
+}
+
+.TabsList {
+    flex-shrink: 0;
+    display: flex;
+    border-bottom: 1px solid;
+}
