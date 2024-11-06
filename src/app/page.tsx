@@ -1,15 +1,29 @@
-import Logo from "./public/images/flare_logo.svg";
+"use client"
+import Logo from "./public/images/flare_logo 2.svg"
 import Image from "next/image";
-import { Circle, CircleHelp, Wind, Bell } from "lucide-react"
-import Link from "next/link";
 import BottomNavBar from "@/components/BottomNavBar";
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+
 
 export default function Page() {
 
-    //text will be replaced with imported data
     return (
         <>
-         
+            <div className="flex flex-col landingLayout items-center justify-center">
+                <Image
+                    src={Logo}
+                    alt="logo of Flare"
+                    width={191}
+                    height={191}
+                    priority
+                />
+                <h1 className="landingHead font-black">FLARE</h1>
+                <Link href={"/homepage"} >
+                    <Button className="bg-gray-300 text-neutral-800">Placeholder Start</Button>
+                </Link>
+            </div>
         </>
     )
 }

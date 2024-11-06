@@ -110,6 +110,10 @@ h5 {
   @apply font-sans;
 }
 
+.landingHead {
+  color: var(--white);
+}
+
 /* Tailwind Layer Utilities */
 @layer utilities {
   .text-balance {
@@ -243,4 +247,11 @@ h5 {
   padding: 20px;
   background: linear-gradient(180deg, #111 0%, #3B3B3B 100%);
 
+}
+
+.landingLayout {
+  height: 100vh;
+  padding: 20px;
+  
+  background: linear-gradient(204deg, #111 19.23%, #1F1108 80.77%);
 }
