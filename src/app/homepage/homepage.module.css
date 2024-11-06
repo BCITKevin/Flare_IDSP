@@ -1,6 +1,19 @@
 
 .contentContainer {
     gap: 10px;
+    color: var(--white);
+}
+
+.landingLogo {
+    color: var(--white);
+}
+
+.homeIcons {
+    justify-content: space-between;
+}
+
+.homeHeading {
+    color: var(--white);
 }
 
 .fireRisk {

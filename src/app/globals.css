@@ -73,22 +73,27 @@ body {
   margin: 0 auto;
   overflow: hidden;
   background-color: var(--d-grey);
-  padding-bottom: 60px; /* Prevent content from hiding behind the BottomNavBar */
+  padding-bottom: 60px;
+  /* Prevent content from hiding behind the BottomNavBar */
 }
 
 /* Typography Styles */
 h1 {
   font-size: 48px;
 }
+
 h2 {
   font-size: 30px;
 }
+
 h3 {
   font-size: 24px;
 }
+
 h4 {
   font-size: 20px;
 }
+
 h5 {
   font-size: 18px;
 }
@@ -174,6 +179,7 @@ h5 {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -222,12 +228,19 @@ h5 {
 .appLayout {
   height: 100vh;
   padding: 20px;
+
 }
 
-.newsLayout {
+.newsLayout,
+.safetyLayout {
   height: 100vh;
   padding: 20px;
   background-color: var(--black);
-  
-  color: var(--white);
+}
+
+.homeLayout {
+  height: 100vh;
+  padding: 20px;
+  background: linear-gradient(180deg, #111 0%, #3B3B3B 100%);
+
 }

@@ -105,8 +105,8 @@ export default function News() {
             <div className="newsLayout">
                     <header className="">
                         <h1 className={`${styles.newsHeading}`}>News</h1>
-                        <h4 className="mt-5">Get the latest Information</h4>
-                        <h4 className="mb-5">Oct 20, 2024</h4>
+                        <h4 className={`${styles.newsSubHeading} mt-5`}>Get the latest Information</h4>
+                        <h4 className={`${styles.newsSubHeading} mb-5`}>Oct 20, 2024</h4>
                     </header>
                     <svg xmlns="http://www.w3.org/2000/svg" width="404" height="4" viewBox="0 0 404 4" fill="none">
                         <path d="M2 2H402" stroke="#00838F" strokeWidth="4" strokeLinecap="round" />

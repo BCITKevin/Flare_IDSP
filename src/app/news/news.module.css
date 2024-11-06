@@ -56,6 +56,10 @@
     color: var(--p-highlight);
 }
 
+.newsSubHeading {
+    color: var(--white);
+}
+
 /*COMPONENTS (SHOULD BE MOVED)*/
 
 .articleHighlight {

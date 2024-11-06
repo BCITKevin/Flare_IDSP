@@ -1,4 +1,8 @@
 
+.safetyHeading {
+    color: var(--p-highlight);
+}
+
 .articleBody {
     color: var(--text-black);
 }

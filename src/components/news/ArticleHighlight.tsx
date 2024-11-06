@@ -15,7 +15,7 @@ export default function ArticleHighlight({ article }) {
           <div className="flex pb-3 text-gray-500">
             <p>{article.author}</p>
             <p>{new Date(article.date).toLocaleDateString()}</p>
-            <Link href="https://vancouversun.com">Coastal Daily News</Link>
+            <p>Coastal Daily News</p>
           </div>
         </div>
       </Link>
