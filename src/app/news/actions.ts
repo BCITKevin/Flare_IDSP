@@ -62,5 +62,3 @@ export default async function formatNews(news: any[]) {
     // for (const aNews of news) {
     // }
 }
-
-// 현재 포멧된 html을 만들순 있으나, cheerio로 paragraph와 img 를 가져올때 따로 가져오기 때문에 지피티에게 그걸 줘도 제대로 된 순서로 아웃풋을 주지 못함.

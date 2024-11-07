@@ -25,7 +25,7 @@ const BottomNavBar: React.FC = () => {
 
   return (
     <nav
-      className={`${styles.bottomNav} font-sans`}
+      className={`${styles.bottomNav} font-sans fixed bottom-0 left-0 w-full z-50`}
       aria-label="bottom navigation"
     >
       {navItems.map((item) => (
