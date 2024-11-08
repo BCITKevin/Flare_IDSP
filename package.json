@@ -11,6 +11,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.682.0",
     "@aws-sdk/s3-request-presigner": "^3.682.0",
+    "@googlemaps/js-api-loader": "^1.16.8",
     "@next/env": "^15.0.1",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-dialog": "^1.1.2",
@@ -35,7 +36,7 @@
     "leaflet": "^1.9.4",
     "lucide": "^0.454.0",
     "lucide-react": "^0.454.0",
-    "next": "14.2.15",
+    "next": "^15.0.2",
     "postgres": "^3.4.5",
     "react": "^18",
     "react-day-picker": "^8.10.1",
@@ -45,6 +46,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/google.maps": "^3.58.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
