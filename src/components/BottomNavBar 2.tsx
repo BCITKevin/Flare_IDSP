@@ -16,7 +16,7 @@ const BottomNavBar: React.FC = () => {
   const pathname = usePathname();
 
   const navItems: NavItem[] = [
-    { href: "/homepage", icon: "/icons/Home.png", label: "Home" },
+    { href: "/", icon: "/icons/Home.png", label: "Home" },
     { href: "/news", icon: "/icons/News.png", label: "News" },
     { href: "/map", icon: "/icons/Weather.png", label: "Map" },
     { href: "/safety", icon: "/icons/Safety.png", label: "Safety" },
@@ -24,7 +24,7 @@ const BottomNavBar: React.FC = () => {
   ];
 
   return (
-    <div
+    <nav
       className={`${styles.bottomNav} font-sans`}
       aria-label="bottom navigation"
     >
@@ -32,8 +32,9 @@ const BottomNavBar: React.FC = () => {
         <Link
           key={item.href}
           href={item.href}
-          className={`${styles.navItem} ${pathname === item.href ? styles.active : ""
-            }`}
+          className={`${styles.navItem} ${
+            pathname === item.href ? styles.active : ""
+          }`}
           aria-current={pathname === item.href ? "page" : undefined}
         >
           <Image
@@ -46,7 +47,7 @@ const BottomNavBar: React.FC = () => {
           <span className={styles.label}>{item.label}</span>
         </Link>
       ))}
-    </div>
+    </nav>
   );
 };
 export default BottomNavBar;

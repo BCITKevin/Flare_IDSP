@@ -1,86 +1,153 @@
-
 .mapContainer {
   width: 100%;
-  max-width: 56rem;
-  margin: 0 auto;
+  height: 100%;
+}
+
+.searchContainer {
+  margin-bottom: 1rem;
+}
+
+.searchForm {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.searchInput {
+  flex: 1;
 }
 
 .mapWrapper {
-  height: 60vh;
+  width: 100%;
+  height: 600px;
   border-radius: 0.5rem;
   overflow: hidden;
 }
 
-.searchContainer {
+/* Legend Control Styles */
+.legendControl {
+  margin: 10px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 10px;
 }
 
-@media (min-width: 640px) {
-  .searchContainer {
-    flex-direction: row;
-    gap: 1rem;
-  }
-}
-
-.searchForm {
-  flex: 1;
+.mapButton {
+  background-color: rgba(0, 0, 0, 0.8);
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  cursor: pointer;
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
 }
 
-.searchInputWrapper {
-  position: relative;
-  flex: 1;
+.mapButton svg {
+  width: 24px;
+  height: 24px;
+  color: white;
 }
 
-.searchInput {
-  width: 100%;
-  padding: 0.5rem;
-  padding-right: 2.5rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
+.legendContent {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 12px;
+  padding: 16px;
+  min-width: 300px;
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
 }
 
-.searchIcon {
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
-}
-
-.dateInput {
-  padding: 0.5rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.375rem;
-}
-
-.legend {
-  background: white;
-  padding: 0.75rem;
-  border-radius: 0.375rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  font-family: var(--font-geist-sans);
+.legendContent.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .legendTitle {
+  color: #ff6b35;
+  font-size: 18px;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 16px;
 }
 
 .legendItem {
+  background-color: white;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
   display: flex;
-  align-items: center;
-  margin: 0.25rem 0;
+  align-items: flex-start;
 }
 
-.legendColor {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-right: 0.5rem;
-  border-radius: 0.25rem;
+.legendMarker {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 12px;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.legendText {
+  flex: 1;
+}
+
+.legendLevel {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.legendDescription {
+  font-size: 12px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .legendContent {
+    min-width: unset;
+    width: calc(100vw - 20px);
+    max-width: 300px;
+  }
+
+  .legendDescription {
+    font-size: 11px;
+  }
+}
+
+/* Weather Widget Styles */
+.weatherWidget {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  color: white;
+  padding: 8px 12px;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.weatherTemp {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .legendContent {
+    min-width: unset;
+    width: calc(100vw - 20px);
+    max-width: 300px;
+  }
+
+  .legendDescription {
+    font-size: 11px;
+  }
+
+  .weatherWidget {
+    padding: 6px 10px;
+  }
 }

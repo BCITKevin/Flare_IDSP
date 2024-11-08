@@ -1,0 +1,20 @@
+
+.safetyHeading {
+    color: var(--p-highlight);
+}
+
+.articleBody {
+    color: var(--text-black);
+}
+
+.articleBody *{
+    color: var(--text-black);
+}
+
+
+@media only screen and (max-width: 600px) {
+    .appLayout {
+      overflow-y: scroll;
+      padding-bottom: 8rem;
+  }
+}
