@@ -1,12 +1,11 @@
 {
-"compilerOptions": {
+  "compilerOptions": {
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "target": "es2015"
-  }
+    "target": "ES2017",
     "baseUrl": ".",
     "allowJs": true,
     "skipLibCheck": true,
@@ -31,8 +30,7 @@
     },
     "types": [
       "leaflet"
-    ],
-    "target": "ES2017"
+    ]
   },
   "include": [
     "next-env.d.ts",

@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     Card,
@@ -10,13 +9,22 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import "./safety.css"hh
+import styles from "./safety.module.css"
+import { Backpack, Map, Flag, Car } from "lucide-react";
+import prepareHero from "../public/images/prepareHero.png"
+import evacHero from "../public/images/EvacHero.png"
+import emergencyHero from "../public/images/EmergencyHero.png"
 import BottomNavBar from "@/components/BottomNavBar";
+
+import { useState } from "react";
+import Image from "next/image";
 
 type Message = {
     text: string;
     sender: string;
 };
+
+// Card can be reformatted into a reusable component
 
 export default function Safety() {
     const [showChat, setShowChat] = useState(false);
@@ -60,36 +68,104 @@ export default function Safety() {
         }
     }
 
-    return (
-        <body>
-            <div className="appLayout">
-                <h1 className="text-white">Safety</h1>
-                <h3 className="text-orange-600 font-bold">AI Insight</h3>
-                <div></div>
-                <h3 className="text-orange-600 font-bold">Safety Tips</h3>
-                <div className="mt-8">
-                    <Tabs defaultValue="account" className="w-full flex flex-col">
-                        <TabsList>
-                            <TabsTrigger value="Prepare">Prepare</TabsTrigger>
-                            <TabsTrigger value="Emergency">Emergency</TabsTrigger>
-                            <TabsTrigger value="Evacuation">Evacuation</TabsTrigger>
+    const prepareText = `
+    <strong>Stay informed:</strong> Monitor emergency alerts and evacuation orders from local authorities.
+    <br><br>
+    <strong>Prepare to leave immediately:</strong> 
+    - Gather essential items, including:
+    <br><br>
+    <ul>
+        <li>- Medications</li>
+        <li>- Important documents (ID, insurance)</li>
+        <li>- Emergency kit (water, food, flashlight)</li>
+    </ul>
+    <br>
+    <strong>Follow evacuation routes:</strong> Use the safest, predefined routes recommended by local authorities.
+    <br><br>
+    <strong>Leave as early as possible:</strong> Don't wait for the last moment. Protect your safety and others.
+    <br><br>
+    <strong>Assist neighbors if possible:</strong> Especially the elderly or those with disabilities.
+    <br><br>
+    <strong>Keep your vehicle ready:</strong> Full gas tank, keys accessible, and parked facing outward.
+    `;
 
+    const emergencyText = `
+    <strong>If you are in danger, contact emergency services immediately.</strong>
+    <br><br>
+    <strong>Stay inside if safe:</strong> If you can't evacuate, move to a safe room with minimal windows.
+    <br><br>
+    <strong>Block air entry:</strong> Seal windows and doors to prevent smoke from entering.
+    <br><br>
+    <strong>Listen to official information:</strong> Use radio or mobile apps for updates.
+    <br><br>
+    <strong>Use face coverings:</strong> Wet towels or N95 masks can help filter smoke.
+    <br><br>
+    <strong>Stay hydrated:</strong> Drink plenty of water to combat heat and smoke inhalation effects.
+    `;
+
+    const evacuationText = `
+    <strong>Create a defensible space around your home:</strong> Clear away flammable materials like dry leaves and wood piles.
+    <br><br>
+    <strong>Develop a family emergency plan:</strong> Include meeting spots, communication strategies, and escape routes.
+    <br><br>
+    <strong>Assemble an emergency kit:</strong> Include:
+    <ul>
+        <li>- First aid supplies</li>
+        <li>- Non-perishable food and water (enough for 3 days)</li>
+        <li>- Flashlights, batteries, and a whistle</li>
+    </ul>
+    <br>
+    <strong>Keep important documents ready:</strong> Store them in a fireproof safe or have digital backups.
+    <br><br>
+    <strong>Know your local risk level:</strong> Stay informed about wildfire risks in your area and practice evacuation drills.
+    <br><br>
+    <strong>Sign up for emergency alerts:</strong> Subscribe to local wildfire and weather warning systems.
+    `;
+
+
+    
+
+    return (
+        <div>
+            <div className="safetyLayout">
+
+                <h1 className={styles.safetyHeading}>Safety</h1>
+                <h3 className={`${styles.safetyHeading} mt-12`}>AI Insight</h3>
+                <Card className={`${styles.card} p-5 mt-3`}>
+                    <strong className={styles.articleBody}>Based on your Location and Recent Weather:</strong>
+                    <p className={styles.articleBody}>Consider bringing extra water and cooling supplies to prevent heatstroke while outside</p>
+                </Card>
+                <h3 className={`${styles.safetyHeading} mt-8`}>Safety Tips</h3>
+                <div className="mt-2">
+                    <Tabs defaultValue="account" className="w-full flex flex-col">
+                        <TabsList className="space-x-8">
+                            <TabsTrigger value="Prepare" className="w-full">Prepare</TabsTrigger>
+                            <TabsTrigger value="Emergency" className="w-full">Emergency</TabsTrigger>
+                            <TabsTrigger value="Evacuation" className="w-full">Evacuation</TabsTrigger>
                         </TabsList>
-                        <TabsContent value="Prepare">Make changes to your account here.</TabsContent>
-                        <TabsContent value="Emergency">Change your password here.</TabsContent>
-                        <TabsContent value="Evacuation">Make changes to your account here.</TabsContent>
+                        <TabsContent value="Prepare">
+                            <Card className={`${styles.card} p-6 flex flex-col items-center`}>
+                                <Image src={prepareHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
+                                <Flag color="black" className="m-6" />
+                                <p dangerouslySetInnerHTML={{ __html: prepareText }} className={styles.articleBody} />
+                            </Card>
+                        </TabsContent>
+                        <TabsContent value="Emergency">
+                            <Card className={`${styles.card} p-6 flex flex-col items-center`}>
+                                <Image src={emergencyHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
+                                <Backpack color="black" className="m-6" />
+                                <p dangerouslySetInnerHTML={{ __html: emergencyText }} className={styles.articleBody} />
+                            </Card>
+                        </TabsContent>
+                        <TabsContent value="Evacuation">
+                            <Card className={`${styles.card} p-6 flex flex-col items-center`}>
+                                <Image src={evacHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
+                                <Map color="black" className="m-6" />
+                                <p dangerouslySetInnerHTML={{ __html: evacuationText }} className={styles.articleBody} />
+                            </Card>
+                        </TabsContent>
                     </Tabs>
                 </div>
-
-                <div>
-                    <button className="bg-neutral-800 rounded-md fixed bottom-24 right-4 w-12 h-12 z-50" onClick={() => setShowChat(true)}>
-                        <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-full h-full" />
-                    </button>
-
-                    <BottomNavBar />
-                </div>
-
-
                 {showChat ? (
                     <>
                         <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -164,47 +240,9 @@ export default function Safety() {
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </>
                 ) : <></>}
-
-    return (
-        <div>
-            <div className="safetyLayout">
-                <h1 className={styles.safetyHeading}>Safety</h1>
-                <h3 className={`${styles.safetyHeading} mt-12`}>AI Insight</h3>
-                <Card className={`${styles.card} p-5 mt-3`}>
-                    <strong className={styles.articleBody}>Based on your Location and Recent Weather:</strong>
-                    <p className={styles.articleBody}>Consider bringing extra water and cooling supplies to prevent heatstroke while outside</p>
-                </Card>
-                <h3 className={`${styles.safetyHeading} mt-8`}>Safety Tips</h3>
-                <div className="mt-2">
-                    <Tabs defaultValue="account" className="w-full flex flex-col">
-                        <TabsList className="space-x-8">
-                            <TabsTrigger value="Prepare" className="w-full">Prepare</TabsTrigger>
-                            <TabsTrigger value="Emergency" className="w-full">Emergency</TabsTrigger>
-                            <TabsTrigger value="Evacuation" className="w-full">Evacuation</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="Prepare">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center`}>
-                                <Image src={prepareHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
-                                <Flag color="black" className="m-6" />
-                                <p dangerouslySetInnerHTML={{ __html: prepareText }} className={styles.articleBody} />
-                            </Card>
-                        </TabsContent>
-                        <TabsContent value="Emergency">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center`}>
-                                <Image src={emergencyHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
-                                <Backpack color="black" className="m-6" />
-                                <p dangerouslySetInnerHTML={{ __html: emergencyText }} className={styles.articleBody} />
-                            </Card>
-                        </TabsContent>
-                        <TabsContent value="Evacuation">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center`}>
-                                <Image src={evacHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
-                                <Map color="black" className="m-6" />
-                                <p dangerouslySetInnerHTML={{ __html: evacuationText }} className={styles.articleBody} />
-                            </Card>
-                        </TabsContent>
-                    </Tabs>
-                </div>
+                    <button className="bg-neutral-800 rounded-md fixed bottom-24" onClick={() => setShowChat(true)}>
+                        <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-full h-full" />
+                    </button>
             </div>
             <BottomNavBar />
         </div>
