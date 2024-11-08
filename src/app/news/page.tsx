@@ -93,12 +93,26 @@ export default function News() {
             image: "https://images.unsplash.com/photo-1683009427666-340595e57e43?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmlvZGl2ZXJzaXR5fGVufDB8fDB8fHww"
         },
     ];
-
     const [tabState, setTabState] = useState("Local")
 
-    // Filter articles by scope
     const filterArticlesByScope = (scope: any) =>
         articles.filter((article) => article.scope === scope);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+
+                const data = await fetchNewsClient();
+
+                await formatNews(data.items);
+
+            } catch (error) {
+                console.error("Error fetching news:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <div >
@@ -208,8 +222,9 @@ export default function News() {
                             ))}
                         </TabsContent>
                     </Tabs>
-                </div>
+                </div> // div?
             <BottomNavBar />
         </div>
     )
 }
+
