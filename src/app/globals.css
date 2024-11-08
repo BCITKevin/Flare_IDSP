@@ -19,6 +19,7 @@
   width: 100vw;
   height: 100vh;
   --radius: 0.5rem;
+
 }
 
 /* Font-face definitions */
@@ -72,22 +73,27 @@ body {
   margin: 0 auto;
   overflow: hidden;
   background-color: var(--d-grey);
-  padding-bottom: 60px; /* Prevent content from hiding behind the BottomNavBar */
+  padding-bottom: 60px;
+  /* Prevent content from hiding behind the BottomNavBar */
 }
 
 /* Typography Styles */
 h1 {
   font-size: 48px;
 }
+
 h2 {
   font-size: 30px;
 }
+
 h3 {
   font-size: 24px;
 }
+
 h4 {
   font-size: 20px;
 }
+
 h5 {
   font-size: 18px;
 }
@@ -102,6 +108,10 @@ h5 {
   margin: auto;
   color: var(--white);
   @apply font-sans;
+}
+
+.landingHead {
+  color: var(--white);
 }
 
 /* Tailwind Layer Utilities */
@@ -173,6 +183,7 @@ h5 {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -214,4 +225,33 @@ h5 {
   background: white;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* App Sizing to Mobile */
+
+.appLayout {
+  height: 100vh;
+  padding: 20px;
+
+}
+
+.newsLayout,
+.safetyLayout {
+  height: 100vh;
+  padding: 20px;
+  background-color: var(--black);
+}
+
+.homeLayout {
+  height: 100vh;
+  padding: 20px;
+  background: linear-gradient(180deg, #111 0%, #3B3B3B 100%);
+
+}
+
+.landingLayout {
+  height: 100vh;
+  padding: 20px;
+  
+  background: linear-gradient(204deg, #111 19.23%, #1F1108 80.77%);
 }
