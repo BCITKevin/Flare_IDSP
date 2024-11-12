@@ -117,51 +117,51 @@ const WeatherMap = () => {
       try {
         const google = await loader.load();
         const map = new google.maps.Map(mapRef.current, {
-          center: { lat: 54.5, lng: -125.5 },
-          zoom: isMobile ? 5 : 6,
+          center: { lat: 49.2827, lng: -123.1207 }, // Vancouver center
+          zoom: isMobile ? 11 : 12,
           streetViewControl: false,
           mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
           mapTypeControl: false,
+          zoomControl: true,
+          zoomControlOptions: {
+            position: google.maps.ControlPosition.RIGHT_BOTTOM
+          },
+          clickableIcons: false,
           styles: [
             {
-              featureType: 'poi',
-              elementType: 'labels',
-              stylers: [{ visibility: 'off' }]
+              "elementType": "geometry",
+              "stylers": [{ "color": "#242f3e" }]
+            },
+        
+            
+            {
+              "featureType": "water",
+              "elementType": "labels.text.stroke",
+              "stylers": [{ "color": "#17263c" }]
             },
             {
-              featureType: 'transit',
-              elementType: 'labels',
-              stylers: [{ visibility: 'off' }]
+              "featureType": "all",
+              "elementType": "controls",
+              "stylers": [
+                { "visibility": "on" },
+                { "invert_lightness": true }
+              ]
             },
             {
-              featureType: 'water',
-              elementType: 'geometry',
-              stylers: [{ color: '#b3d1ff' }]
+              "featureType": "zoom",
+              "elementType": "controls",
+              "stylers": [
+                { "visibility": "on" },
+                { "invert_lightness": true }
+              ]
             },
             {
-              featureType: 'landscape',
-              elementType: 'geometry',
-              stylers: [{ color: '#f5f5f5' }]
-            },
-            {
-              featureType: 'road',
-              elementType: 'geometry',
-              stylers: [{ color: '#ffffff' }]
-            },
-            {
-              featureType: 'road',
-              elementType: 'labels',
-              stylers: [{ visibility: 'on' }]
-            },
-            {
-              featureType: 'administrative',
-              elementType: 'geometry',
-              stylers: [{ visibility: 'off' }]
-            },
-            {
-              featureType: 'administrative.province',
-              elementType: 'geometry',
-              stylers: [{ visibility: 'on' }]
+              "featureType": "fullscreen",
+              "elementType": "controls",
+              "stylers": [
+                { "visibility": "on" },
+                { "invert_lightness": true }
+              ]
             }
           ]
         });
@@ -243,71 +243,91 @@ const WeatherMap = () => {
 
       const infowindow = new google.maps.InfoWindow({
         content: `
-          <div style="padding: 16px; max-width: 400px;">
-            <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">${name}</h3>
-            
+        <style>
+          /* Custom scrollbar for info window */
+          .gm-style-iw-d::-webkit-scrollbar {
+            width: 8px;
+          }
+          .gm-style-iw-d::-webkit-scrollbar-track {
+            background: #000000;
+          }
+          .gm-style-iw-d::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 4px;
+          }
+        </style>
+        <div style="padding: 20px; width: 300px; max-width: 90vw; background-color: #000000; color: #ffffff;">
+          <h3 style="font-size: 24px; font-weight: bold; margin-bottom: 16px; color: #ffffff;">${name}</h3>
             <!-- Current Conditions -->
             <div style="margin-bottom: 16px;">
               <div style="background-color: ${fwiInfo.color}; color: ${fwiInfo.textColor};
                 padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px;">
                 Current Fire Danger: ${weatherData.danger_rating}
               </div>
-              <div>Current FWI Value: ${weatherData.fwi.toFixed(1)}</div>
+              <div style="color: #ffffff;">Current FWI Value: ${weatherData.fwi.toFixed(1)}</div>
             </div>
             
             <!-- Current Weather Details -->
-            <div style="display: grid; gap: 4px; font-size: 14px; margin-bottom: 16px;">
+            <div style="background-color: #111111; padding: 12px; border-radius: 4px; margin-bottom: 16px;">
               <div>Temperature: ${weatherData.current.temp.toFixed(1)}°C</div>
               <div>Feels Like: ${weatherData.current.feels_like.toFixed(1)}°C</div>
               <div>Humidity: ${weatherData.current.humidity}%</div>
               <div>Wind: ${(weatherData.current.wind_speed * 3.6).toFixed(1)} km/h</div>
               <div>UV Index: ${weatherData.current.uvi}</div>
-              <div>Weather: ${weatherData.current.weather[0].description}</div>
             </div>
       
             <!-- 5-Day Forecast -->
             <div style="margin-top: 16px;">
-              <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 8px;">5-Day Forecast</h4>
-              <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;">
-              ${weatherData.daily.slice(0, 5).map((day, index) => {
-                const dayFWI = weatherData.daily_fwi[index].fwi;
-                const dayFWIInfo = getFWILevel(dayFWI);
-                return `
-                  <div style="text-align: center; font-size: 12px;">
-                    <div style="font-weight: bold; margin-bottom: 4px;">
-                      ${new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
-                    </div>
-                    <div style="margin-bottom: 4px;">
-                      ${day.temp.max.toFixed(1)}°C
-                    </div>
+              <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #ffffff;">5-Day Forecast</h4>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                ${weatherData.daily.slice(0, 5).map((day, index) => {
+                  const dayFWI = weatherData.daily_fwi[index].fwi;
+                  const dayFWIInfo = getFWILevel(dayFWI);
+                  return `
                     <div style="
-                      background-color: ${dayFWIInfo.color}; 
-                      color: ${dayFWIInfo.textColor};
-                      padding: 2px 4px; 
-                      border-radius: 4px; 
-                      font-size: 11px;
-                      margin-top: 4px;">
-                      ${weatherData.daily_fwi[index].danger_rating}
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      padding: 8px;
+                      color: #ffffff;
+                      font-size: 14px;
+                    ">
+                      <div style="font-weight: bold; min-width: 60px;">
+                        ${new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
+                      </div>
+                      <div style="margin: 0 12px;">
+                        ${day.temp.max.toFixed(1)}°C
+                      </div>
+                      <div style="
+                        background-color: ${dayFWIInfo.color}; 
+                        color: ${dayFWIInfo.textColor};
+                        padding: 4px 8px; 
+                        border-radius: 4px; 
+                        font-size: 12px;
+                        margin-left: auto;
+                      ">
+                        ${weatherData.daily_fwi[index].danger_rating}
+                      </div>
                     </div>
-                  </div>
-                `;
-              }).join('')}
+                  `;
+                }).join('')}
               </div>
             </div>
       
+            <!-- Weather Alerts -->
             ${weatherData.alerts && weatherData.alerts.length > 0 ? 
               `<div style="margin-top: 16px;">
-                <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 8px;">Weather Alerts</h4>
+                <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #ffffff;">Weather Alerts</h4>
                 ${weatherData.alerts.map(alert => `
-                  <div style="margin-top: 8px; padding: 8px; background-color: #FEE2E2; border: 1px solid #DC2626; border-radius: 4px;">
+                  <div style="margin-top: 8px; padding: 8px; background-color: #2a2a2a; border: 1px solid #DC2626; border-radius: 4px;">
                     <strong style="color: #DC2626;">${alert.event}</strong>
-                    <div style="font-size: 12px; margin-top: 4px;">
+                    <div style="font-size: 12px; margin-top: 4px; color: #ffffff;">
                       ${alert.description ? 
                         alert.description.split('\n')[0] : 
                         'No additional details available'
                       }
                     </div>
-                    <div style="font-size: 11px; color: #666; margin-top: 4px;">
+                    <div style="font-size: 11px; color: #888888; margin-top: 4px;">
                       ${new Date(alert.start * 1000).toLocaleString()} - 
                       ${new Date(alert.end * 1000).toLocaleString()}
                     </div>
@@ -317,9 +337,48 @@ const WeatherMap = () => {
               : ''
             }
           </div>
-        `
+        `,
+        options: {
+          backgroundColor: '#000000',
+          borderRadius: '8px',
+          minWidth: 300,
+          maxWidth: 350,
+        }
       });
-    
+      const style = document.createElement('style');
+style.textContent = `
+  .gm-style-iw {
+    background-color: #000000 !important;
+    padding: 0 !important;
+  }
+  .gm-style-iw-d {
+    overflow: auto !important;
+    background-color: #000000 !important;
+  }
+  /* Close button container */
+  .gm-style-iw > button {
+    background-color: #000000 !important;
+    border: none !important;
+    padding: 8px !important;
+    border-radius: 0 !important;
+    opacity: 1 !important;
+    top: 0 !important;
+    right: 0 !important;
+  }
+  /* The X image itself */
+  .gm-style-iw > button > img {
+    filter: invert(1) !important;
+    opacity: 1 !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+  }
+  /* Remove info window shadow */
+  .gm-style-iw-t::after {
+    display: none;
+  }
+`;
+document.head.appendChild(style);
       const markerElement = new google.maps.marker.AdvancedMarkerElement({
         map: googleMapRef.current,
         position: { lat, lng: lon },
@@ -352,41 +411,42 @@ const WeatherMap = () => {
 
   return (
     <Card className={styles.mapContainer}>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="flex items-center gap-2">
-          <Image 
-            src="/icons/Weather.png" 
-            alt="Weather Icon" 
-            width={24} 
-            height={24} 
-            priority={true}
-            style={{ width: '24px', height: '24px' }}
-          />
+      <CardHeader className="flex flex-row items-center justify-between border-b border-gray-800">
+        <CardTitle className="flex items-center gap-2 text-white">
+          <Cloud className="h-6 w-6" />
           Vancouver Weather Map
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-4">
         <div className={styles.searchContainer}>
           <form onSubmit={handleSearch} className={styles.searchForm}>
             <Input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search locations in Vancouver..."
+              placeholder="Search location"
               className={styles.searchInput}
             />
-            <Button type="submit" disabled={loading || !searchQuery} className="ml-2">
-              {loading ? <Loader2 className="animate-spin" size={20} /> : 'Search'}
+            <Button 
+              type="submit" 
+              disabled={loading || !searchQuery} 
+              className="bg-[#00b8d4] hover:bg-[#00a0c0] text-white"
+            >
+              {loading ? (
+                <Loader2 className="animate-spin" size={20} />
+              ) : (
+                'Search'
+              )}
             </Button>
           </form>
         </div>
-
+  
         {error && (
           <Alert variant="destructive" className="mb-4">
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
-
+  
         <div ref={mapRef} className={styles.mapWrapper} />
       </CardContent>
     </Card>

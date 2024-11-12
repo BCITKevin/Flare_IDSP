@@ -1,153 +1,106 @@
-.mapContainer {
+/* Map Controls - Base styles for both zoom and fullscreen */
+.mapWrapper :global(.gm-control-active),
+.mapWrapper :global(.gm-fullscreen-control) {
+  background-color: black !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 40px !important;
+  height: 40px !important;
+  padding: 8px !important;
+}
+
+/* Fullscreen control specific */
+.mapWrapper :global(.gm-fullscreen-control) {
+  margin: 12px !important;
+}
+
+/* Zoom controls container */
+.mapWrapper :global(.gmnoprint.gm-bundled-control) {
+  background-color: transparent !important;
+  margin-right: 12px !important;
+  margin-bottom: 12px !important;
+}
+
+/* Zoom buttons container */
+.mapWrapper :global(.gmnoprint.gm-bundled-control .gmnoprint) {
+  background-color: black !important;
+  border-radius: 0 !important;
+}
+
+/* Individual zoom buttons */
+.mapWrapper :global(.gm-bundled-control .gm-control-active) {
+  margin: 0 !important;
+  width: 40px !important;
+  height: 40px !important;
+}
+
+/* Zoom control divider */
+.mapWrapper :global(.gmnoprint.gm-bundled-control .gmnoprint > div > div) {
+  margin: 0 !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  height: 1px !important;
+}
+
+/* Icons in controls */
+.mapWrapper :global(.gm-control-active img),
+.mapWrapper :global(.gm-fullscreen-control img) {
+  filter: invert(1) !important;
+  width: 24px !important;
+  height: 24px !important;
+}
+
+/* Hover states */
+.mapWrapper :global(.gm-control-active:hover),
+.mapWrapper :global(.gm-fullscreen-control:hover) {
+  background-color: #1a1a1a !important;
+}
+
+
+
+.searchForm {
+  display: flex;
+  gap: 8px;
   width: 100%;
-  height: 100%;
 }
 
 .searchContainer {
   margin-bottom: 1rem;
-}
-
-.searchForm {
   display: flex;
-  gap: 0.5rem;
 }
 
 .searchInput {
-  flex: 1;
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  color: white;
+  border-radius: 6px;
 }
+
+.searchInput::placeholder {
+  color: #888;
+}
+
+
+
 
 .mapWrapper {
   width: 100%;
-  height: 600px;
-  border-radius: 0.5rem;
+  height: calc(100vh - 140px); /* Subtracting space for header and search */
+  border-radius: 8px;
   overflow: hidden;
 }
 
-/* Legend Control Styles */
-.legendControl {
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+/* For mobile responsiveness */
+@media (max-width: 768px) {
+  .mapWrapper {
+    height: calc(100vh - 120px); /* Slightly less space for mobile header */
+  }
 }
 
-.mapButton {
-  background-color: rgba(0, 0, 0, 0.8);
-  border: none;
-  border-radius: 8px;
-  width: 40px;
-  height: 40px;
-  padding: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mapButton svg {
-  width: 24px;
-  height: 24px;
-  color: white;
-}
-
-.legendContent {
-  background-color: rgba(0, 0, 0, 0.8);
+.mapContainer {
+  background: #1a1a1a;
   border-radius: 12px;
-  padding: 16px;
-  min-width: 300px;
-  transition: all 0.3s ease;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-}
-
-.legendContent.visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.legendTitle {
-  color: #ff6b35;
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-
-.legendItem {
-  background-color: white;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: flex-start;
-}
-
-.legendMarker {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-right: 12px;
-  margin-top: 4px;
-  flex-shrink: 0;
-}
-
-.legendText {
-  flex: 1;
-}
-
-.legendLevel {
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.legendDescription {
-  font-size: 12px;
-  color: #666;
-}
-
-@media (max-width: 768px) {
-  .legendContent {
-    min-width: unset;
-    width: calc(100vw - 20px);
-    max-width: 300px;
-  }
-
-  .legendDescription {
-    font-size: 11px;
-  }
-}
-
-/* Weather Widget Styles */
-.weatherWidget {
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 8px;
-  color: white;
-  padding: 8px 12px;
-  margin: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.weatherTemp {
-  font-size: 20px;
-  font-weight: 600;
-}
-
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-  .legendContent {
-    min-width: unset;
-    width: calc(100vw - 20px);
-    max-width: 300px;
-  }
-
-  .legendDescription {
-    font-size: 11px;
-  }
-
-  .weatherWidget {
-    padding: 6px 10px;
-  }
+  overflow: hidden;
+  border: none;
+  height: 100vh; /* Full viewport height */
 }

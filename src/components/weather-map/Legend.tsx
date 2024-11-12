@@ -2,6 +2,7 @@ import React from 'react';
 import { Info } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
+import styles from "./Legend.module.css"
 
 const FWI_SCALE = [
   { class: 0, range: '<5.2', level: 'Very Low', color: '#126E00' },
@@ -33,23 +34,23 @@ const getLegendDescription = (level) => {
 
 export const Legend = () => {
   return (
-    <div className="absolute bottom-4 right-4">
+    <div className="absolute bottom-20 right-4 z-10">
       <Popover>
         <PopoverTrigger asChild>
           <Button 
-            variant="secondary" 
+            variant="outline" 
             size="icon" 
-            className="h-10 w-10 rounded-full shadow-lg bg-white hover:bg-gray-100"
+            className="h-10 w-10 rounded-full bg-[#1a1a1a] border-gray-700 hover:bg-[#2a2a2a] hover:border-gray-600"
           >
-            <Info className="h-5 w-5" />
+            <Info className="h-5 w-5 text-gray-300" />
           </Button>
         </PopoverTrigger>
         <PopoverContent 
-          className="w-80 p-4" 
+          className="w-80 p-4 bg-[#1a1a1a] border-gray-700 text-gray-100" 
           side="left"
           align="end"
         >
-          <h4 className="text-lg font-semibold mb-4">Fire Weather Index (FWI) Legend</h4>
+          <h4 className="text-lg font-semibold mb-4 text-white">Fire Weather Index (FWI) Legend</h4>
           <div className="space-y-3">
             {FWI_SCALE.map(({ class: classNum, level, color }) => (
               <div key={classNum} className="flex items-start gap-3">
@@ -61,8 +62,8 @@ export const Legend = () => {
                   }}
                 />
                 <div>
-                  <div className="font-medium">Class {classNum}: {level}</div>
-                  <div className="text-sm text-gray-600">
+                  <div className="font-medium text-gray-200">Class {classNum}: {level}</div>
+                  <div className="text-sm text-gray-400">
                     {getLegendDescription(level)}
                   </div>
                 </div>
