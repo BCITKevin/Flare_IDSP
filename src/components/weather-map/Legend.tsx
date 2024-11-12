@@ -1,5 +1,7 @@
+import React from 'react';
 import { Info } from 'lucide-react';
-import styles from './WeatherMap.module.css';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
 
 const FWI_SCALE = [
   { class: 0, range: '<5.2', level: 'Very Low', color: '#126E00' },
@@ -29,33 +31,46 @@ const getLegendDescription = (level) => {
   }
 };
 
-export const MapLegend = ({ show, onToggle }) => {
+export const Legend = () => {
   return (
-    <div className={styles.legendControl}>
-      <button 
-        className={styles.mapButton} 
-        onClick={onToggle}
-        aria-label="Toggle legend"
-      >
-        <Info />
-      </button>
-      <div className={`${styles.legendContent} ${show ? styles.visible : ''}`}>
-        <h4 className={styles.legendTitle}>Legend</h4>
-        {FWI_SCALE.map(({ class: classNum, level, color }) => (
-          <div key={classNum} className={styles.legendItem}>
-            <div 
-              className={styles.legendMarker} 
-              style={{ backgroundColor: color }}
-            />
-            <div className={styles.legendText}>
-              <div className={styles.legendLevel}>Class {classNum}: {level}</div>
-              <div className={styles.legendDescription}>
-                {getLegendDescription(level)}
+    <div className="absolute bottom-4 right-4">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button 
+            variant="secondary" 
+            size="icon" 
+            className="h-10 w-10 rounded-full shadow-lg bg-white hover:bg-gray-100"
+          >
+            <Info className="h-5 w-5" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent 
+          className="w-80 p-4" 
+          side="left"
+          align="end"
+        >
+          <h4 className="text-lg font-semibold mb-4">Fire Weather Index (FWI) Legend</h4>
+          <div className="space-y-3">
+            {FWI_SCALE.map(({ class: classNum, level, color }) => (
+              <div key={classNum} className="flex items-start gap-3">
+                <div 
+                  className="w-5 h-5 rounded-full mt-1 flex-shrink-0"
+                  style={{ 
+                    backgroundColor: color,
+                    border: color === '#FFEB3B' ? '1px solid #666' : 'none'
+                  }}
+                />
+                <div>
+                  <div className="font-medium">Class {classNum}: {level}</div>
+                  <div className="text-sm text-gray-600">
+                    {getLegendDescription(level)}
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };
