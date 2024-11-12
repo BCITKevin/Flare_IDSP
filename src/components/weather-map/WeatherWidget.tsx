@@ -3,7 +3,11 @@ import { Cloud } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import styles from "./WeatherWidget.module.css"
 
-export const WeatherWidget = ({ temperature }) => {
+interface WeatherWidgetProps {
+  temperature: number;
+}
+
+export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ temperature }) => {
   return (
     <div className="absolute top-4 left-4 z-10">
       <Card className="bg-[#1a1a1a] border-gray-700 p-3 flex items-center gap-2">

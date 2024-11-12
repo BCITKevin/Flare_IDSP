@@ -16,7 +16,44 @@ import Image from 'next/image';
 import { Loader } from '@googlemaps/js-api-loader';
 import styles from './WeatherMap.module.css';
 
-const getFWILevel = (fwiValue) => {
+// Define the structure of FWI level info
+type FWIInfo = {
+  class: number;
+  level: string;
+  color: string;
+  textColor: string;
+};
+
+// Define the structure of fetched weather data
+interface WeatherData {
+  current: {
+    temp: number;
+    feels_like: number;
+    humidity: number;
+    wind_speed: number;
+    uvi: number;
+  };
+  alerts?: Array<{
+    event: string;
+    description: string;
+    start: number;
+    end: number;
+  }>;
+  daily: Array<{
+    dt: number;
+    temp: {
+      max: number;
+    };
+  }>;
+  fwi: number;
+  danger_rating: string;
+  daily_fwi: Array<{
+    fwi: number;
+    danger_rating: string;
+  }>;
+}
+
+const getFWILevel = (fwiValue: number | null | undefined): FWIInfo => {
   if (fwiValue === null || fwiValue === undefined || isNaN(fwiValue)) {
     return { class: -1, level: 'Unknown', color: '#808080', textColor: 'white' };
   }
@@ -28,7 +65,7 @@ const getFWILevel = (fwiValue) => {
   return { class: 5, level: 'Extreme', color: '#4A0404', textColor: 'white' };
 };
 
-const fetchWeatherData = async (lat, lon) => {
+const fetchWeatherData = async (lat: number, lon: number): Promise<WeatherData> => {
   try {
     // Fetch regular weather data
     const weatherResponse = await fetch(
@@ -47,7 +84,7 @@ const fetchWeatherData = async (lat, lon) => {
     const currentDangerRating = fwiData?.list?.[0]?.danger_rating?.description || 'Unknown';
 
     // Get next 5 days timestamps
-    const daily_fwi = [];
+    const daily_fwi: Array<{fwi: number; danger_rating: string }> = [];
     for(let i = 0; i < 5; i++) {
       const date = new Date();
       date.setDate(date.getDate() + i);
@@ -87,15 +124,15 @@ const fetchWeatherData = async (lat, lon) => {
     throw error;
   }
 };
-const WeatherMap = () => {
-  const mapRef = useRef(null);
-  const googleMapRef = useRef(null);
-  const markerRef = useRef(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [weatherOverlay, setWeatherOverlay] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
+const WeatherMap: React.FC = () => {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const googleMapRef = useRef<google.maps.Map | null>(null);
+  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+  const [weatherOverlay, setWeatherOverlay] = useState<google.maps.ImageMapType | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   // Your existing useEffect for mobile check remains the same
   useEffect(() => {
@@ -109,14 +146,14 @@ const WeatherMap = () => {
   useEffect(() => {
     const initializeMap = async () => {
       const loader = new Loader({
-        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
         version: 'weekly',
         libraries: ['marker']
       });
     
       try {
         const google = await loader.load();
-        const map = new google.maps.Map(mapRef.current, {
+        const map = new google.maps.Map(mapRef.current as HTMLDivElement, {
           center: { lat: 49.2827, lng: -123.1207 }, // Vancouver center
           zoom: isMobile ? 11 : 12,
           streetViewControl: false,
@@ -188,9 +225,9 @@ const WeatherMap = () => {
         const newOverlay = new google.maps.ImageMapType({
           getTileUrl: function(coord, zoom) {
             return weatherMapUrl
-              .replace('{z}', zoom)
-              .replace('{x}', coord.x)
-              .replace('{y}', coord.y);
+              .replace('{z}', zoom.toString())
+              .replace('{x}', coord.x.toString())
+              .replace('{y}', coord.y.toString());
           },
           tileSize: new google.maps.Size(256, 256),
           opacity: 0.7
@@ -212,7 +249,7 @@ const WeatherMap = () => {
 
 
 
-  const handleSearch = async (e) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -229,7 +266,7 @@ const WeatherMap = () => {
       const weatherData = await fetchWeatherData(lat, lon);
 
       if (markerRef.current) {
-        markerRef.current.setMap(null);
+        markerRef.current.setMap = (null);
       }
 
       const fwiInfo = getFWILevel(weatherData.fwi);
@@ -241,7 +278,7 @@ const WeatherMap = () => {
         glyphColor: fwiInfo.color === '#FFEB3B' ? '#000000' : '#FFFFFF'
       });
 
-      const infowindow = new google.maps.InfoWindow({
+      const infoTab = new google.maps.InfoWindow({
         content: `
         <style>
           /* Custom scrollbar for info window */
@@ -387,23 +424,27 @@ document.head.appendChild(style);
       });
   
       markerElement.addListener('click', () => {
-        infowindow.open({
+        infoTab.open({
           anchor: markerElement,
           map: googleMapRef.current
         });
       });
   
       markerRef.current = markerElement;
-      googleMapRef.current.panTo({ lat, lng: lon });
-      googleMapRef.current.setZoom(13);
-      infowindow.open({
+      googleMapRef.current?.panTo({ lat, lng: lon });
+      googleMapRef.current?.setZoom(13);
+      infoTab.open({
         anchor: markerElement,
         map: googleMapRef.current
       });
   
     } catch (err) {
       console.error('Error:', err);
-      setError(err.message || 'Failed to fetch location data');
+      if (err instanceof Error) {
+        setError(err.message || 'Failed to fetch location data');
+      } else {
+        setError('Failed to fetch location data');
+      }
     } finally {
       setLoading(false);
     }

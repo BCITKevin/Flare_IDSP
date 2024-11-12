@@ -13,7 +13,7 @@ const FWI_SCALE = [
   { class: 5, range: '≥50', level: 'Extreme', color: '#4A0404' }
 ];
 
-const getLegendDescription = (level) => {
+const getLegendDescription = (level: string) => {
   switch(level) {
     case 'Very Low':
       return 'Minimal Risk; fires are unlikely to spread significantly.';
