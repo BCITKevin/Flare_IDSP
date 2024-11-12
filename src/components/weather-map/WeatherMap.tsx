@@ -26,8 +26,7 @@ const getFWILevel = (fwiValue) => {
   return { class: 5, level: 'Extreme', color: '#4A0404', textColor: 'white' };
 };
 
-const fetchWeatherData = async (lat, lon, date) => {
-  const timestamp = Math.floor(date.getTime() / 1000);
+const fetchWeatherData = async (lat, lon) => {
   
   try {
     // Fetch regular weather data
@@ -69,7 +68,6 @@ const WeatherMap = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [weatherOverlay, setWeatherOverlay] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -159,8 +157,7 @@ const WeatherMap = () => {
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(weatherContainer);
     
         // Add the weather overlay
-        const timestamp = Math.floor(selectedDate.getTime() / 1000);
-        const weatherMapUrl = `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&date=${timestamp}`;
+        const weatherMapUrl = `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`;
         
         const newOverlay = new google.maps.ImageMapType({
           getTileUrl: function(coord, zoom) {
@@ -184,30 +181,10 @@ const WeatherMap = () => {
     if (typeof window !== 'undefined' && !googleMapRef.current) {
       initializeMap();
     }
-  }, [isMobile, selectedDate]);
+  }, [isMobile]);
 
-  // Your existing weather overlay useEffect remains the same
-  useEffect(() => {
-    if (googleMapRef.current && weatherOverlay) {
-      const timestamp = Math.floor(selectedDate.getTime() / 1000);
-      const weatherMapUrl = `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&date=${timestamp}`;
-      
-      const newOverlay = new google.maps.ImageMapType({
-        getTileUrl: function(coord, zoom) {
-          return weatherMapUrl
-            .replace('{z}', zoom)
-            .replace('{x}', coord.x)
-            .replace('{y}', coord.y);
-        },
-        tileSize: new google.maps.Size(256, 256),
-        opacity: 0.7
-      });
 
-      googleMapRef.current.overlayMapTypes.clear();
-      googleMapRef.current.overlayMapTypes.push(newOverlay);
-      setWeatherOverlay(newOverlay);
-    }
-  }, [selectedDate]);
+
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -223,7 +200,7 @@ const WeatherMap = () => {
       if (!data.length) throw new Error('Location not found');
 
       const { lat, lon, name } = data[0];
-      const weatherData = await fetchWeatherData(lat, lon, selectedDate);
+      const weatherData = await fetchWeatherData(lat, lon);
 
       if (markerRef.current) {
         markerRef.current.setMap(null);
@@ -372,22 +349,6 @@ const WeatherMap = () => {
               placeholder="Search locations in Vancouver..."
               className={styles.searchInput}
             />
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="ml-2">
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {selectedDate.toLocaleDateString()}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0 z-[1000]">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
             <Button type="submit" disabled={loading || !searchQuery} className="ml-2">
               {loading ? <Loader2 className="animate-spin" size={20} /> : 'Search'}
             </Button>
