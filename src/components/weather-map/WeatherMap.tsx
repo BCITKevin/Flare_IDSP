@@ -17,9 +17,11 @@ import { Loader } from '@googlemaps/js-api-loader';
 import styles from './WeatherMap.module.css';
 
 const getFWILevel = (fwiValue) => {
-  if (!fwiValue || isNaN(fwiValue)) return { class: -1, level: 'Unknown', color: '#808080', textColor: 'white' };
+  if (fwiValue === null || fwiValue === undefined || isNaN(fwiValue)) {
+    return { class: -1, level: 'Unknown', color: '#808080', textColor: 'white' };
+  }
   if (fwiValue < 5.2) return { class: 0, level: 'Very Low', color: '#126E00', textColor: 'white' };
-  if (fwiValue < 11.2) return { class: 1, level: 'Low', color: '#FFEB3B', textColor: 'black' };
+  if (fwiValue < 11.2) return { class: 1, level: 'Low', color: '#FFEB3B', textColor: 'white' };
   if (fwiValue < 21.3) return { class: 2, level: 'Moderate', color: '#ED8E3E', textColor: 'white' };
   if (fwiValue < 38.0) return { class: 3, level: 'High', color: '#FF0000', textColor: 'white' };
   if (fwiValue < 50.0) return { class: 4, level: 'Very High', color: '#890000', textColor: 'white' };
@@ -27,7 +29,6 @@ const getFWILevel = (fwiValue) => {
 };
 
 const fetchWeatherData = async (lat, lon) => {
-  
   try {
     // Fetch regular weather data
     const weatherResponse = await fetch(
@@ -41,18 +42,44 @@ const fetchWeatherData = async (lat, lon) => {
     );
     const fwiData = await fwiResponse.json();
 
-    // Extract current FWI from response
+    // Get current FWI value
     const currentFWI = fwiData?.list?.[0]?.main?.fwi || 0;
+    const currentDangerRating = fwiData?.list?.[0]?.danger_rating?.description || 'Unknown';
 
-    // Create daily FWI values based on forecast conditions
-    const daily_fwi = weatherData.daily.map((day, index) => {
-      const variation = (Math.random() - 0.5) * 2; // Random variation of ±1
-      return Math.max(0, currentFWI + variation);
-    });
+    // Get next 5 days timestamps
+    const daily_fwi = [];
+    for(let i = 0; i < 5; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() + i);
+      const timestamp = Math.floor(date.getTime() / 1000);
+
+      try {
+        const dayFwiResponse = await fetch(
+          `https://api.openweathermap.org/data/2.5/fwi?lat=${lat}&lon=${lon}&dt=${timestamp}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`
+        );
+        const dayFwiData = await dayFwiResponse.json();
+        
+        daily_fwi.push({
+          fwi: dayFwiData?.list?.[0]?.main?.fwi || currentFWI,
+          danger_rating: dayFwiData?.list?.[0]?.danger_rating?.description || currentDangerRating
+        });
+      } catch (error) {
+        console.error(`Error fetching FWI for day ${i}:`, error);
+        // Fallback to current FWI if request fails
+        daily_fwi.push({
+          fwi: currentFWI,
+          danger_rating: currentDangerRating
+        });
+      }
+    }
+
+    console.log('Current FWI:', currentFWI);
+    console.log('Daily FWI:', daily_fwi);
 
     return {
       ...weatherData,
       fwi: currentFWI,
+      danger_rating: currentDangerRating,
       daily_fwi
     };
   } catch (error) {
@@ -60,7 +87,6 @@ const fetchWeatherData = async (lat, lon) => {
     throw error;
   }
 };
-
 const WeatherMap = () => {
   const mapRef = useRef(null);
   const googleMapRef = useRef(null);
@@ -224,7 +250,7 @@ const WeatherMap = () => {
             <div style="margin-bottom: 16px;">
               <div style="background-color: ${fwiInfo.color}; color: ${fwiInfo.textColor};
                 padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px;">
-                Current Fire Danger: ${fwiInfo.level}
+                Current Fire Danger: ${weatherData.danger_rating}
               </div>
               <div>Current FWI Value: ${weatherData.fwi.toFixed(1)}</div>
             </div>
@@ -243,29 +269,29 @@ const WeatherMap = () => {
             <div style="margin-top: 16px;">
               <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 8px;">5-Day Forecast</h4>
               <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;">
-                ${weatherData.daily.slice(0, 5).map((day, index) => {
-                  const dayFWI = weatherData.daily_fwi[index];
-                  const dayFWIInfo = getFWILevel(dayFWI);
-                  return `
-                    <div style="text-align: center; font-size: 12px;">
-                      <div style="font-weight: bold; margin-bottom: 4px;">
-                        ${new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
-                      </div>
-                      <div style="margin-bottom: 4px;">
-                        ${day.temp.max.toFixed(1)}°C
-                      </div>
-                      <div style="
-                        background-color: ${dayFWIInfo.color}; 
-                        color: ${dayFWIInfo.textColor};
-                        padding: 2px 4px; 
-                        border-radius: 4px; 
-                        font-size: 11px;
-                        margin-top: 4px;">
-                        FWI: ${dayFWI.toFixed(1)}
-                      </div>
+              ${weatherData.daily.slice(0, 5).map((day, index) => {
+                const dayFWI = weatherData.daily_fwi[index].fwi;
+                const dayFWIInfo = getFWILevel(dayFWI);
+                return `
+                  <div style="text-align: center; font-size: 12px;">
+                    <div style="font-weight: bold; margin-bottom: 4px;">
+                      ${new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
                     </div>
-                  `;
-                }).join('')}
+                    <div style="margin-bottom: 4px;">
+                      ${day.temp.max.toFixed(1)}°C
+                    </div>
+                    <div style="
+                      background-color: ${dayFWIInfo.color}; 
+                      color: ${dayFWIInfo.textColor};
+                      padding: 2px 4px; 
+                      border-radius: 4px; 
+                      font-size: 11px;
+                      margin-top: 4px;">
+                      ${weatherData.daily_fwi[index].danger_rating}
+                    </div>
+                  </div>
+                `;
+              }).join('')}
               </div>
             </div>
       
