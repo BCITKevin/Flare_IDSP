@@ -11,7 +11,7 @@ export default function MapLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="min-h-screen sm:p-8">
+    <main className="min-h-screen sm:p-1">
       {children}
     </main>
   );

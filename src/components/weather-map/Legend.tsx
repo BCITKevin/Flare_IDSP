@@ -2,7 +2,6 @@ import React from 'react';
 import { Info } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import styles from "./Legend.module.css"
 
 const FWI_SCALE = [
   { class: 0, range: '<5.2', level: 'Very Low', color: '#126E00' },
@@ -37,16 +36,21 @@ export const Legend = () => {
     <div className="absolute bottom-20 right-4 z-10">
       <Popover>
         <PopoverTrigger asChild>
-          <Button 
-            variant="outline" 
-            size="icon" 
-            className="h-10 w-10 rounded-full bg-[#1a1a1a] border-gray-700 hover:bg-[#2a2a2a] hover:border-gray-600"
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-10 w-10 rounded-full bg-[#1a1a1a] border-gray-700 hover:bg-[#2a2a2a] hover:border-gray-600 flex items-center justify-center p-0.5"
           >
-            <Info className="h-5 w-5 text-gray-300" />
+            
+            <Info 
+              //the ! is for removing a rule with the .\{\&_svg\}\:size-4 svg 
+              className="text-gray-100 !w-8 !h-8" 
+              strokeWidth={2}
+            />
           </Button>
         </PopoverTrigger>
-        <PopoverContent 
-          className="w-80 p-4 bg-[#1a1a1a] border-gray-700 text-gray-100" 
+        <PopoverContent
+          className="w-80 p-4 bg-[#1a1a1a] border-gray-700 text-gray-100"
           side="left"
           align="end"
         >
@@ -54,9 +58,9 @@ export const Legend = () => {
           <div className="space-y-3">
             {FWI_SCALE.map(({ class: classNum, level, color }) => (
               <div key={classNum} className="flex items-start gap-3">
-                <div 
+                <div
                   className="w-5 h-5 rounded-full mt-1 flex-shrink-0"
-                  style={{ 
+                  style={{
                     backgroundColor: color,
                     border: color === '#FFEB3B' ? '1px solid #666' : 'none'
                   }}
@@ -75,3 +79,5 @@ export const Legend = () => {
     </div>
   );
 };
+
+export default Legend;

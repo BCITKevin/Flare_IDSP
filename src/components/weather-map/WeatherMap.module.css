@@ -119,7 +119,7 @@
     right: 20px; /* Keep visible */
   }
   .mapWrapper {
-    height: calc(100vh - 120px - 1rem - 60px); /* Mobile height with 1rem margin */
+    height: calc(100vh - 120px - 1rem - 110px); /* Mobile height with 1rem margin */
   }
 }
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Loader2, Info, Cloud } from 'lucide-react';
+import { Search, Loader2, Info, Cloud, Thermometer, SunSnow, Waves, Wind, Sun  } from 'lucide-react';
 import { WeatherWidget } from './WeatherWidget';
 import { Legend } from './Legend';
 import { createRoot } from 'react-dom/client';
@@ -283,17 +283,29 @@ const WeatherMap: React.FC = () => {
         <style>
           /* Custom scrollbar for info window */
           .gm-style-iw-d::-webkit-scrollbar {
-            width: 8px;
+            width: 4px !important;
+            height: 4px !important; /* Set height for the horizontal scrollbar */
           }
           .gm-style-iw-d::-webkit-scrollbar-track {
-            background: #000000;
+            background: none !important;
           }
           .gm-style-iw-d::-webkit-scrollbar-thumb {
-            background: #333333;
-            border-radius: 4px;
+            background: red;
+            border-radius: 4px !important;
+          }
+
+          /* Custom horizontal scrollbar (bottom scrollbar) */
+          .gm-style-iw-d::-webkit-scrollbar-horizontal {
+            height: 4px !important;
+          }
+
+          .gm-style-iw-d::-webkit-scrollbar-thumb:horizontal {
+            background: red;
+            border-radius: 4px !important;
           }
         </style>
-        <div style="padding: 20px; width: 300px; max-width: 90vw; background-color: #000000; color: #ffffff;">
+        <div style="padding: 10px; width: 310px; max-width: 90vw; background-color: #000000; color: #ffffff;"
+        class="min-h-full">
           <h3 style="font-size: 24px; font-weight: bold; margin-bottom: 16px; color: #ffffff;">${name}</h3>
             <!-- Current Conditions -->
             <div style="margin-bottom: 16px;">
@@ -305,17 +317,89 @@ const WeatherMap: React.FC = () => {
             </div>
             
             <!-- Current Weather Details -->
-            <div style="background-color: #111111; padding: 12px; border-radius: 4px; margin-bottom: 16px;">
-              <div>Temperature: ${weatherData.current.temp.toFixed(1)}°C</div>
-              <div>Feels Like: ${weatherData.current.feels_like.toFixed(1)}°C</div>
-              <div>Humidity: ${weatherData.current.humidity}%</div>
-              <div>Wind: ${(weatherData.current.wind_speed * 3.6).toFixed(1)} km/h</div>
-              <div>UV Index: ${weatherData.current.uvi}</div>
-            </div>
+            <div class="bg-black text-white pt-4 rounded-md mb-4 divide-y divide-gray-700 flex flex-col w-9/12 justify-center">
+              <div class="flex justify-between py-1">
+                <div class="flex">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="mr-2"
+                  >
+                    <path d="M12 2a5 5 0 1 1-5 5v10a5 5 0 1 1 0-10V7a5 5 0 0 1 5-5Z"/>
+                  </svg>
+                  Temperature:
+                </div>
+                <span>${weatherData.current.temp.toFixed(1)}°C</span>
+              </div>
+              <div class="flex justify-between py-1">
+                <div class="flex">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="mr-2"
+                  >
+                    <path d="M12 8a4 4 0 1 1-8 0a4 4 0 0 1 8 0Z"/>
+                    <path d="M8 2v2"/>
+                    <path d="M8 12v2"/>
+                    <path d="M2 8h2"/>
+                    <path d="M12 8h2"/>
+                    <path d="m3.5 3.5 1.5 1.5"/>
+                    <path d="m11 11 1.5 1.5"/>
+                    <path d="m3.5 12.5 1.5-1.5"/>
+                    <path d="m11 5 1.5-1.5"/>
+                    <path d="M16 12v10"/>
+                    <path d="M20 12v10"/>
+                    <path d="M16 18h4"/>
+                  </svg>
+                  Feels Like:
+                </div>
+                <span>${weatherData.current.feels_like.toFixed(1)}°C</span>
+              </div>
+              <div class="flex justify-between py-1">
+                <div class="flex">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="mr-2"
+                  >
+                    <path d="M2 12h20"/>
+                    <path d="M2 17h20"/>
+                    <path d="M2 7h20"/>
+                  </svg>
+                  Humidity:
+                </div>
+                <span>${weatherData.current.humidity}%</span>
+              </div>
+              <div class="flex justify-between py-1">
+                <div class="flex">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="mr-2"
+                  >
+                    <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/>
+                    <path d="M9.6 4.6A2 2 0 1 1 11 8H2"/>
+                    <path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>
+                  </svg>
+                  Wind:
+                </div>
+                <span>${(weatherData.current.wind_speed * 3.6).toFixed(1)} km/h</span>
+              </div>
+              <div class="flex justify-between py-1">
+                <div class="flex">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="mr-2"
+                  >
+                    <circle cx="12" cy="12" r="4"/>
+                    <path d="M12 2v2"/>
+                    <path d="M12 20v2"/>
+                    <path d="m4.93 4.93 1.41 1.41"/>
+                    <path d="m17.66 17.66 1.41 1.41"/>
+                    <path d="M2 12h2"/>
+                    <path d="M20 12h2"/>
+                    <path d="m6.34 17.66-1.41 1.41"/>
+                    <path d="m19.07 4.93-1.41 1.41"/>
+                  </svg>
+                  UV Index:
+                </div>
+                <span>${weatherData.current.uvi}</span>
+              </div>
       
             <!-- 5-Day Forecast -->
             <div style="margin-top: 16px;">
-              <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #ffffff;">5-Day Forecast</h4>
+              <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #ffffff;">5-Day Forecast of Risk</h4>
               <div style="display: flex; flex-direction: column; gap: 8px;">
                 ${weatherData.daily.slice(0, 5).map((day, index) => {
                   const dayFWI = weatherData.daily_fwi[index].fwi;
@@ -394,7 +478,7 @@ style.textContent = `
   }
   /* Close button container */
   .gm-style-iw > button {
-    background-color: #000000 !important;
+    background-color: red !important;
     border: none !important;
     padding: 8px !important;
     border-radius: 0 !important;
@@ -455,18 +539,21 @@ document.head.appendChild(style);
     <Card className={styles.mapContainer}>
       <CardHeader className="flex flex-row items-center justify-between border-b border-gray-800">
         <CardTitle className="flex items-center gap-2 text-white">
-          <Cloud className="h-6 w-6" />
-          Vancouver Weather Map
+          {/* <Cloud className="h-6 w-6" /> */}
+          <h2>Wildfire Risk / Weather Map</h2>
         </CardTitle>
       </CardHeader>
-      <CardContent className="">
+      <CardContent className='m-0 p-0 text-white'>
+        <h4>Search </h4>
+      </CardContent>
+      <CardContent className="p-0 pt-1">
         <div className={styles.searchContainer}>
           <form onSubmit={handleSearch} className={styles.searchForm}>
             <Input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search location"
+              placeholder="Enter your destination here..."
               className={styles.searchInput}
             />
             <Button 
