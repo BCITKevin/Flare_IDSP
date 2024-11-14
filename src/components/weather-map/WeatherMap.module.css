@@ -84,23 +84,77 @@
 
 
 .mapWrapper {
+  position: relative; /* Ensure correct positioning of controls */
   width: 100%;
-  height: calc(100vh - 140px); /* Subtracting space for header and search */
+  height: calc(100vh - 80px - 1rem - 60px); /* Adjust height for header and nav bar */
   border-radius: 8px;
-  overflow: hidden;
+  overflow: hidden; /* Prevent unwanted overflow */
+}
+
+/* Adjust controls for all screen sizes */
+.mapWrapper :global(.gmnoprint.gm-bundled-control) {
+  position: absolute; /* Ensure controls are not affected by overflow or margins */
+  right: 12px; /* Adjust for visibility */
+  bottom: 12px; /* Ensure consistent margin */
+  z-index: 10; /* Bring above other elements */
+  background-color: transparent !important; /* No background */
+}
+
+.mapWrapper :global(.gmnoprint.gm-bundled-control .gmnoprint) {
+  background-color: black !important;
+  border-radius: 4px; /* Rounded buttons */
+  margin: 0 !important; /* Reset any external margins */
+  z-index: 11; /* Keep above map elements */
+}
+
+.mapWrapper :global(.gm-fullscreen-control) {
+  margin-bottom: 100px !important;
+  margin-right: 12px !important;
+}
+
+/* Adjust controls for wider screens */
+@media (min-width: 1024px) {
+  .mapWrapper :global(.gmnoprint.gm-bundled-control) {
+    bottom: 20px; /* Increase margin on larger screens */
+    right: 20px; /* Keep visible */
+  }
+  .mapWrapper {
+    height: calc(100vh - 120px - 1rem - 60px); /* Mobile height with 1rem margin */
+  }
 }
 
 /* For mobile responsiveness */
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .mapWrapper {
-    height: calc(100vh - 120px); /* Slightly less space for mobile header */
+    height: calc(100vh - 120px - 1rem - 60px); /* Mobile height with 1rem margin */
   }
+}
+
+/* Keep the iPhone-specific adjustments */
+@media (max-width: 430px) {
+  .mapWrapper :global(.gmnoprint.gm-bundled-control),
+  .mapWrapper :global(.gm-fullscreen-control) {
+    margin-bottom: 100px !important;
+  }
+  .mapWrapper {
+    height: calc(100vh - 120px - 1rem - 60px); /* Mobile height with 1rem margin */
+  }
+}
+
+
+/* Icons in the zoom controls */
+.mapWrapper :global(.gm-control-active img) {
+  filter: invert(1) !important; /* Ensure visibility on dark backgrounds */
+  width: 24px !important;
+  height: 24px !important;
 }
 
 .mapContainer {
   background: #1a1a1a;
+  position: relative; /* Ensure contents align correctly */
   border-radius: 12px;
-  overflow: hidden;
-  border: none;
-  height: 100vh; /* Full viewport height */
+  overflow: visible; /* Allow controls to be fully visible */
+  height: calc(100vh - 80px - 60px); /* Maintain height */
+  width: 100%;
+  border:none;
 }

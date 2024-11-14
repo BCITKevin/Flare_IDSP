@@ -404,6 +404,7 @@ style.textContent = `
   }
   /* The X image itself */
   .gm-style-iw > button > img {
+    background:white;
     filter: invert(1) !important;
     opacity: 1 !important;
     width: 16px !important;
@@ -458,7 +459,7 @@ document.head.appendChild(style);
           Vancouver Weather Map
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-4">
+      <CardContent className="">
         <div className={styles.searchContainer}>
           <form onSubmit={handleSearch} className={styles.searchForm}>
             <Input
