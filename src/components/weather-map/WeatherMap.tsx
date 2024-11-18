@@ -176,30 +176,6 @@ const WeatherMap: React.FC = () => {
               "elementType": "labels.text.stroke",
               "stylers": [{ "color": "#17263c" }]
             },
-            {
-              "featureType": "all",
-              "elementType": "controls",
-              "stylers": [
-                { "visibility": "on" },
-                { "invert_lightness": true }
-              ]
-            },
-            {
-              "featureType": "zoom",
-              "elementType": "controls",
-              "stylers": [
-                { "visibility": "on" },
-                { "invert_lightness": true }
-              ]
-            },
-            {
-              "featureType": "fullscreen",
-              "elementType": "controls",
-              "stylers": [
-                { "visibility": "on" },
-                { "invert_lightness": true }
-              ]
-            }
           ]
         });
     
