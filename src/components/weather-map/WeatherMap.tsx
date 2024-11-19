@@ -131,7 +131,6 @@ const WeatherMap: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const [weatherOverlay, setWeatherOverlay] = useState<google.maps.ImageMapType | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   // Your existing useEffect for mobile check remains the same
@@ -195,22 +194,7 @@ const WeatherMap: React.FC = () => {
         );
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(weatherContainer);
     
-        // Add the weather overlay
-        const weatherMapUrl = `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`;
         
-        const newOverlay = new google.maps.ImageMapType({
-          getTileUrl: function(coord, zoom) {
-            return weatherMapUrl
-              .replace('{z}', zoom.toString())
-              .replace('{x}', coord.x.toString())
-              .replace('{y}', coord.y.toString());
-          },
-          tileSize: new google.maps.Size(256, 256),
-          opacity: 0.7
-        });
-    
-        map.overlayMapTypes.push(newOverlay);
-        setWeatherOverlay(newOverlay);
       } catch (error) {
         console.error('Error loading Google Maps:', error);
         setError('Failed to load map');
