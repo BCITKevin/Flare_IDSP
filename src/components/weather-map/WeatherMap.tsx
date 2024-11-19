@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Loader2, Info, Cloud } from 'lucide-react';
+import { Search, Loader2, Info, Cloud, Thermometer, SunSnow, Waves, Wind, Sun  } from 'lucide-react';
 import { WeatherWidget } from './WeatherWidget';
-import { MapLegend } from './Legend';
+import { Legend } from './Legend';
 import { createRoot } from 'react-dom/client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -16,19 +16,56 @@ import Image from 'next/image';
 import { Loader } from '@googlemaps/js-api-loader';
 import styles from './WeatherMap.module.css';
 
-
-const getFWILevel = (fwiValue) => {
-  if (fwiValue < 5.2) return { class: 0, level: 'Very Low', color: '#126E00' };
-  if (fwiValue < 11.2) return { class: 1, level: 'Low', color: '#FFEB3B' };
-  if (fwiValue < 21.3) return { class: 2, level: 'Moderate', color: '#ED8E3E' };
-  if (fwiValue < 38.0) return { class: 3, level: 'High', color: '#FF0000' };
-  if (fwiValue < 50.0) return { class: 4, level: 'Very High', color: '#890000' };
-  return { class: 5, level: 'Extreme', color: '#4A0404' };
+// Define the structure of FWI level info
+type FWIInfo = {
+  class: number;
+  level: string;
+  color: string;
+  textColor: string;
 };
 
-const fetchWeatherData = async (lat, lon, date) => {
-  const timestamp = Math.floor(date.getTime() / 1000);
-  
+// Define the structure of fetched weather data
+interface WeatherData {
+  current: {
+    temp: number;
+    feels_like: number;
+    humidity: number;
+    wind_speed: number;
+    uvi: number;
+  };
+  alerts?: Array<{
+    event: string;
+    description: string;
+    start: number;
+    end: number;
+  }>;
+  daily: Array<{
+    dt: number;
+    temp: {
+      max: number;
+    };
+  }>;
+  fwi: number;
+  danger_rating: string;
+  daily_fwi: Array<{
+    fwi: number;
+    danger_rating: string;
+  }>;
+}
+
+const getFWILevel = (fwiValue: number | null | undefined): FWIInfo => {
+  if (fwiValue === null || fwiValue === undefined || isNaN(fwiValue)) {
+    return { class: -1, level: 'Unknown', color: '#808080', textColor: 'white' };
+  }
+  if (fwiValue < 5.2) return { class: 0, level: 'Very Low', color: '#126E00', textColor: 'white' };
+  if (fwiValue < 11.2) return { class: 1, level: 'Low', color: '#FFEB3B', textColor: 'white' };
+  if (fwiValue < 21.3) return { class: 2, level: 'Moderate', color: '#ED8E3E', textColor: 'white' };
+  if (fwiValue < 38.0) return { class: 3, level: 'High', color: '#FF0000', textColor: 'white' };
+  if (fwiValue < 50.0) return { class: 4, level: 'Very High', color: '#890000', textColor: 'white' };
+  return { class: 5, level: 'Extreme', color: '#4A0404', textColor: 'white' };
+};
+
+const fetchWeatherData = async (lat: number, lon: number): Promise<WeatherData> => {
   try {
     // Fetch regular weather data
     const weatherResponse = await fetch(
@@ -36,35 +73,67 @@ const fetchWeatherData = async (lat, lon, date) => {
     );
     const weatherData = await weatherResponse.json();
 
-    // Fetch FWI data
+    // Fetch current FWI data
     const fwiResponse = await fetch(
       `https://api.openweathermap.org/data/2.5/fwi?lat=${lat}&lon=${lon}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`
     );
     const fwiData = await fwiResponse.json();
 
+    // Get current FWI value
+    const currentFWI = fwiData?.list?.[0]?.main?.fwi || 0;
+    const currentDangerRating = fwiData?.list?.[0]?.danger_rating?.description || 'Unknown';
+
+    // Get next 5 days timestamps
+    const daily_fwi: Array<{fwi: number; danger_rating: string }> = [];
+    for(let i = 0; i < 5; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() + i);
+      const timestamp = Math.floor(date.getTime() / 1000);
+
+      try {
+        const dayFwiResponse = await fetch(
+          `https://api.openweathermap.org/data/2.5/fwi?lat=${lat}&lon=${lon}&dt=${timestamp}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`
+        );
+        const dayFwiData = await dayFwiResponse.json();
+        
+        daily_fwi.push({
+          fwi: dayFwiData?.list?.[0]?.main?.fwi || currentFWI,
+          danger_rating: dayFwiData?.list?.[0]?.danger_rating?.description || currentDangerRating
+        });
+      } catch (error) {
+        console.error(`Error fetching FWI for day ${i}:`, error);
+        // Fallback to current FWI if request fails
+        daily_fwi.push({
+          fwi: currentFWI,
+          danger_rating: currentDangerRating
+        });
+      }
+    }
+
+    console.log('Current FWI:', currentFWI);
+    console.log('Daily FWI:', daily_fwi);
+
     return {
       ...weatherData,
-      fwi: fwiData.fwi || 0
+      fwi: currentFWI,
+      danger_rating: currentDangerRating,
+      daily_fwi
     };
   } catch (error) {
     console.error('Error fetching weather data:', error);
     throw error;
   }
 };
+const WeatherMap: React.FC = () => {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const googleMapRef = useRef<google.maps.Map | null>(null);
+  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
-const WeatherMap = () => {
-  const mapRef = useRef(null);
-  const googleMapRef = useRef(null);
-  const markerRef = useRef(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [weatherOverlay, setWeatherOverlay] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [showLegend, setShowLegend] = useState(false);
-  
-
+  // Your existing useEffect for mobile check remains the same
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -72,63 +141,40 @@ const WeatherMap = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Your existing map initialization useEffect remains the same
   useEffect(() => {
     const initializeMap = async () => {
       const loader = new Loader({
-        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
         version: 'weekly',
         libraries: ['marker']
       });
     
       try {
         const google = await loader.load();
-        const map = new google.maps.Map(mapRef.current, {
-          center: { lat: 54.5, lng: -125.5 }, // Center of BC
-          zoom: isMobile ? 5 : 6,
+        const map = new google.maps.Map(mapRef.current as HTMLDivElement, {
+          center: { lat: 49.2827, lng: -123.1207 }, // Vancouver center
+          zoom: isMobile ? 11 : 12,
           streetViewControl: false,
           mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
-          mapTypeControl: false, // Remove map type control completely
+          mapTypeControl: false,
+          zoomControl: true,
+          zoomControlOptions: {
+            position: google.maps.ControlPosition.RIGHT_BOTTOM
+          },
+          clickableIcons: false,
           styles: [
             {
-              featureType: 'poi',
-              elementType: 'labels',
-              stylers: [{ visibility: 'off' }]
+              "elementType": "geometry",
+              "stylers": [{ "color": "#242f3e" }]
             },
+        
+            
             {
-              featureType: 'transit',
-              elementType: 'labels',
-              stylers: [{ visibility: 'off' }]
+              "featureType": "water",
+              "elementType": "labels.text.stroke",
+              "stylers": [{ "color": "#17263c" }]
             },
-            {
-              featureType: 'water',
-              elementType: 'geometry',
-              stylers: [{ color: '#b3d1ff' }]
-            },
-            {
-              featureType: 'landscape',
-              elementType: 'geometry',
-              stylers: [{ color: '#f5f5f5' }]
-            },
-            {
-              featureType: 'road',
-              elementType: 'geometry',
-              stylers: [{ color: '#ffffff' }]
-            },
-            {
-              featureType: 'road',
-              elementType: 'labels',
-              stylers: [{ visibility: 'on' }]
-            },
-            {
-              featureType: 'administrative',
-              elementType: 'geometry',
-              stylers: [{ visibility: 'off' }]
-            },
-            {
-              featureType: 'administrative.province',
-              elementType: 'geometry',
-              stylers: [{ visibility: 'on' }]
-            }
           ]
         });
     
@@ -137,12 +183,7 @@ const WeatherMap = () => {
         // Create Legend Container
         const legendContainer = document.createElement('div');
         const legendRoot = createRoot(legendContainer);
-        legendRoot.render(
-          <MapLegend 
-            show={showLegend} 
-            onToggle={() => setShowLegend(!showLegend)} 
-          />
-        );
+        legendRoot.render(<Legend />);
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legendContainer);
     
         // Create Weather Widget Container
@@ -153,56 +194,22 @@ const WeatherMap = () => {
         );
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(weatherContainer);
     
-        // Add the weather overlay
-        const timestamp = Math.floor(selectedDate.getTime() / 1000);
-        const weatherMapUrl = `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&date=${timestamp}`;
         
-        const newOverlay = new google.maps.ImageMapType({
-          getTileUrl: function(coord, zoom) {
-            return weatherMapUrl
-              .replace('{z}', zoom)
-              .replace('{x}', coord.x)
-              .replace('{y}', coord.y);
-          },
-          tileSize: new google.maps.Size(256, 256),
-          opacity: 0.7
-        });
-    
-        map.overlayMapTypes.push(newOverlay);
-        setWeatherOverlay(newOverlay);
       } catch (error) {
         console.error('Error loading Google Maps:', error);
         setError('Failed to load map');
       }
     };
+
     if (typeof window !== 'undefined' && !googleMapRef.current) {
       initializeMap();
     }
-  }, [isMobile, selectedDate]);
+  }, [isMobile]);
 
-  useEffect(() => {
-    if (googleMapRef.current && weatherOverlay) {
-      const timestamp = Math.floor(selectedDate.getTime() / 1000);
-      const weatherMapUrl = `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&date=${timestamp}`;
-      
-      const newOverlay = new google.maps.ImageMapType({
-        getTileUrl: function(coord, zoom) {
-          return weatherMapUrl
-            .replace('{z}', zoom)
-            .replace('{x}', coord.x)
-            .replace('{y}', coord.y);
-        },
-        tileSize: new google.maps.Size(256, 256),
-        opacity: 0.7
-      });
 
-      googleMapRef.current.overlayMapTypes.clear();
-      googleMapRef.current.overlayMapTypes.push(newOverlay);
-      setWeatherOverlay(newOverlay);
-    }
-  }, [selectedDate]);
 
-  const handleSearch = async (e) => {
+
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -216,84 +223,273 @@ const WeatherMap = () => {
       if (!data.length) throw new Error('Location not found');
 
       const { lat, lon, name } = data[0];
-      const weatherData = await fetchWeatherData(lat, lon, selectedDate);
+      const weatherData = await fetchWeatherData(lat, lon);
 
       if (markerRef.current) {
-        markerRef.current.setMap(null);
+        markerRef.current.setMap = (null);
       }
 
-      const { level, color } = getFWILevel(weatherData.fwi);
+      const fwiInfo = getFWILevel(weatherData.fwi);
 
-      const pin = new google.maps.marker.PinElement({
-        background: color,
+      const pinElement = new google.maps.marker.PinElement({
+        background: fwiInfo.color,
         scale: 1.2,
-        borderColor: color === '#FFEB3B' ? '#000000' : color, // Black border for yellow pin
-        glyphColor: color === '#FFEB3B' ? '#000000' : '#FFFFFF' // Black glyph for yellow pin
+        borderColor: fwiInfo.color === '#FFEB3B' ? '#000000' : fwiInfo.color,
+        glyphColor: fwiInfo.color === '#FFEB3B' ? '#000000' : '#FFFFFF'
       });
-  
 
-      const infowindow = new google.maps.InfoWindow({
+      const infoTab = new google.maps.InfoWindow({
         content: `
-          <div style="padding: 16px;">
-            <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">${name}</h3>
-            <div style="margin-bottom: 12px;">
-              <div style="background-color: ${color}; color: ${color === '#FFEB3B' ? 'black' : 'white'};
+        <style>
+          /* Custom scrollbar for info window */
+          .gm-style-iw-d::-webkit-scrollbar {
+            width: 4px !important;
+            height: 4px !important; /* Set height for the horizontal scrollbar */
+          }
+          .gm-style-iw-d::-webkit-scrollbar-track {
+            background: none !important;
+          }
+          .gm-style-iw-d::-webkit-scrollbar-thumb {
+            background: red;
+            border-radius: 4px !important;
+          }
+
+          /* Custom horizontal scrollbar (bottom scrollbar) */
+          .gm-style-iw-d::-webkit-scrollbar-horizontal {
+            height: 4px !important;
+          }
+
+          .gm-style-iw-d::-webkit-scrollbar-thumb:horizontal {
+            background: red;
+            border-radius: 4px !important;
+          }
+        </style>
+        <div style="padding: 10px; width: 310px; max-width: 90vw; background-color: #000000; color: #ffffff;"
+        class="min-h-full">
+          <h3 style="font-size: 24px; font-weight: bold; margin-bottom: 16px; color: #ffffff;">${name}</h3>
+            <!-- Current Conditions -->
+            <div style="margin-bottom: 16px;">
+              <div style="background-color: ${fwiInfo.color}; color: ${fwiInfo.textColor};
                 padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px;">
-                Fire Danger: ${level}
+                Current Fire Danger: ${weatherData.danger_rating}
               </div>
-              <div>FWI Value: ${weatherData.fwi.toFixed(1)}</div>
+              <div style="color: #ffffff;">Current FWI Value: ${weatherData.fwi.toFixed(1)}</div>
             </div>
-            <div style="display: grid; gap: 4px; font-size: 14px;">
-              <div>Temperature: ${weatherData.current.temp.toFixed(1)}°C</div>
-              <div>Feels Like: ${weatherData.current.feels_like.toFixed(1)}°C</div>
-              <div>Humidity: ${weatherData.current.humidity}%</div>
-              <div>Wind: ${(weatherData.current.wind_speed * 3.6).toFixed(1)} km/h</div>
-              <div>UV Index: ${weatherData.current.uvi}</div>
-              <div>Weather: ${weatherData.current.weather[0].description}</div>
-              ${weatherData.alerts && weatherData.alerts.length > 0 ? weatherData.alerts.map(alert => `
-                <div style="margin-top: 8px; padding: 8px; background-color: #FEE2E2; border: 1px solid #DC2626; border-radius: 4px;">
-                  <strong style="color: #DC2626;">${alert.event}</strong>
-                  <div style="font-size: 12px; margin-top: 4px;">
-                    ${alert.description ? 
-                      alert.description.split('\n')[0] : // Just take the first line of description if it's too long
-                      'No additional details available'
-                    }
-                  </div>
-                  <div style="font-size: 11px; color: #666; margin-top: 4px;">
-                    ${new Date(alert.start * 1000).toLocaleString()} - 
-                    ${new Date(alert.end * 1000).toLocaleString()}
-                  </div>
+            
+            <!-- Current Weather Details -->
+            <div class="bg-black text-white pt-4 rounded-md mb-4 divide-y divide-gray-700 flex flex-col w-9/12 justify-center">
+              <div class="flex justify-between py-1">
+                <div class="flex">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="mr-2"
+                  >
+                    <path d="M12 2a5 5 0 1 1-5 5v10a5 5 0 1 1 0-10V7a5 5 0 0 1 5-5Z"/>
+                  </svg>
+                  Temperature:
                 </div>
-              `).join('') : ''}
+                <span>${weatherData.current.temp.toFixed(1)}°C</span>
+              </div>
+              <div class="flex justify-between py-1">
+                <div class="flex">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="mr-2"
+                  >
+                    <path d="M12 8a4 4 0 1 1-8 0a4 4 0 0 1 8 0Z"/>
+                    <path d="M8 2v2"/>
+                    <path d="M8 12v2"/>
+                    <path d="M2 8h2"/>
+                    <path d="M12 8h2"/>
+                    <path d="m3.5 3.5 1.5 1.5"/>
+                    <path d="m11 11 1.5 1.5"/>
+                    <path d="m3.5 12.5 1.5-1.5"/>
+                    <path d="m11 5 1.5-1.5"/>
+                    <path d="M16 12v10"/>
+                    <path d="M20 12v10"/>
+                    <path d="M16 18h4"/>
+                  </svg>
+                  Feels Like:
+                </div>
+                <span>${weatherData.current.feels_like.toFixed(1)}°C</span>
+              </div>
+              <div class="flex justify-between py-1">
+                <div class="flex">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="mr-2"
+                  >
+                    <path d="M2 12h20"/>
+                    <path d="M2 17h20"/>
+                    <path d="M2 7h20"/>
+                  </svg>
+                  Humidity:
+                </div>
+                <span>${weatherData.current.humidity}%</span>
+              </div>
+              <div class="flex justify-between py-1">
+                <div class="flex">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="mr-2"
+                  >
+                    <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/>
+                    <path d="M9.6 4.6A2 2 0 1 1 11 8H2"/>
+                    <path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>
+                  </svg>
+                  Wind:
+                </div>
+                <span>${(weatherData.current.wind_speed * 3.6).toFixed(1)} km/h</span>
+              </div>
+              <div class="flex justify-between py-1">
+                <div class="flex">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  class="mr-2"
+                  >
+                    <circle cx="12" cy="12" r="4"/>
+                    <path d="M12 2v2"/>
+                    <path d="M12 20v2"/>
+                    <path d="m4.93 4.93 1.41 1.41"/>
+                    <path d="m17.66 17.66 1.41 1.41"/>
+                    <path d="M2 12h2"/>
+                    <path d="M20 12h2"/>
+                    <path d="m6.34 17.66-1.41 1.41"/>
+                    <path d="m19.07 4.93-1.41 1.41"/>
+                  </svg>
+                  UV Index:
+                </div>
+                <span>${weatherData.current.uvi}</span>
+              </div>
+      
+            <!-- 5-Day Forecast -->
+            <div style="margin-top: 16px;">
+              <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #ffffff;">5-Day Forecast of Risk</h4>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                ${weatherData.daily.slice(0, 5).map((day, index) => {
+                  const dayFWI = weatherData.daily_fwi[index].fwi;
+                  const dayFWIInfo = getFWILevel(dayFWI);
+                  return `
+                    <div style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      padding: 8px;
+                      color: #ffffff;
+                      font-size: 14px;
+                    ">
+                      <div style="font-weight: bold; min-width: 60px;">
+                        ${new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
+                      </div>
+                      <div style="margin: 0 12px;">
+                        ${day.temp.max.toFixed(1)}°C
+                      </div>
+                      <div style="
+                        background-color: ${dayFWIInfo.color}; 
+                        color: ${dayFWIInfo.textColor};
+                        padding: 4px 8px; 
+                        border-radius: 4px; 
+                        font-size: 12px;
+                        margin-left: auto;
+                      ">
+                        ${weatherData.daily_fwi[index].danger_rating}
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
             </div>
+      
+            <!-- Weather Alerts -->
+            ${weatherData.alerts && weatherData.alerts.length > 0 ? 
+              `<div style="margin-top: 16px;">
+                <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #ffffff;">Weather Alerts</h4>
+                ${weatherData.alerts.map(alert => `
+                  <div style="margin-top: 8px; padding: 8px; background-color: #2a2a2a; border: 1px solid #DC2626; border-radius: 4px;">
+                    <strong style="color: #DC2626;">${alert.event}</strong>
+                    <div style="font-size: 12px; margin-top: 4px; color: #ffffff;">
+                      ${alert.description ? 
+                        alert.description.split('\n')[0] : 
+                        'No additional details available'
+                      }
+                    </div>
+                    <div style="font-size: 11px; color: #888888; margin-top: 4px;">
+                      ${new Date(alert.start * 1000).toLocaleString()} - 
+                      ${new Date(alert.end * 1000).toLocaleString()}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>`
+              : ''
+            }
           </div>
-        `
+        `,
+        options: {
+          backgroundColor: '#000000',
+          borderRadius: '8px',
+          minWidth: 300,
+          maxWidth: 350,
+        }
       });
-    
+      const style = document.createElement('style');
+style.textContent = `
+  .gm-style-iw {
+    background-color: #000000 !important;
+    padding: 0 !important;
+  }
+  .gm-style-iw-d {
+    overflow: auto !important;
+    background-color: #000000 !important;
+  }
+  /* Close button container */
+  .gm-style-iw > button {
+    background-color: red !important;
+    border: none !important;
+    padding: 8px !important;
+    border-radius: 0 !important;
+    opacity: 1 !important;
+    top: 0 !important;
+    right: 0 !important;
+  }
+  /* The X image itself */
+  .gm-style-iw > button > img {
+    background:white;
+    filter: invert(1) !important;
+    opacity: 1 !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+  }
+  /* Remove info window shadow */
+  .gm-style-iw-t::after {
+    display: none;
+  }
+`;
+document.head.appendChild(style);
       const markerElement = new google.maps.marker.AdvancedMarkerElement({
         map: googleMapRef.current,
         position: { lat, lng: lon },
-        title: name
+        title: name,
+        content: pinElement.element
       });
   
       markerElement.addListener('click', () => {
-        infowindow.open({
+        infoTab.open({
           anchor: markerElement,
           map: googleMapRef.current
         });
       });
   
       markerRef.current = markerElement;
-      googleMapRef.current.panTo({ lat, lng: lon });
-      googleMapRef.current.setZoom(13);
-      infowindow.open({
+      googleMapRef.current?.panTo({ lat, lng: lon });
+      googleMapRef.current?.setZoom(13);
+      infoTab.open({
         anchor: markerElement,
         map: googleMapRef.current
       });
   
     } catch (err) {
       console.error('Error:', err);
-      setError(err.message || 'Failed to fetch location data');
+      if (err instanceof Error) {
+        setError(err.message || 'Failed to fetch location data');
+      } else {
+        setError('Failed to fetch location data');
+      }
     } finally {
       setLoading(false);
     }
@@ -301,57 +497,45 @@ const WeatherMap = () => {
 
   return (
     <Card className={styles.mapContainer}>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="flex items-center gap-2">
-          <Image 
-            src="/icons/Weather.png" 
-            alt="Weather Icon" 
-            width={24} 
-            height={24} 
-            priority={true}
-            style={{ width: '24px', height: '24px' }}
-          />
-          Vancouver Weather Map
+      <CardHeader className="flex flex-row items-center justify-between border-b border-gray-800">
+        <CardTitle className="flex items-center gap-2 text-white">
+          {/* <Cloud className="h-6 w-6" /> */}
+          <h2>Wildfire Risk / Weather Map</h2>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className='m-0 p-0 text-white'>
+        <h4>Search </h4>
+      </CardContent>
+      <CardContent className="p-0 pt-1">
         <div className={styles.searchContainer}>
           <form onSubmit={handleSearch} className={styles.searchForm}>
             <Input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search locations in Vancouver..."
+              placeholder="Enter your destination here..."
               className={styles.searchInput}
             />
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="ml-2">
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {selectedDate.toLocaleDateString()}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0 z-[1000]">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-            <Button type="submit" disabled={loading || !searchQuery} className="ml-2">
-              {loading ? <Loader2 className="animate-spin" size={20} /> : 'Search'}
+            <Button 
+              type="submit" 
+              disabled={loading || !searchQuery} 
+              className="bg-[#00b8d4] hover:bg-[#00a0c0] text-white"
+            >
+              {loading ? (
+                <Loader2 className="animate-spin" size={20} />
+              ) : (
+                'Search'
+              )}
             </Button>
           </form>
         </div>
-
+  
         {error && (
           <Alert variant="destructive" className="mb-4">
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
-
+  
         <div ref={mapRef} className={styles.mapWrapper} />
       </CardContent>
     </Card>
