@@ -3,7 +3,7 @@
   height: calc(100vh - 80px - 60px);
   background: #1a1a1a;
   position: relative;
-  border-radius: 12px;
+  border-radius: 0;
   overflow: visible;
   border: none;
 }
@@ -26,7 +26,7 @@
   z-index: 10;
 }
 .searchContainer {
-  width: 300px;
+  width: 375px;
   position: static;
   padding: 10px;
   pointer-events: auto;

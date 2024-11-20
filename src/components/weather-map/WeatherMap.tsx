@@ -200,6 +200,30 @@ const WeatherMap: React.FC = () => {
   
                     const infoTab = new google.maps.InfoWindow({
                       content: `
+                      <style>
+          /* Custom scrollbar for info window */
+          .gm-style-iw-d::-webkit-scrollbar {
+            width: 4px !important;
+            height: 4px !important; /* Set height for the horizontal scrollbar */
+          }
+          .gm-style-iw-d::-webkit-scrollbar-track {
+            background: none !important;
+          }
+          .gm-style-iw-d::-webkit-scrollbar-thumb {
+            background: red;
+            border-radius: 4px !important;
+          }
+
+          /* Custom horizontal scrollbar (bottom scrollbar) */
+          .gm-style-iw-d::-webkit-scrollbar-horizontal {
+            height: 4px !important;
+          }
+
+          .gm-style-iw-d::-webkit-scrollbar-thumb:horizontal {
+            background: red;
+            border-radius: 4px !important;
+          }
+        </style>
                       <div style="padding: 10px; width: 310px; max-width: 90vw; background-color: #000000; color: #ffffff;"
                       class="min-h-full">
                         <h3 style="font-size: 24px; font-weight: bold; margin-bottom: 16px; color: #ffffff;">${city.label}</h3>
@@ -355,12 +379,12 @@ const WeatherMap: React.FC = () => {
                           }
                         </div>
                       `,
-                      options: {
+
                         backgroundColor: '#000000',
-                        borderRadius: '8px',
                         minWidth: 300,
                         maxWidth: 350,
-                      }
+                        zIndex: 1000,
+                      
                     });
                     const markerElement = new google.maps.marker.AdvancedMarkerElement({
                       map: googleMapRef.current,
