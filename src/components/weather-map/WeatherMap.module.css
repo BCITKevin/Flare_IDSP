@@ -60,14 +60,15 @@
 
 .searchForm {
   display: flex;
-  gap: 8px;
-  width: 100%;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .searchContainer {
-  margin-bottom: 1rem;
-  display: flex;
+  width: 100%;
+  padding: 1rem;
 }
+
 
 .searchInput {
   background: #2a2a2a;
@@ -80,16 +81,16 @@
   color: #888;
 }
 
-
-
-
 .mapWrapper {
-  position: relative; /* Ensure correct positioning of controls */
   width: 100%;
-  height: calc(100vh - 80px - 1rem - 60px); /* Adjust height for header and nav bar */
-  border-radius: 8px;
-  overflow: hidden; /* Prevent unwanted overflow */
+  height: calc(100% - 140px);
+  min-height: 400px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: #1f2937;
 }
+
+
 
 /* Adjust controls for all screen sizes */
 .mapWrapper :global(.gmnoprint.gm-bundled-control) {
