@@ -126,16 +126,42 @@ export default function Safety() {
     
 
     return (
-        <div>
-            <div className="safetyLayout">
-
-                <h1 className={styles.safetyHeading}>Safety</h1>
-                <h3 className={`${styles.safetyHeading} mt-12`}>AI Insight</h3>
-                <Card className={`${styles.card} p-5 mt-3`}>
-                    <strong className={styles.articleBody}>Based on your Location and Recent Weather:</strong>
-                    <p className={styles.articleBody}>Consider bringing extra water and cooling supplies to prevent heatstroke while outside</p>
+        <body className="min-h-screen overflow-y-auto">
+            <div className="safetyLayout h-full overflow-y-auto mb-44">
+                <div className={`mb-12 ${styles.safetyHeading}`}>
+                    <h1 className="text-4xl font-bold mb-4">
+                        Wildfire Safety Guide
+                    </h1>
+                    <p className={`${styles.whiteText} text-lg `}>
+                        Learn how to prepare and stay safe during wildfire season
+                    </p>
+                </div>
+                <Card className="p-5 mt-3 transition-all duration-300 hover:shadow-lg border-l-4 border-l-orange-500">
+                    <CardHeader className="p-0 mb-3">
+                        <div className="flex items-center gap-2">
+                            <strong className={`${styles.articleBody} text-lg`}>
+                                Based on your Location and Recent Weather
+                            </strong>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                        <div className="flex flex-col gap-2">
+                            <p className={`${styles.articleBody} leading-relaxed`}>
+                                Consider bringing:
+                            </p>
+                            <ul className="list-disc ml-5 space-y-1">
+                                <li className={styles.articleBody}>Extra water (1 gallon per person)</li>
+                                <li className={styles.articleBody}>Cooling towels</li>
+                                <li className={styles.articleBody}>Sun protection (hat, sunscreen)</li>
+                            </ul>
+                        </div>
+                    </CardContent>
                 </Card>
-                <h3 className={`${styles.safetyHeading} mt-8`}>Safety Tips</h3>
+                <div className={`${styles.safetyHeading} mb-6 mt-6`}>
+                    <h3 className="text-2xl font-bold">
+                        Safety Tips
+                    </h3>
+                </div>                
                 <div className="mt-2">
                     <Tabs defaultValue="account" className="w-full flex flex-col">
                         <TabsList className="space-x-8">
@@ -240,11 +266,17 @@ export default function Safety() {
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </>
                 ) : <></>}
-                    <button className="bg-neutral-800 rounded-md fixed bottom-24" onClick={() => setShowChat(true)}>
-                        <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-full h-full" />
-                    </button>
+                  <button 
+                    className="fixed bottom-24 right-8 bg-neutral-800 hover:bg-neutral-700 
+                              text-white rounded-full shadow-lg transition-all duration-300 
+                              flex items-center gap-2 px-6 py-3"
+                    onClick={() => setShowChat(true)}
+                >
+                    <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-6 h-6" />
+                    <span>Ask me questions</span>
+                </button>
             </div>
             <BottomNavBar />
-        </div>
+        </body>
     )
 }
