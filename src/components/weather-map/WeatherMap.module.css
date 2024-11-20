@@ -15,18 +15,24 @@
   background-color: #1f2937;
 }
 
+.container {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  z-index: 10;
+}
 .searchContainer {
-  position: absolute !important;
-  top: 20px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  z-index: 9999 !important;
-  width: 90%;
-  max-width: 300px;
-  padding: 0 10px;
+  width: 300px;
+  position: static;
+  padding: 10px;
   pointer-events: auto;
   background: transparent;
 }
+
 
 .searchForm {
   display: flex;
@@ -127,4 +133,28 @@
   .mapWrapper [class*="gm-fullscreen-control"] {
     margin-bottom: 100px !important;
   }
+}
+
+/* drop down for search */
+.searchInput,
+.dropdown {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  background-color: #1a1a1a;
+  color: white;
+}
+
+.dropdown {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+}
+
+.dropdown option {
+  background-color: #1a1a1a;
+  color: white;
 }

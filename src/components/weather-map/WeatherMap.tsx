@@ -6,13 +6,6 @@ import { WeatherWidget } from './WeatherWidget';
 import { Legend } from './Legend';
 import { createRoot } from 'react-dom/client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { CalendarIcon } from 'lucide-react';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import Image from 'next/image';
 import { Loader } from '@googlemaps/js-api-loader';
 import styles from './WeatherMap.module.css';
 import CitySearch from './CitySearch';
@@ -158,6 +151,7 @@ const WeatherMap: React.FC = () => {
           streetViewControl: false,
           mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID,
           mapTypeControl: false,
+          fullscreenControl: false,
           zoomControl: true,
           zoomControlOptions: {
             position: google.maps.ControlPosition.RIGHT_BOTTOM
@@ -469,7 +463,7 @@ const WeatherMap: React.FC = () => {
             )}
           </div>
         );
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchContainer);
+        map.controls[google.maps.ControlPosition.LEFT_TOP].push(searchContainer);
     
         // Create Legend Container
         const legendContainer = document.createElement('div');
