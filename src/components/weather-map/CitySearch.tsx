@@ -116,7 +116,7 @@ const CitySearch: React.FC<CitySearchProps> = ({ onCitySelect }) => {
                     });
                   }
                 }}
-                className="cursor-pointer hover:bg-gray-800"
+                className="cursor-pointer hover:bg-gray-800 text-white"
               >
                 <Check
                   className={cn(

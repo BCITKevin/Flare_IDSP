@@ -200,30 +200,6 @@ const WeatherMap: React.FC = () => {
   
                     const infoTab = new google.maps.InfoWindow({
                       content: `
-                      <style>
-                        /* Custom scrollbar for info window */
-                        .gm-style-iw-d::-webkit-scrollbar {
-                          width: 4px !important;
-                          height: 4px !important; /* Set height for the horizontal scrollbar */
-                        }
-                        .gm-style-iw-d::-webkit-scrollbar-track {
-                          background: none !important;
-                        }
-                        .gm-style-iw-d::-webkit-scrollbar-thumb {
-                          background: red;
-                          border-radius: 4px !important;
-                        }
-              
-                        /* Custom horizontal scrollbar (bottom scrollbar) */
-                        .gm-style-iw-d::-webkit-scrollbar-horizontal {
-                          height: 4px !important;
-                        }
-              
-                        .gm-style-iw-d::-webkit-scrollbar-thumb:horizontal {
-                          background: red;
-                          border-radius: 4px !important;
-                        }
-                      </style>
                       <div style="padding: 10px; width: 310px; max-width: 90vw; background-color: #000000; color: #ffffff;"
                       class="min-h-full">
                         <h3 style="font-size: 24px; font-weight: bold; margin-bottom: 16px; color: #ffffff;">${city.label}</h3>
@@ -386,42 +362,6 @@ const WeatherMap: React.FC = () => {
                         maxWidth: 350,
                       }
                     });
-                    const style = document.createElement('style');
-              style.textContent = `
-                .gm-style-iw {
-                  background-color: #000000 !important;
-                  padding: 0 !important;
-                }
-                .gm-style-iw-d {
-                  overflow: auto !important;
-                  background-color: #000000 !important;
-                }
-                /* Close button container */
-                .gm-style-iw > button {
-                  background-color: red !important;
-                  border: none !important;
-                  padding: 8px !important;
-                  border-radius: 0 !important;
-                  opacity: 1 !important;
-                  top: 0 !important;
-                  right: 0 !important;
-                }
-                /* The X image itself */
-                .gm-style-iw > button > img {
-                  background:white;
-                  filter: invert(1) !important;
-                  opacity: 1 !important;
-                  width: 16px !important;
-                  height: 16px !important;
-                  margin: 0 !important;
-                }
-                /* Remove info window shadow */
-                .gm-style-iw-t::after {
-                  display: none;
-                }
-              `;
-  
-  
                     const markerElement = new google.maps.marker.AdvancedMarkerElement({
                       map: googleMapRef.current,
                       position: { lat: city.lat, lng: city.lon },
