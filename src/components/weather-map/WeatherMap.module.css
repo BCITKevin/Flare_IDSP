@@ -149,8 +149,6 @@
 
 .dropdown {
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   cursor: pointer;
 }
 
@@ -158,3 +156,4 @@
   background-color: #1a1a1a;
   color: white;
 }
+
