@@ -18,7 +18,7 @@ export default function Page() {
                     height={191}
                     priority
                 />
-                <h1 className="landingHead font-black">FLARE</h1>
+                <h1 className="landingHead">FLARE</h1>
                 <Link href={"/homepage"} >
                     <Button className="bg-gray-300 text-neutral-800">Placeholder Start</Button>
                 </Link>

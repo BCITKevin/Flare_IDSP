@@ -112,6 +112,7 @@ h5 {
 
 .landingHead {
   color: var(--white);
+  font-family: 'PPMori';
 }
 
 /* Tailwind Layer Utilities */

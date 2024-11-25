@@ -17,7 +17,7 @@ export default function HomePage() {
                             <Image src={Logo} alt="Flare logo" className="w-12 mb-4" />
                             <Bell size={32} color="white" />
                         </header>
-                        <h1 className={`font-black ${styles.landingLogo}`}>FLARE</h1>
+                        <h1 className={styles.landingLogo}>FLARE</h1>
                     </div>
 
                     <div className={`grid ${styles.contentContainer}`}>

@@ -6,6 +6,8 @@
 
 .landingLogo {
     color: var(--white);
+    font-family: 'PPMori';
+    font-weight: bold;
 }
 
 .homeIcons {
