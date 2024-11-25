@@ -13,11 +13,11 @@ export default function Page() {
         const timer = setTimeout(() => {
             setFadeOut(true);
             setTimeout(() => {
-                router.push("/homepage"); // Navigate after fade-out
-            }, 1000); // Adjust to match the duration of your animation
-        }, 2000); // Wait for 2 seconds before starting the fade-out
+                router.push("/homepage");
+            }, 1000);
+        }, 2000);
 
-        return () => clearTimeout(timer); // Clean up the timer
+        return () => clearTimeout(timer);
     }, [router]);
 
     return (
