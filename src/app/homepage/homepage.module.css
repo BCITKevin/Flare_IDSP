@@ -2,6 +2,7 @@
 .contentContainer {
     gap: 10px;
     color: var(--white);
+    margin-top: 5rem;
 }
 
 .landingLogo {
@@ -40,6 +41,8 @@
 
     padding: 21px;
     color: var(--white);
+
+    overflow: hidden;
 
 }
 

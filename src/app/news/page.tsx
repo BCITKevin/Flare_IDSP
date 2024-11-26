@@ -4,7 +4,7 @@ import getSignedURL, { getNewsFromDB } from "./actions";
 import styles from './news.module.css'
 import ArticleCard from "@/components/news/ArticleCard";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BottomNavBar from "@/components/BottomNavBar"
 import ArticleHighlight from "@/components/news/ArticleHighlight";
 
