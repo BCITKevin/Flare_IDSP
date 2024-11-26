@@ -20,7 +20,7 @@ const WeatherMap = dynamic(
 
 export default function MapPage() {
   return (
-    <div className="flex justify-center p-4">
+    <div className="flex justify-center pt-4 pr-4 pl-4">
       <WeatherMap />
       <BottomNavBar />
     </div>
