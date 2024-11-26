@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect } from "react";
 import ArticleCard from "../../components/news/ArticleCard";
 import BottomNavBar from "@/components/BottomNavBar";
 import styles from "./news.module.css";
@@ -34,7 +34,7 @@ export default function News() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [tabState, setTabState] = useState<Category>("Local");
-  const [currentQuery, setCurrentQuery] = useState<string>(""); // 현재 쿼리를 저장할 상태 추가
+  //const [setCurrentQuery] = useState<string>(""); // 현재 쿼리를 저장할 상태 추가
 
   useEffect(() => {
     const savedQuery = localStorage.getItem("lastQuery");
@@ -61,7 +61,7 @@ export default function News() {
         newQuery = "BC wildfires";
     }
     setQuery(newQuery);
-    setCurrentQuery(newQuery); // 현재 쿼리 업데이트
+    //setCurrentQuery(newQuery); // 현재 쿼리 업데이트
   }, [tabState]);
 
   useEffect(() => {
@@ -92,13 +92,13 @@ export default function News() {
     fetchNews();
   }, [query]);
 
-  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const searchQuery = formData.get("search") as string;
-    setQuery(searchQuery);
-    setCurrentQuery(searchQuery); // 검색 쿼리도 현재 쿼리로 업데이트
-  };
+  // const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.currentTarget);
+  //   const searchQuery = formData.get("search") as string;
+  //   setQuery(searchQuery);
+  //   setCurrentQuery(searchQuery); // 검색 쿼리도 현재 쿼리로 업데이트
+  // };
 
   // Categorize articles based on query match
   const categorizeArticles = (
@@ -135,9 +135,16 @@ export default function News() {
         <header>
           <h1 className={`${styles.newsHeading}`}>News</h1>
           <h4 className={`${styles.newsSubHeading} mt-5`}>
-            Get the latest Information about &ldquo;{currentQuery}&rdquo;
+            Get the latest Information
           </h4>
-          <form onSubmit={handleSearch} className="mb-5">
+          <p className={styles.newsDate}>
+            {new Date().toLocaleDateString("en-CA", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
+          {/* <form onSubmit={handleSearch} className="mb-5">
             <input
               type="text"
               name="search"
@@ -148,7 +155,7 @@ export default function News() {
             <button type="submit" className={styles.searchButton}>
               Search
             </button>
-          </form>
+          </form> */}
         </header>
         <svg
           xmlns="http://www.w3.org/2000/svg"
