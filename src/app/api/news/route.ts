@@ -31,6 +31,7 @@ export async function GET() {
       return NextResponse.json(data);
     }
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: 'Failed to fetch news' },
       { status: 500 }
@@ -38,7 +39,7 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
   const body = await req.json();
   
   const messages = body.messages;
@@ -65,9 +66,9 @@ export async function POST(req: Request, res: NextResponse) {
   return NextResponse.json({ output: theResponse }, { status: 200 });
 }
 
-async function storeS3(data: any) {
+async function storeS3(data: object) {
 
-    const signedURLRequest = await getSignedURL(data);
+    const signedURLRequest = await getSignedURL();
 
     const { url } = signedURLRequest.success;
 

@@ -14,7 +14,7 @@ const s3 = new S3Client({
 
 const generateFileName = (bytes = 30) => crypto.randomBytes(bytes).toString("hex");
 
-export default async function getSignedURL(data: any) {
+export default async function getSignedURL() {
     const putObjectCommand = new PutObjectCommand({
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: generateFileName(),

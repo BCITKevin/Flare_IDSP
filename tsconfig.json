@@ -3,7 +3,7 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
     ],
     "target": "ES2017",
     "baseUrl": ".",
@@ -36,7 +36,9 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "public/server.js",
+    "types/web-push.d.ts",
   ],
   "exclude": [
     "node_modules"

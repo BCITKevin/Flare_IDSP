@@ -1,8 +1,18 @@
 import styles from "./ArticleCard.module.css"
 
-export default function articleCard({ article }: { article: any }) {
-    return (
+type Article = {
+    id: number;
+    scope: string;
+    title: string;
+    date: string;
+    description: string;
+    author: string;
+    image: string;
+    content: string;
+}
 
+export default function articleCard({ article }: { article: Article }) {
+    return (
         <div key={article.id} className={styles.articleCardContainer}>
             <img
                 src={article.image}

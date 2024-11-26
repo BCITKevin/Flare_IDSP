@@ -10,6 +10,8 @@ import { Loader } from '@googlemaps/js-api-loader';
 import styles from './WeatherMap.module.css';
 import CitySearch from './CitySearch';
 
+
+
 // Define the structure of FWI level info
 type FWIInfo = {
   class: number;
@@ -60,6 +62,7 @@ const getFWILevel = (fwiValue: number | null | undefined): FWIInfo => {
 };
 
 const fetchWeatherData = async (lat: number, lon: number): Promise<WeatherData> => {
+
   try {
     // Fetch regular weather data
     const weatherResponse = await fetch(
@@ -126,7 +129,6 @@ const WeatherMap: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
-  // Your existing useEffect for mobile check remains the same
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -137,12 +139,15 @@ const WeatherMap: React.FC = () => {
   // Your existing map initialization useEffect remains the same
   useEffect(() => {
     const initializeMap = async () => {
+      if (!mapRef.current) return;
+
       const loader = new Loader({
+
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
         version: 'weekly',
         libraries: ['marker']
       });
-    
+
       try {
         const google = await loader.load();
         const map = new google.maps.Map(mapRef.current as HTMLDivElement, {
@@ -169,7 +174,7 @@ const WeatherMap: React.FC = () => {
             },
           ]
         });
-    
+
         googleMapRef.current = map;
   
         // Create Search Container
@@ -249,6 +254,8 @@ const WeatherMap: React.FC = () => {
               </svg>
               Temperature:
             </div>
+
+      
             <span>${weatherData.current.temp.toFixed(1)}°C</span>
           </div>
                             <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #374151;">
@@ -281,6 +288,7 @@ const WeatherMap: React.FC = () => {
                 <path d="M2 7h20"/>
               </svg>
               Humidity:
+
             </div>
             <span>${weatherData.current.humidity}%</span>
           </div>
@@ -479,6 +487,7 @@ const WeatherMap: React.FC = () => {
     }
   }, [isMobile]);
 
+ 
 
 return (
   <Card className={styles.mapContainer}>

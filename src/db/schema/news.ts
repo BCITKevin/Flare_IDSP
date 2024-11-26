@@ -1,4 +1,4 @@
-import { serial, text, pgTable, pgEnum, timestamp, integer } from "drizzle-orm/pg-core"
+import { text, pgTable, pgEnum, timestamp } from "drizzle-orm/pg-core"
 
 export const mediaType = pgEnum("query_type", ["wildfire"]);
 

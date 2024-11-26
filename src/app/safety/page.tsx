@@ -3,14 +3,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+    // CardContent,
+    // CardDescription,
+    // CardFooter,
+    // CardHeader,
+    // CardTitle,
 } from "@/components/ui/card"
 import styles from "./safety.module.css"
-import { Backpack, Map, Flag, Car } from "lucide-react";
+import { Backpack, Map, Flag } from "lucide-react";
 import prepareHero from "../public/images/prepareHero.png"
 import evacHero from "../public/images/EvacHero.png"
 import emergencyHero from "../public/images/EmergencyHero.png"
@@ -28,7 +28,7 @@ type Message = {
 
 export default function Safety() {
     const [showChat, setShowChat] = useState(false);
-    const [error, setError] = useState<null | string>(null);
+    // const [error, setError] = useState<null | string>(null);
     const [prevMsg, setMsg] = useState<Message[]>([
         { text: "Hello! Is there anything about wildfires I could help you with today?", sender: 'bot' },
     ]);
@@ -123,7 +123,7 @@ export default function Safety() {
     `;
 
 
-    
+
 
     return (
         <body className="min-h-screen overflow-y-auto">
