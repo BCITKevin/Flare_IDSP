@@ -1,43 +1,92 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import crypto from 'crypto';
-import { db } from "@/db";
-import { media } from "@/db/schema/news";
+import { z } from "zod";
+import fetch from "node-fetch";
 
-const s3 = new S3Client({
-    region: process.env.AWS_BUCKET_REGION!,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY!,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-    }
-})
+// 환경 변수 검증
+const EnvSchema = z.object({
+  BING_NEWS_API_KEY: z.string(),
+  NEXT_PUBLIC_BING_NEWS_ENDPOINT: z.string().url(),
+});
+const env = EnvSchema.parse(process.env);
 
-const generateFileName = (bytes = 30) => crypto.randomBytes(bytes).toString("hex");
-
-export default async function getSignedURL() {
-    const putObjectCommand = new PutObjectCommand({
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: generateFileName(),
-        ContentType: 'application/json',
+// Bing News API 응답 스키마
+const BingNewsResponseSchema = z.object({
+  value: z.array(
+    z.object({
+      name: z.string(),
+      url: z.string().url(),
+      image: z
+        .object({
+          thumbnail: z
+            .object({
+              contentUrl: z.string().url(),
+              width: z.number().optional(),
+              height: z.number().optional(),
+            })
+            .optional(),
+        })
+        .optional(),
+      description: z.string(),
+      provider: z.array(z.object({ name: z.string() })),
+      datePublished: z.string(),
     })
+  ),
+});
 
-    const signedUrl = await getSignedUrl(s3, putObjectCommand, {
-        expiresIn: 60,
-    })
-
-    await db.insert(media).values({
-        url: signedUrl.split("?")[0],
-        type: "wildfire",
-    })
-
-    return { success: { url: signedUrl } };
+export interface BingNewsArticle {
+  name: string;
+  url: string;
+  image?: {
+    thumbnail?: {
+      contentUrl: string;
+      width?: number;
+      height?: number;
+    };
+  };
+  description: string;
+  provider: { name: string }[];
+  datePublished: string;
+  content?: string; // 전체 기사 내용
 }
 
-export async function getNewsFromDB() {
-    const news = await db
-    .select()
-    .from(media)
-    .then((res) => res[0]);
+export interface BingNewsResponse {
+  value: BingNewsArticle[];
+}
 
-    return news;
+// 뉴스 기사 가져오기 함수
+export async function fetchNews(
+  query: string,
+  market: string = "en-CA"
+): Promise<BingNewsResponse> {
+  console.log(`Fetching news for query: ${query}, market: ${market}`); // 추가된 로그
+  const { BING_NEWS_API_KEY, NEXT_PUBLIC_BING_NEWS_ENDPOINT } = env;
+
+  const url = `${NEXT_PUBLIC_BING_NEWS_ENDPOINT}?q=${encodeURIComponent(
+    query
+  )}&mkt=${market}&count=10`;
+
+  console.log("Request URL:", url); // 추가된 로그
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const response = await fetch(url, {
+    headers: {
+      "Ocp-Apim-Subscription-Key": BING_NEWS_API_KEY,
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(
+      `Bing News API 요청 실패: ${response.statusText}. 상세 내용: ${errorText}`
+    );
+    throw new Error(
+      `Bing News API 요청 실패: ${response.statusText}. 상세 내용: ${errorText}`
+    );
+  }
+
+  const data = await response.json();
+  const parsedData = BingNewsResponseSchema.parse(data); // 응답 데이터 검증
+  console.log("Bing News API 응답 데이터 파싱 완료");
+
+  return { value: parsedData.value }; // 스크래핑 없이 기사 데이터 반환
 }

@@ -8,10 +8,13 @@ import { useEffect } from 'react'
 import sendNotification from "@/lib/notification/sendNotification";
 
 function getOrCreateClientId() {
+
     let clientId = localStorage.getItem('clientId');
+    console.log(clientId);
     if (!clientId) {
         clientId = crypto.randomUUID();
         localStorage.setItem('clientId', clientId);
+        return clientId;
     }
     return clientId;
 }

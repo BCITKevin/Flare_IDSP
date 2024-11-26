@@ -24,6 +24,7 @@ export default function HomePage() {
     const [isInstallable, setIsInstallable] = useState(false);
 
     async function handleNotifiaction() {
+        // console.log('handleNotifiaction');
         if (Notification.permission === 'default') {
             const permission = await Notification.requestPermission();
             if (permission !== 'granted') {
@@ -34,6 +35,7 @@ export default function HomePage() {
         const msg = 'replace this to the proper msg later';
 
         const clientId = localStorage.getItem('clientId');
+        console.log(clientId);
         if (clientId) {
 
             const subData = await getAllSubscription(clientId);

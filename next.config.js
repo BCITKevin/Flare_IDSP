@@ -11,24 +11,29 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'www.bing.com',
+        pathname: '/th/**',
       },
       {
-        protocol: "https",
-        hostname: "plus.unsplash.com",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
       },
       {
-        protocol: "https",
-        hostname: "maps.openweathermap.org",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'plus.unsplash.com',
+        pathname: '/**',
       },
       {
-        protocol: "https",
-        hostname: "tile.openweathermap.org",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'maps.openweathermap.org',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'tile.openweathermap.org',
+        pathname: '/**',
       }
     ],
   },
