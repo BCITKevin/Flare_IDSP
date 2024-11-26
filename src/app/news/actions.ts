@@ -1,43 +1,64 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import crypto from 'crypto';
-import { db } from "@/app/db";
-import { media } from "@/app/db/schema/news";
+import * as cheerio from 'cheerio';
 
-const s3 = new S3Client({
-    region: process.env.AWS_BUCKET_REGION!,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY!,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-    }
-})
+const encodedString = encodeURI('BC wildfire%');
+const AXIOS_OPTIONS = {
+    headers: {
+        "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36",
+    },
+    params: {
+        q: encodedString,
+        tbm: "nws",
+        hl: 'en',
+        gl: 'us'
+    },
+};
 
-const generateFileName = (bytes = 30) => crypto.randomBytes(bytes).toString("hex");
+async function getNewsInfo() {
+    const response = await fetch('http://google.com/search', AXIOS_OPTIONS);
+    const data = await response.text();
+    
+    let $ = cheerio.load(data);
+    const pattern = /s='(?<img>[^']+)';\w+\s\w+=\['(?<id>\w+_\d+)'];/gm;
 
-export default async function getSignedURL(data: any) {
-    const putObjectCommand = new PutObjectCommand({
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: generateFileName(),
-        ContentType: 'application/json',
-    })
+    const images = [...data.matchAll(pattern)].map((match) => ({ 
+        id: match.groups?.id, 
+        img: match.groups?.img.replace('\\x3d', '') || "No image"
+    }));
 
-    const signedUrl = await getSignedUrl(s3, putObjectCommand, {
-        expiresIn: 60,
-    })
+    const allNewsInfo = Array.from($('.WlydOe')).map((el) => {
+        return {
+            link: $(el).attr('href'),
+            source: $(el).find('.CEMjEf span').text().trim(),
+            title: $(el).find('.mCBkyc').text().trim().replace('\n', ''),
+            snippet: $(el).find('.GI74Re').text().trim().replace('\n', ''),
+            image: images.find(({ id, img }) => id === $(el).find('.uhHOwf img').attr('id'))?.img || "No image",
+            date: $(el).find('.ZE0LJd span').text().trim(),
+        };
+    });
 
-    await db.insert(media).values({
-        url: signedUrl.split("?")[0],
-        type: "wildfire",
-    })
-
-    return { success: { url: signedUrl } };
+    return allNewsInfo;
 }
 
-export async function getNewsFromDB() {
-    const news = await db
-    .select()
-    .from(media)
-    .then((res) => res[0]);
+export default async function formatNews(news: any[]) {
 
-    return news;
+    const url = `https://api.scraperapi.com/?api_key=${process.env.NEXT_PUBLIC_SCRAPER_API_KEY}&url=${news[0].link}&autoparse=true&country_code=us`;
+
+    const res = await fetch(url)
+        
+    if (res.ok) {
+        const html = await res.text();
+        const $ = cheerio.load(html);
+
+
+        
+        console.log(news[1].link);
+        console.log($.html());
+        
+        
+
+    }
+
+    // for (const aNews of news) {
+    // }
 }

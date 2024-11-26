@@ -1,0 +1,74 @@
+
+.theSpan{
+    font-family:'PPMori';
+    padding-left: 1rem;
+}
+
+.headerz{
+    color: var(--white);
+    font-family:'PPMori';
+    font-weight: 600;
+}
+
+.settings-container {
+    height: 100vh;
+    padding: 1.5rem;
+    padding-top: 120px;
+    background-color: var(--black);
+  }
+  
+  .settings-container h1 {
+    font-size: 1.5rem; /* Equivalent to text-2xl */
+    margin-bottom: 1rem;
+  }
+  
+  .settings-container section {
+    margin-bottom: 1rem;
+  }
+  
+  .settings-container h2 {
+    font-size: 1.125rem; /* Equivalent to text-lg */
+    margin-bottom: 0.5rem;
+  }
+  
+  .accordion-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+  }
+
+  
+  .icon-gray {
+    color: var(--black); /* Equivalent to text-gray-400 */
+  }
+  
+  .accordion-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width:100%;
+  }
+  
+  .accordion-content.space-y-2 {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+.accordion-contentAbout{
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family:'PPMori';
+}
+
+.underlineSpan{
+    text-decoration: underline;
+}
+
+.underlineSpan:hover{
+    cursor: pointer;
+}

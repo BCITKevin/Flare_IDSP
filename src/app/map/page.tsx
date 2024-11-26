@@ -4,6 +4,7 @@
 import BottomNavBar from "@/components/BottomNavBar";
 import dynamic from "next/dynamic";
 import { Loader2 } from "lucide-react";
+import styles from './map.module.css'
 
 const WeatherMap = dynamic(
   () => import("@/components/weather-map/WeatherMap"),
@@ -19,7 +20,7 @@ const WeatherMap = dynamic(
 
 export default function MapPage() {
   return (
-    <div className="flex justify-center p-4">
+    <div className="flex justify-center pt-4 pr-4 pl-4">
       <WeatherMap />
       <BottomNavBar />
     </div>

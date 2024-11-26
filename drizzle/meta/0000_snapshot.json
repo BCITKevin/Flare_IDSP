@@ -1,5 +1,5 @@
 {
-  "id": "63651487-18b4-4eb9-a936-622a63a7ed59",
+  "id": "5588ae03-1dff-43be-b828-127f2b46fbfc",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,7 +10,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -40,11 +40,75 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
+    },
+    "public.newsData": {
+      "name": "newsData",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "data": {
+          "name": "data",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "disaster_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "news_id": {
+          "name": "news_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "newsData_news_id_media_id_fk": {
+          "name": "newsData_news_id_media_id_fk",
+          "tableFrom": "newsData",
+          "tableTo": "media",
+          "columnsFrom": [
+            "news_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     }
   },
   "enums": {
     "public.query_type": {
       "name": "query_type",
+      "schema": "public",
+      "values": [
+        "wildfire"
+      ]
+    },
+    "public.disaster_type": {
+      "name": "disaster_type",
       "schema": "public",
       "values": [
         "wildfire"

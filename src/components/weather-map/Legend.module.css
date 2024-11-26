@@ -1,0 +1,85 @@
+.legendControl {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .mapButton {
+    background-color: rgba(0, 0, 0, 0.8);
+    border: none;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mapButton svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+  }
+  
+  .legendContent {
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    padding: 16px;
+    min-width: 300px;
+    border: 1px solid #404040;
+  }
+  
+  .legendTitle {
+    color: #00b8d4;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  .legendItem {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .legendMarker {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 12px;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+  
+  .legendText {
+    flex: 1;
+  }
+  
+  .legendLevel {
+    font-weight: 600;
+    color: white;
+    margin-bottom: 4px;
+  }
+  
+  .legendDescription {
+    font-size: 12px;
+    color: #888;
+  }
+  
+  @media (max-width: 768px) {
+    .legendContent {
+      min-width: unset;
+      width: calc(100vw - 20px);
+      max-width: 300px;
+    }
+  
+    .legendDescription {
+      font-size: 11px;
+    }
+  }

@@ -1,26 +1,19 @@
-* {
+
+.contentContainer {
+    gap: 10px;
     color: var(--white);
 }
 
-.appLayout {
-    background: linear-gradient(180deg, #111 0%, #3B3B3B 100%);
-    height: 100%;
-    
-    padding: 20px;
+.landingLogo {
+    color: var(--white);
 }
 
-header {
+.homeIcons {
     justify-content: space-between;
-    
-    margin-top: 60px;
 }
 
-.contentContainer {
-    margin: auto;
-
-    justify-content: center;
-
-    gap: 10px;
+.homeHeading {
+    color: var(--white);
 }
 
 .fireRisk {
@@ -46,6 +39,8 @@ header {
     grid-area: 2 / 1 / 3 / 2;
 
     padding: 21px;
+    color: var(--white);
+
 }
 
 .safety {
@@ -57,6 +52,8 @@ header {
     grid-area: 3 / 1 / 4 / 2;
 
     padding: 21px;
+
+    color: var(--white);
 }
 
 .news {

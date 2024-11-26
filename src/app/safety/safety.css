@@ -1,4 +1,1 @@
-.appLayout {
-    height: 100%;
-    padding: 20px;
-}
+/* For some reason the app doesn't render without safety.css */

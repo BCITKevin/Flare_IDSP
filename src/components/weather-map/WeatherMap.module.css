@@ -1,86 +1,160 @@
-
-.mapContainer {
-  width: 100%;
-  max-width: 56rem;
-  margin: 0 auto;
+/* Map Controls - Base styles for both zoom and fullscreen */
+.mapWrapper :global(.gm-control-active),
+.mapWrapper :global(.gm-fullscreen-control) {
+  background-color: black !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 40px !important;
+  height: 40px !important;
+  padding: 8px !important;
 }
 
-.mapWrapper {
-  height: 60vh;
-  border-radius: 0.5rem;
-  overflow: hidden;
+/* Fullscreen control specific */
+.mapWrapper :global(.gm-fullscreen-control) {
+  margin: 12px !important;
+}
+
+/* Zoom controls container */
+.mapWrapper :global(.gmnoprint.gm-bundled-control) {
+  background-color: transparent !important;
+  margin-right: 12px !important;
+  margin-bottom: 12px !important;
+}
+
+/* Zoom buttons container */
+.mapWrapper :global(.gmnoprint.gm-bundled-control .gmnoprint) {
+  background-color: black !important;
+  border-radius: 0 !important;
+}
+
+/* Individual zoom buttons */
+.mapWrapper :global(.gm-bundled-control .gm-control-active) {
+  margin: 0 !important;
+  width: 40px !important;
+  height: 40px !important;
+}
+
+/* Zoom control divider */
+.mapWrapper :global(.gmnoprint.gm-bundled-control .gmnoprint > div > div) {
+  margin: 0 !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  height: 1px !important;
+}
+
+/* Icons in controls */
+.mapWrapper :global(.gm-control-active img),
+.mapWrapper :global(.gm-fullscreen-control img) {
+  filter: invert(1) !important;
+  width: 24px !important;
+  height: 24px !important;
+}
+
+/* Hover states */
+.mapWrapper :global(.gm-control-active:hover),
+.mapWrapper :global(.gm-fullscreen-control:hover) {
+  background-color: #1a1a1a !important;
+}
+
+
+
+.searchForm {
+  display: flex;
+  gap: 8px;
+  width: 100%;
 }
 
 .searchContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
   margin-bottom: 1rem;
-}
-
-@media (min-width: 640px) {
-  .searchContainer {
-    flex-direction: row;
-    gap: 1rem;
-  }
-}
-
-.searchForm {
-  flex: 1;
   display: flex;
-  gap: 0.5rem;
-}
-
-.searchInputWrapper {
-  position: relative;
-  flex: 1;
 }
 
 .searchInput {
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  color: white;
+  border-radius: 6px;
+}
+
+.searchInput::placeholder {
+  color: #888;
+}
+
+
+
+
+.mapWrapper {
+  position: relative; /* Ensure correct positioning of controls */
   width: 100%;
-  padding: 0.5rem;
-  padding-right: 2.5rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
+  height: calc(100vh - 80px - 1rem - 60px); /* Adjust height for header and nav bar */
+  border-radius: 8px;
+  overflow: hidden; /* Prevent unwanted overflow */
 }
 
-.searchIcon {
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
+/* Adjust controls for all screen sizes */
+.mapWrapper :global(.gmnoprint.gm-bundled-control) {
+  position: absolute; /* Ensure controls are not affected by overflow or margins */
+  right: 12px; /* Adjust for visibility */
+  bottom: 12px; /* Ensure consistent margin */
+  z-index: 10; /* Bring above other elements */
+  background-color: transparent !important; /* No background */
 }
 
-.dateInput {
-  padding: 0.5rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.375rem;
+.mapWrapper :global(.gmnoprint.gm-bundled-control .gmnoprint) {
+  background-color: black !important;
+  border-radius: 4px; /* Rounded buttons */
+  margin: 0 !important; /* Reset any external margins */
+  z-index: 11; /* Keep above map elements */
 }
 
-.legend {
-  background: white;
-  padding: 0.75rem;
-  border-radius: 0.375rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  font-family: var(--font-geist-sans);
+.mapWrapper :global(.gm-fullscreen-control) {
+  margin-bottom: 100px !important;
+  margin-right: 12px !important;
 }
 
-.legendTitle {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+/* Adjust controls for wider screens */
+@media (min-width: 1024px) {
+  .mapWrapper :global(.gmnoprint.gm-bundled-control) {
+    bottom: 20px; /* Increase margin on larger screens */
+    right: 20px; /* Keep visible */
+  }
+  .mapWrapper {
+    height: calc(100vh - 120px - 1rem - 110px); /* Mobile height with 1rem margin */
+  }
 }
 
-.legendItem {
-  display: flex;
-  align-items: center;
-  margin: 0.25rem 0;
+/* For mobile responsiveness */
+@media (max-width: 1023px) {
+  .mapWrapper {
+    height: calc(100vh - 120px - 1rem - 60px); /* Mobile height with 1rem margin */
+  }
 }
 
-.legendColor {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-right: 0.5rem;
-  border-radius: 0.25rem;
+/* Keep the iPhone-specific adjustments */
+@media (max-width: 430px) {
+  .mapWrapper :global(.gmnoprint.gm-bundled-control),
+  .mapWrapper :global(.gm-fullscreen-control) {
+    margin-bottom: 100px !important;
+  }
+  .mapWrapper {
+    height: calc(100vh - 120px - 1rem - 60px); /* Mobile height with 1rem margin */
+  }
+}
+
+
+/* Icons in the zoom controls */
+.mapWrapper :global(.gm-control-active img) {
+  filter: invert(1) !important; /* Ensure visibility on dark backgrounds */
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.mapContainer {
+  background: #1a1a1a;
+  position: relative; /* Ensure contents align correctly */
+  border-radius: 12px;
+  overflow: visible; /* Allow controls to be fully visible */
+  height: calc(100vh - 80px - 60px); /* Maintain height */
+  width: 100%;
+  border:none;
 }

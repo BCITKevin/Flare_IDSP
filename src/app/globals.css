@@ -2,62 +2,126 @@
 @tailwind components;
 @tailwind utilities;
 
-/* src/app/globals.css 파일 */
+/* Root CSS Variables */
+:root {
+  font-size: 14px;
 
+  --white: #EBEBEB;
+  --black: #0F0F0F;
+  --l-grey: #A1A1A1;
+  --d-grey: #202020;
+
+  --p-highlight: #F45D01;
+  --s-highlight: #FFD035;
+  --p-compliment: #00BCD4;
+  --s-compliment: #00838F;
+
+  width: 100vw;
+  height: 100vh;
+  --radius: 0.5rem;
+
+}
+
+/* Font-face definitions */
 @font-face {
   font-family: 'PPMori';
   src: url('/fonts/PPMori-Extralight.otf') format('opentype');
-  font-weight: 200; /* Extralight */
+  font-weight: 200;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'PPMori';
   src: url('/fonts/PPMori-ExtralightItalic.otf') format('opentype');
-  font-weight: 200; /* Extralight Italic */
+  font-weight: 200;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'PPMori';
   src: url('/fonts/PPMori-Regular.otf') format('opentype');
-  font-weight: 400; /* Regular */
+  font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'PPMori';
   src: url('/fonts/PPMori-RegularItalic.otf') format('opentype');
-  font-weight: 400; /* Regular Italic */
+  font-weight: 400;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'PPMori';
   src: url('/fonts/PPMori-SemiBold.otf') format('opentype');
-  font-weight: 600; /* SemiBold */
+  font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'PPMori';
   src: url('/fonts/PPMori-SemiBoldItalic.otf') format('opentype');
-  font-weight: 600; /* SemiBold Italic */
+  font-weight: 600;
   font-style: italic;
 }
 
-
+/* Global Body Styling */
 body {
-  @apply font-sans; /* Tailwind의 유틸리티 클래스를 사용해 PPMori 폰트를 기본으로 적용 */
+  font-family: Arial, Helvetica, sans-serif;
+  width: 440px;
+  height: 990px;
+  margin: 0 auto;
+  overflow: hidden;
+  background-color: var(--d-grey);
+  padding-bottom: 60px;
+  /* Prevent content from hiding behind the BottomNavBar */
 }
 
+/* Typography Styles */
+h1 {
+  font-size: 48px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+/* Custom Landing Styles */
+.landingContainer {
+  background-color: var(--black);
+}
+
+.landingLogo {
+  font-size: 4rem;
+  margin: auto;
+  color: var(--white);
+  @apply font-sans;
+}
+
+.landingHead {
+  color: var(--white);
+}
+
+/* Tailwind Layer Utilities */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 }
 
-
+/* CSS Variables for Light and Dark Modes */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -84,8 +148,8 @@ body {
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
   }
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -114,27 +178,18 @@ body {
   }
 }
 
+/* Border and Background Styles */
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
-/* Jin added / 
-added padding to the bottom of the page content to prevent it from being hidden behind the BottomNavBar */
-body {
-  padding-bottom: 60px; 
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-/* ALli added for maps*/
-/* Add after your existing styles */
-
+/* Leaflet Map Styling */
 .leaflet-container {
   font-family: var(--font-geist-sans);
 }
@@ -153,19 +208,76 @@ body {
   display: none;
 }
 
+/* Responsive Styling for Leaflet Controls */
 @media (max-width: 768px) {
   .leaflet-control-layers {
     font-size: 14px;
   }
-  
+
   .leaflet-control-layers-list {
     max-height: 60vh;
     overflow-y: auto;
   }
 }
 
+/* Custom Popup Styling */
 .custom-popup .leaflet-popup-content-wrapper {
   background: white;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* App Sizing to Mobile */
+
+.appLayout {
+  height: 100vh;
+  padding: 20px;
+
+}
+
+.newsLayout,
+.safetyLayout {
+  height: 100vh;
+  padding: 20px;
+  background-color: var(--black);
+}
+
+.homeLayout {
+  height: 100vh;
+  padding: 20px;
+  background: linear-gradient(180deg, #111 0%, #3B3B3B 100%);
+
+}
+
+.landingLayout {
+  height: 100vh;
+  padding: 20px;
+  
+  background: linear-gradient(204deg, #111 19.23%, #1F1108 80.77%);
+}
+
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* Customizing shadcn Popover for dark theme */
+[role="dialog"] {
+  background-color: #1a1a1a !important;
+  border-color: #404040 !important;
 }
