@@ -75,16 +75,18 @@ export default function News() {
       try {
         const res = await fetch(
           `/api/news/?query=${encodeURIComponent(query)}&mkt=en-CA`
-        ); // mkt 파라미터 추가
-        console.log("Client fetched from API"); // 추가된 로그
+        );
         if (!res.ok) {
           throw new Error(`API 요청 실패: ${res.statusText}`);
         }
         const data: { value: BingNewsArticle[] } = await res.json();
-        console.log("Client received data:", data); // 추가된 로그
+        console.log("Client received data:", data);
         setArticles(data.value || []);
       } catch (err: unknown) {
-        console.error("Client error:", err); // 추가된 로그
+        console.error(
+          "Client error:",
+          err instanceof Error ? err.message : err
+        );
         setError("Failed to fetch news. Please try again later.");
       } finally {
         setLoading(false);
@@ -152,8 +154,11 @@ export default function News() {
       );
 
       router.push("/article");
-    } catch (error) {
-      console.error("Failed to fetch article:", error);
+    } catch (error: unknown) {
+      console.error(
+        "Failed to fetch article:",
+        error instanceof Error ? error.message : error
+      );
     }
   };
 
