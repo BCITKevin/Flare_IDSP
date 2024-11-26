@@ -66,6 +66,8 @@ export async function fetchNews(
 
   console.log("Request URL:", url); // 추가된 로그
 
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   const response = await fetch(url, {
     headers: {
       "Ocp-Apim-Subscription-Key": BING_NEWS_API_KEY,
