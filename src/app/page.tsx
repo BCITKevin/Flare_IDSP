@@ -14,26 +14,25 @@ export default function Page() {
             setTimeout(() => {
                 router.push("/homepage");
             }, 1000);
-        }, 2000);
+        }, 1000);
 
         return () => clearTimeout(timer);
     }, [router]);
 
     return (
-        <>
-            <div className="flex flex-col landingLayout items-center justify-center">
-                <Image
-                    src={Logo}
-                    alt="logo of Flare"
-                    width={191}
-                    height={191}
-                    priority
-                />
-                <h1 className="landingHead">FLARE</h1>
-                <Link href={"/homepage"} >
-                    <Button className="bg-gray-300 text-neutral-800">Placeholder Start</Button>
-                </Link>
-            </div>
-        </>
-    )
+        <div
+            className={`flex flex-col landingLayout items-center justify-center ${
+                fadeOut ? "fade-out" : ""
+            }`}
+        >
+            <Image
+                src={Logo}
+                alt="logo of Flare"
+                width={191}
+                height={191}
+                priority
+            />
+            <h1 className="landingHead">FLARE</h1>
+        </div>
+    );
 }
