@@ -23,10 +23,13 @@ const nextConfig = {
         protocol: "https",
         hostname: "tile.openweathermap.org",
         pathname: "/**",
-      }
+      },
       // 필요한 다른 도메인이 있다면 추가
     ],
+    domains: ["www.bing.com"], // 허용할 도메인 추가
   },
 };
+
+
 
 module.exports = nextConfig;

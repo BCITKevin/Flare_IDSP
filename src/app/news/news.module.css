@@ -8,7 +8,9 @@
 
 .newsContent {
     display: flex;
-
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
 }
 
 .tabTriggerContainer {
@@ -38,16 +40,16 @@
     margin: 6px;
 }
 
-.tabTrigger:active {
+.tabTrigger[data-state='active'] {
     display: flex;
-    width: 100px;
-    height: 50px;
-    padding: 6px 12px;
+    padding: 12px 12px;
     justify-content: center;
     align-items: center;
+    flex: 1 0 0;
 
     border-radius: 12px;
     background: var(--s-compliment, #00838F);
+    color: var(--White, #EBEBEB);
 
     margin: 6px;
 }
@@ -94,3 +96,77 @@
     display: flex;
     border-bottom: 1px solid;
 }
+
+.newsLayout {
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    padding-bottom: 70px;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tabTriggerContainer {
+    position: sticky;
+    top: 0;
+    background-color: #202020;
+    z-index: 10;
+}
+
+.articleHighlight {
+    overflow: hidden;
+}
+
+.newsLayout::-webkit-scrollbar {
+    width: 8px;
+}
+
+.newsLayout::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.newsLayout::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.newsLayout::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.form {
+    display: none;  /* 폼 전체를 숨김 */
+}
+
+/* 아래 스타일들은 나중에 필요할 때를 대비해 주석처리로 남겨둡니다 */
+/*.searchInput {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid var(--s-compliment, #00838F);
+    border-radius: 8px;
+    background: var(--d-grey, #202020);
+    color: var(--white, #EBEBEB);
+}
+
+.searchButton {
+    padding: 8px 16px;
+    background: var(--s-compliment, #00838F);
+    color: var(--white, #EBEBEB);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.searchButton:hover {
+    background: var(--p-compliment, #00BCD4);
+}*/
+
+.newsDate {
+    color: var(--white);
+    text-align: left;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    font-size: 1rem;
+    color: var(--white);
+} 

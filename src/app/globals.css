@@ -69,12 +69,9 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
   width: 440px;
-  height: 990px;
   margin: 0 auto;
-  overflow: hidden;
   background-color: var(--d-grey);
   padding-bottom: 60px;
-  /* Prevent content from hiding behind the BottomNavBar */
 }
 
 /* Typography Styles */
@@ -240,6 +237,8 @@ h5 {
   height: 100vh;
   padding: 20px;
   background-color: var(--black);
+  overflow-y: auto;
+  padding-bottom: 80px;
 }
 
 .homeLayout {
@@ -256,7 +255,18 @@ h5 {
   background: linear-gradient(204deg, #111 19.23%, #1F1108 80.77%);
 }
 
+/* new */
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
 
+/* Hide scrollbar for IE, Edge and Firefox */
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+
+/* below was main */
 /* Custom scrollbar for dark theme */
 ::-webkit-scrollbar {
   width: 8px;
