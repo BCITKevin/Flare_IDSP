@@ -22,7 +22,6 @@
     height: 120px;
 
     border-radius: 6px;
-    background: linear-gradient(45deg, #173124 0.25%, #2BA669 99.75%);
     grid-area: 1 / 1 / 2 / 3;
 
     display: flex;

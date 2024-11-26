@@ -6,7 +6,7 @@ import { Circle, CircleHelp, Wind, Bell, Bot } from "lucide-react"
 import Link from "next/link";
 import BottomNavBar from "@/components/BottomNavBar";
 import { fetchWeatherData, WeatherData } from "@/utils/fetchWeatherData";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/router";
 
@@ -14,7 +14,8 @@ import { useRouter } from "next/router";
 export default function HomePage() {
     const [cityName, setCityName] = useState("Vancouver");
     const [weatherData, setWeatherData] = useState(null);
-    const [fireRisk, setFireRisk] = useState() 
+    const [fireRisk, setFireRisk] = useState();
+    const [riskColour, setRiskColour] = useState();
 
     useEffect(() => {
         const loadWeatherData = async () => {
@@ -28,10 +29,23 @@ export default function HomePage() {
 
         loadWeatherData();
     }, [cityName]);
-    
-    useEffect(() => {
 
-    }, [])
+    useEffect(() => {
+        if (weatherData?.current.temp) {
+            const temp = weatherData.current.temp.toFixed(0);
+            if (temp < 16) {
+                setFireRisk("Low");
+                setRiskColour("bg-gradient-to-r from-green-800 to-green-500")
+
+            } else if (temp < 25) {
+                setFireRisk("Medium");
+                setRiskColour("bg-gradient-to-r from-yellow-800 to-yellow-500")
+            } else {
+                setFireRisk("High");
+                setRiskColour("bg-gradient-to-r from-red-800 to-red-500")
+            }
+        }
+    }, [weatherData]);
 
 
     //text will be replaced with imported data
@@ -48,11 +62,11 @@ export default function HomePage() {
                     </div>
 
                     <div className={`grid ${styles.contentContainer}`}>
-                        <div className={`grid grid-cols-2 gap-4 ${styles.fireRisk}`}>
-                            <h2 className={styles.homeHeading}>Wildfire Risk: Low</h2>
+                        <div className={`grid grid-cols-2 gap-4 ${styles.fireRisk} ${riskColour}`}>
+                            <h2 className={styles.homeHeading}>Wildfire Risk: {fireRisk}</h2>
                             <CircleHelp size={24} />
                         </div>
-                        
+
                         <Link href="/map" className={styles.location}>
                             <h3>{weatherData ? `${weatherData.cityName}` : <p>My Location</p>}</h3>
                             {weatherData ? (
