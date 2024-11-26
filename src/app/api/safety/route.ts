@@ -5,7 +5,7 @@ const openai = new OpenAI({
     apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
 });
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
     try {
         const body = await req.json();
         const message = body.message;
@@ -14,7 +14,7 @@ export async function POST(req: Request, res: NextResponse) {
             model: 'gpt-3.5-turbo',
             messages: [
                 { role: "system", content: 'You are an expert on BC wildfires. Respond as if you have access to real-time information about the BC wildfire situation. If a user asks questions related to wildfire conditions, provide practical advice and recommendations based on the current status.' },
-                { role: "user", content: message } 
+                { role: "user", content: message }
             ],
         });
     

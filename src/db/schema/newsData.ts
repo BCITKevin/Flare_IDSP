@@ -1,4 +1,4 @@
-import { serial, text, pgTable, pgEnum, timestamp, integer } from "drizzle-orm/pg-core"
+import { serial, text, pgTable, pgEnum, timestamp } from "drizzle-orm/pg-core"
 import { media } from './news';
 
 export const mediaType = pgEnum("disaster_type", ["wildfire"]);

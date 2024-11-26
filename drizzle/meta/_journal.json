@@ -8,6 +8,27 @@
       "when": 1730608922006,
       "tag": "0000_concerned_giant_man",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1732649007624,
+      "tag": "0001_abandoned_doomsday",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1732649031823,
+      "tag": "0002_unique_banshee",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1732649558687,
+      "tag": "0003_bitter_gunslinger",
+      "breakpoints": true
     }
   ]
 }

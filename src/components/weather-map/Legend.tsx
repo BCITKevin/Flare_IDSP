@@ -10,8 +10,8 @@ const FWI_SCALE = [
   { class: 5, range: '≥50', level: 'Extreme', color: '#4A0404' }
 ];
 
-const getLegendDescription = (level) => {
-  switch(level) {
+const getLegendDescription = (level: string): string => {
+  switch (level) {
     case 'Very Low':
       return 'Minimal Risk; fires are unlikely to spread significantly.';
     case 'Low':
@@ -29,11 +29,16 @@ const getLegendDescription = (level) => {
   }
 };
 
-export const MapLegend = ({ show, onToggle }) => {
+interface MapLegendProps {
+  show: boolean;
+  onToggle: () => void;
+}
+
+export const MapLegend: React.FC<MapLegendProps> = ({ show, onToggle }) => {
   return (
     <div className={styles.legendControl}>
-      <button 
-        className={styles.mapButton} 
+      <button
+        className={styles.mapButton}
         onClick={onToggle}
         aria-label="Toggle legend"
       >
@@ -43,8 +48,8 @@ export const MapLegend = ({ show, onToggle }) => {
         <h4 className={styles.legendTitle}>Legend</h4>
         {FWI_SCALE.map(({ class: classNum, level, color }) => (
           <div key={classNum} className={styles.legendItem}>
-            <div 
-              className={styles.legendMarker} 
+            <div
+              className={styles.legendMarker}
               style={{ backgroundColor: color }}
             />
             <div className={styles.legendText}>

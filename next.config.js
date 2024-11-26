@@ -1,18 +1,24 @@
 // next.config.js
 
 /** @type {import('next').NextConfig} */
+
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development'
+});
+
 const nextConfig = {
   images: {
     remotePatterns: [
       {
         protocol: "https",
         hostname: "images.unsplash.com",
-        pathname: "/**", // 모든 경로 허용
+        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "plus.unsplash.com",
-        pathname: "/**", // 모든 경로 허용
+        pathname: "/**",
       },
       {
         protocol: "https",
@@ -24,9 +30,10 @@ const nextConfig = {
         hostname: "tile.openweathermap.org",
         pathname: "/**",
       }
-      // 필요한 다른 도메인이 있다면 추가
     ],
   },
 };
 
-module.exports = nextConfig;
+module.exports = withPWA({
+  ...nextConfig
+});

@@ -1,8 +1,8 @@
+import nextPwa from 'next-pwa';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   webpack(config) {
-    // SVG 파일 처리 규칙 추가
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
@@ -13,4 +13,15 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+const withPWA = nextPwa({
+  dest: "public",
+  // disable: process.env.NODE_ENV === "development",
+  register: true,
+  skipWaiting: true,
+});
+
+const config = withPWA({
+  ...nextConfig,
+});
+
+export default config;

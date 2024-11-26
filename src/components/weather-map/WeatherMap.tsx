@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Loader2, Info, Cloud } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { WeatherWidget } from './WeatherWidget';
 import { MapLegend } from './Legend';
 import { createRoot } from 'react-dom/client';
@@ -16,8 +16,26 @@ import Image from 'next/image';
 import { Loader } from '@googlemaps/js-api-loader';
 import styles from './WeatherMap.module.css';
 
+type FWILevel = {
+  class: number;
+  level: string;
+  color: string;
+};
 
-const getFWILevel = (fwiValue) => {
+type WeatherData = {
+  fwi: number;
+  current: {
+    temp: number;
+    feels_like: number;
+    humidity: number;
+    wind_speed: number;
+    uvi: number;
+    weather: Array<{ description: string }>;
+  };
+  alerts?: Array<{ event: string; description?: string; start: number; end: number }>;
+};
+
+const getFWILevel = (fwiValue: number): FWILevel => {
   if (fwiValue < 5.2) return { class: 0, level: 'Very Low', color: '#126E00' };
   if (fwiValue < 11.2) return { class: 1, level: 'Low', color: '#FFEB3B' };
   if (fwiValue < 21.3) return { class: 2, level: 'Moderate', color: '#ED8E3E' };
@@ -26,9 +44,9 @@ const getFWILevel = (fwiValue) => {
   return { class: 5, level: 'Extreme', color: '#4A0404' };
 };
 
-const fetchWeatherData = async (lat, lon, date) => {
-  const timestamp = Math.floor(date.getTime() / 1000);
-  
+const fetchWeatherData = async (lat: number, lon: number): Promise<WeatherData> => {
+  // const timestamp = Math.floor(date.getTime() / 1000);
+
   try {
     // Fetch regular weather data
     const weatherResponse = await fetch(
@@ -53,17 +71,18 @@ const fetchWeatherData = async (lat, lon, date) => {
 };
 
 const WeatherMap = () => {
-  const mapRef = useRef(null);
-  const googleMapRef = useRef(null);
-  const markerRef = useRef(null);
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const googleMapRef = useRef<google.maps.Map | null>(null);
+  const markerRef = useRef<google.maps.Marker | google.maps.marker.AdvancedMarkerElement | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [weatherOverlay, setWeatherOverlay] = useState(null);
+  const [weatherOverlay, setWeatherOverlay] = useState<google.maps.ImageMapType | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [showLegend, setShowLegend] = useState(false);
-  
+
+
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -74,12 +93,14 @@ const WeatherMap = () => {
 
   useEffect(() => {
     const initializeMap = async () => {
+      if (!mapRef.current) return;
+
       const loader = new Loader({
-        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
         version: 'weekly',
         libraries: ['marker']
       });
-    
+
       try {
         const google = await loader.load();
         const map = new google.maps.Map(mapRef.current, {
@@ -131,20 +152,20 @@ const WeatherMap = () => {
             }
           ]
         });
-    
+
         googleMapRef.current = map;
-    
+
         // Create Legend Container
         const legendContainer = document.createElement('div');
         const legendRoot = createRoot(legendContainer);
         legendRoot.render(
-          <MapLegend 
-            show={showLegend} 
-            onToggle={() => setShowLegend(!showLegend)} 
+          <MapLegend
+            show={showLegend}
+            onToggle={() => setShowLegend(!showLegend)}
           />
         );
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legendContainer);
-    
+
         // Create Weather Widget Container
         const weatherContainer = document.createElement('div');
         const weatherRoot = createRoot(weatherContainer);
@@ -152,22 +173,22 @@ const WeatherMap = () => {
           <WeatherWidget temperature={26} />
         );
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(weatherContainer);
-    
+
         // Add the weather overlay
         const timestamp = Math.floor(selectedDate.getTime() / 1000);
         const weatherMapUrl = `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&date=${timestamp}`;
-        
+
         const newOverlay = new google.maps.ImageMapType({
-          getTileUrl: function(coord, zoom) {
+          getTileUrl: function (coord, zoom) {
             return weatherMapUrl
-              .replace('{z}', zoom)
-              .replace('{x}', coord.x)
-              .replace('{y}', coord.y);
+              .replace('{z}', String(zoom))
+              .replace('{x}', String(coord.x))
+              .replace('{y}', String(coord.y));
           },
           tileSize: new google.maps.Size(256, 256),
           opacity: 0.7
         });
-    
+
         map.overlayMapTypes.push(newOverlay);
         setWeatherOverlay(newOverlay);
       } catch (error) {
@@ -184,13 +205,13 @@ const WeatherMap = () => {
     if (googleMapRef.current && weatherOverlay) {
       const timestamp = Math.floor(selectedDate.getTime() / 1000);
       const weatherMapUrl = `https://maps.openweathermap.org/maps/2.0/fwi/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&date=${timestamp}`;
-      
+
       const newOverlay = new google.maps.ImageMapType({
-        getTileUrl: function(coord, zoom) {
+        getTileUrl: function (coord, zoom) {
           return weatherMapUrl
-            .replace('{z}', zoom)
-            .replace('{x}', coord.x)
-            .replace('{y}', coord.y);
+            .replace('{z}', String(zoom))
+            .replace('{x}', String(coord.x))
+            .replace('{y}', String(coord.y));
         },
         tileSize: new google.maps.Size(256, 256),
         opacity: 0.7
@@ -202,7 +223,7 @@ const WeatherMap = () => {
     }
   }, [selectedDate]);
 
-  const handleSearch = async (e) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -216,21 +237,23 @@ const WeatherMap = () => {
       if (!data.length) throw new Error('Location not found');
 
       const { lat, lon, name } = data[0];
-      const weatherData = await fetchWeatherData(lat, lon, selectedDate);
+      const weatherData = await fetchWeatherData(lat, lon);
 
-      if (markerRef.current) {
+      if ('setMap' in markerRef.current!) {
         markerRef.current.setMap(null);
+      } else if (markerRef.current) {
+        markerRef.current.map = null;
       }
 
       const { level, color } = getFWILevel(weatherData.fwi);
 
-      const pin = new google.maps.marker.PinElement({
-        background: color,
-        scale: 1.2,
-        borderColor: color === '#FFEB3B' ? '#000000' : color, // Black border for yellow pin
-        glyphColor: color === '#FFEB3B' ? '#000000' : '#FFFFFF' // Black glyph for yellow pin
-      });
-  
+      // const pin = new google.maps.marker.PinElement({
+      //   background: color,
+      //   scale: 1.2,
+      //   borderColor: color === '#FFEB3B' ? '#000000' : color, // Black border for yellow pin
+      //   glyphColor: color === '#FFEB3B' ? '#000000' : '#FFFFFF' // Black glyph for yellow pin
+      // });
+
 
       const infowindow = new google.maps.InfoWindow({
         content: `
@@ -254,10 +277,10 @@ const WeatherMap = () => {
                 <div style="margin-top: 8px; padding: 8px; background-color: #FEE2E2; border: 1px solid #DC2626; border-radius: 4px;">
                   <strong style="color: #DC2626;">${alert.event}</strong>
                   <div style="font-size: 12px; margin-top: 4px;">
-                    ${alert.description ? 
-                      alert.description.split('\n')[0] : // Just take the first line of description if it's too long
-                      'No additional details available'
-                    }
+                    ${alert.description ?
+            alert.description.split('\n')[0] : // Just take the first line of description if it's too long
+            'No additional details available'
+          }
                   </div>
                   <div style="font-size: 11px; color: #666; margin-top: 4px;">
                     ${new Date(alert.start * 1000).toLocaleString()} - 
@@ -269,31 +292,36 @@ const WeatherMap = () => {
           </div>
         `
       });
-    
+
       const markerElement = new google.maps.marker.AdvancedMarkerElement({
         map: googleMapRef.current,
         position: { lat, lng: lon },
         title: name
       });
-  
+
       markerElement.addListener('click', () => {
         infowindow.open({
           anchor: markerElement,
           map: googleMapRef.current
         });
       });
-  
+
       markerRef.current = markerElement;
-      googleMapRef.current.panTo({ lat, lng: lon });
-      googleMapRef.current.setZoom(13);
+      googleMapRef.current!.panTo({ lat, lng: lon });
+      googleMapRef.current!.setZoom(13);
       infowindow.open({
         anchor: markerElement,
         map: googleMapRef.current
       });
-  
+
     } catch (err) {
       console.error('Error:', err);
-      setError(err.message || 'Failed to fetch location data');
+
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Failed to fetch location data');
+      }
     } finally {
       setLoading(false);
     }
@@ -303,11 +331,11 @@ const WeatherMap = () => {
     <Card className={styles.mapContainer}>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2">
-          <Image 
-            src="/icons/Weather.png" 
-            alt="Weather Icon" 
-            width={24} 
-            height={24} 
+          <Image
+            src="/icons/Weather.png"
+            alt="Weather Icon"
+            width={24}
+            height={24}
             priority={true}
             style={{ width: '24px', height: '24px' }}
           />
@@ -335,7 +363,9 @@ const WeatherMap = () => {
                 <Calendar
                   mode="single"
                   selected={selectedDate}
-                  onSelect={setSelectedDate}
+                  onSelect={(day) => {
+                    if (day) setSelectedDate(day);
+                  }}
                   initialFocus
                 />
               </PopoverContent>

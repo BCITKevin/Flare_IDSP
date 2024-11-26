@@ -1,7 +1,7 @@
 import { Cloud } from 'lucide-react';
 import styles from './WeatherMap.module.css';
 
-export const WeatherWidget = ({ temperature }) => {
+export const WeatherWidget = ({ temperature }: { temperature: number }) => {
   return (
     <div className={styles.weatherWidget}>
       <div className={styles.weatherTemp}>{temperature}°</div>
