@@ -1,0 +1,1 @@
+ALTER TABLE "subscription" RENAME COLUMN "url" TO "data";

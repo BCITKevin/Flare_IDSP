@@ -12,8 +12,8 @@ const FWI_SCALE = [
   { class: 5, range: '≥50', level: 'Extreme', color: '#4A0404' }
 ];
 
-const getLegendDescription = (level: string) => {
-  switch(level) {
+const getLegendDescription = (level: string): string => {
+  switch (level) {
     case 'Very Low':
       return 'Minimal Risk; fires are unlikely to spread significantly.';
     case 'Low':
@@ -31,6 +31,7 @@ const getLegendDescription = (level: string) => {
   }
 };
 
+
 export const Legend = () => {
   return (
     <div className="absolute bottom-20 right-4 z-10">
@@ -46,6 +47,7 @@ export const Legend = () => {
               //the ! is for removing a rule with the .\{\&_svg\}\:size-4 svg 
               className="text-gray-100 !w-8 !h-8" 
               strokeWidth={2}
+
             />
           </Button>
         </PopoverTrigger>
