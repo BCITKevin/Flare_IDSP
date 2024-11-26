@@ -1,17 +1,32 @@
+"use client"
+
 import Logo from "../public/images/flare_logo.svg";
 import Image from "next/image";
 import styles from "./homepage.module.css"
 import { Circle, CircleHelp, Wind, Bell, Bot } from "lucide-react"
 import Link from "next/link";
+import { useState } from "react";
 import BottomNavBar from "@/components/BottomNavBar";
+import WildfireRisk from "@/components/wildfireRisk/WildfireRisk";
 
 export default function HomePage() {
+
+    const [isWildfireRiskVisible, setIsWildfireRiskVisible] = useState(false);
+
+    const handleHelpClick = () => {
+      setIsWildfireRiskVisible(true);
+    };
+  
+    const handlePopupClose = () => {
+      setIsWildfireRiskVisible(false);
+    };
 
     //text will be replaced with imported data
     return (
         <>
             <div>
                 <div className="homeLayout">
+                    {isWildfireRiskVisible && <WildfireRisk onClose={handlePopupClose} />}
                     <div className={styles.header}>
                         <header className={`flex items-center ${styles.homeIcons}`}>
                             <Image src={Logo} alt="Flare logo" className="w-12 mb-4" />
@@ -23,7 +38,7 @@ export default function HomePage() {
                     <div className={`grid ${styles.contentContainer}`}>
                         <div className={`grid grid-cols-2 gap-4 ${styles.fireRisk}`}>
                             <h2 className={styles.homeHeading}>Wildfire Risk: Low</h2>
-                            <CircleHelp size={24} />
+                            <CircleHelp size={24} onClick={handleHelpClick} className="cursor-pointer" />
                         </div>
 
                         <Link href="/map" className={styles.location}>
