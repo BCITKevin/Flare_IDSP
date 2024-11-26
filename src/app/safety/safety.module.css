@@ -11,6 +11,10 @@
     color: var(--text-black);
 }
 
+.whiteText {
+    color: var(--white);
+}
+
 
 @media only screen and (max-width: 600px) {
     .appLayout {

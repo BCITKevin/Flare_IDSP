@@ -1,5 +1,7 @@
+import React from 'react';
 import { Info } from 'lucide-react';
-import styles from './WeatherMap.module.css';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
 
 const FWI_SCALE = [
   { class: 0, range: '<5.2', level: 'Very Low', color: '#126E00' },
@@ -29,38 +31,55 @@ const getLegendDescription = (level: string): string => {
   }
 };
 
-interface MapLegendProps {
-  show: boolean;
-  onToggle: () => void;
-}
 
-export const MapLegend: React.FC<MapLegendProps> = ({ show, onToggle }) => {
+export const Legend = () => {
   return (
-    <div className={styles.legendControl}>
-      <button
-        className={styles.mapButton}
-        onClick={onToggle}
-        aria-label="Toggle legend"
-      >
-        <Info />
-      </button>
-      <div className={`${styles.legendContent} ${show ? styles.visible : ''}`}>
-        <h4 className={styles.legendTitle}>Legend</h4>
-        {FWI_SCALE.map(({ class: classNum, level, color }) => (
-          <div key={classNum} className={styles.legendItem}>
-            <div
-              className={styles.legendMarker}
-              style={{ backgroundColor: color }}
+    <div className="absolute bottom-20 right-4 z-10">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-10 w-10 rounded-full bg-[#1a1a1a] border-gray-700 hover:bg-[#2a2a2a] hover:border-gray-600 flex items-center justify-center p-0.5"
+          >
+            
+            <Info 
+              //the ! is for removing a rule with the .\{\&_svg\}\:size-4 svg 
+              className="text-gray-100 !w-8 !h-8" 
+              strokeWidth={2}
+
             />
-            <div className={styles.legendText}>
-              <div className={styles.legendLevel}>Class {classNum}: {level}</div>
-              <div className={styles.legendDescription}>
-                {getLegendDescription(level)}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          className="w-80 p-4 bg-[#1a1a1a] border-gray-700 text-gray-100"
+          side="left"
+          align="end"
+        >
+          <h4 className="text-lg font-semibold mb-4 text-white">Fire Weather Index (FWI) Legend</h4>
+          <div className="space-y-3">
+            {FWI_SCALE.map(({ class: classNum, level, color }) => (
+              <div key={classNum} className="flex items-start gap-3">
+                <div
+                  className="w-5 h-5 rounded-full mt-1 flex-shrink-0"
+                  style={{
+                    backgroundColor: color,
+                    border: color === '#FFEB3B' ? '1px solid #666' : 'none'
+                  }}
+                />
+                <div>
+                  <div className="font-medium text-gray-200">Class {classNum}: {level}</div>
+                  <div className="text-sm text-gray-400">
+                    {getLegendDescription(level)}
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };
+
+export default Legend;
