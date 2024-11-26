@@ -6,7 +6,6 @@ import Image from "next/image";
 import styles from "./homepage.module.css";
 import { CircleHelp, Wind, Bell } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import BottomNavBar from "@/components/BottomNavBar";
 import WildfireRisk from "@/components/wildfireRisk/WildfireRisk";
 import { useEffect, useState } from "react";
