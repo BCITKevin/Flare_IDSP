@@ -9,6 +9,7 @@ import styles from "./news.module.css";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface BingNewsArticle {
   name: string;
@@ -35,6 +36,7 @@ export default function News() {
   const [error, setError] = useState<string | null>(null);
   const [tabState, setTabState] = useState<Category>("Local");
   //const [setCurrentQuery] = useState<string>(""); // 현재 쿼리를 저장할 상태 추가
+  const router = useRouter();
 
   useEffect(() => {
     const savedQuery = localStorage.getItem("lastQuery");
@@ -129,6 +131,32 @@ export default function News() {
     return { highlighted, others };
   };
 
+  const handleArticleClick = async (article: BingNewsArticle) => {
+    try {
+      const response = await fetch(
+        `/api/article?url=${encodeURIComponent(article.url)}`
+      );
+      const fullArticle = await response.json();
+
+      localStorage.setItem(
+        "articleData",
+        JSON.stringify({
+          title: article.name,
+          date: new Date(article.datePublished).toLocaleDateString(),
+          author: article.provider[0]?.name || "Unknown Author",
+          content: fullArticle.content,
+          image:
+            article.image?.thumbnail?.contentUrl || "/images/logo_Flare.png",
+          source: article.provider[0]?.name,
+        })
+      );
+
+      router.push("/article");
+    } catch (error) {
+      console.error("Failed to fetch article:", error);
+    }
+  };
+
   return (
     <div>
       <div className="newsLayout">
@@ -204,9 +232,9 @@ export default function News() {
                   return (
                     <>
                       {highlighted && (
-                        <Link
-                          href={highlighted.url}
+                        <div
                           className={`${styles.articleHighlight}`}
+                          onClick={() => handleArticleClick(highlighted)}
                         >
                           {highlighted.image?.thumbnail?.contentUrl && (
                             <Image
@@ -239,7 +267,7 @@ export default function News() {
                               </p>
                             </div>
                           </div>
-                        </Link>
+                        </div>
                       )}
                       <div className="mt-4">
                         {others.map((article, index) => {
@@ -254,9 +282,12 @@ export default function News() {
                               article.provider[0]?.name || "Unknown Author",
                           };
                           return (
-                            <Link key={index} href={article.url} passHref>
+                            <div
+                              key={index}
+                              onClick={() => handleArticleClick(article)}
+                            >
                               <ArticleCard article={transformedArticle} />
-                            </Link>
+                            </div>
                           );
                         })}
                         {others.length === 0 && (
