@@ -11,6 +11,40 @@ export async function GET(req: Request) {
   }
 
   try {
+    // 저작권 보호가 필요한 뉴스 사이트들
+    const protectedDomains = [
+      'msn.com',
+      'ctvnews.ca',
+      'bellmedia.ca'
+    ];
+
+    // 도메인 체크
+    const isProtectedContent = protectedDomains.some(domain => 
+      articleUrl.includes(domain)
+    );
+
+    if (isProtectedContent) {
+      // 메타 태그에서 이미지 URL 추출 시도
+      const response = await axios.get(articleUrl);
+      const dom = new JSDOM(response.data);
+      const metaImage = dom.window.document.querySelector('meta[property="og:image"]')?.getAttribute('content') ||
+                       dom.window.document.querySelector('meta[name="twitter:image"]')?.getAttribute('content');
+
+      return new Response(JSON.stringify({
+        title: "Copyright Protected Content",
+        content: "This article cannot be accessed directly due to copyright protection. Please read the original article through the link below.",
+        url: articleUrl,
+        isProtected: true,
+        date: new Date().toISOString(),
+        author: "See original article",
+        source: new URL(articleUrl).hostname,
+        image: metaImage || ""
+      }), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // 다른 뉴스 사이트의 경우 기존 로직 사용
     console.log('Attempting to fetch article from:', articleUrl);
 
     const response = await axios.get(articleUrl, {
@@ -56,6 +90,10 @@ export async function GET(req: Request) {
                          dom.window.document.querySelector('.article-content') ||
                          dom.window.document.querySelector('main');
       
+      // Extract image URL from meta tags
+      const metaImage = dom.window.document.querySelector('meta[property="og:image"]')?.getAttribute('content') ||
+                       dom.window.document.querySelector('meta[name="twitter:image"]')?.getAttribute('content');
+      
       if (mainContent) {
         return new Response(
           JSON.stringify({
@@ -63,6 +101,7 @@ export async function GET(req: Request) {
             content: mainContent.textContent,
             byline: "",
             siteName: "MSN",
+            image: metaImage || ""
           }),
           {
             headers: {
@@ -75,12 +114,9 @@ export async function GET(req: Request) {
       return new Response("Failed to parse article", { status: 400 });
     }
 
-    console.log('Successfully parsed article:', {
-      title: article.title,
-      byline: article.byline,
-      siteName: article.siteName,
-      contentLength: article.textContent?.length
-    });
+    // Extract image URL from meta tags for successful parse as well
+    const metaImage = dom.window.document.querySelector('meta[property="og:image"]')?.getAttribute('content') ||
+                     dom.window.document.querySelector('meta[name="twitter:image"]')?.getAttribute('content');
 
     return new Response(
       JSON.stringify({
@@ -88,6 +124,7 @@ export async function GET(req: Request) {
         content: article.textContent,
         byline: article.byline,
         siteName: article.siteName,
+        image: metaImage || ""
       }),
       {
         headers: {
@@ -96,23 +133,8 @@ export async function GET(req: Request) {
       }
     );
   } catch (error: unknown) {
-    console.error("Detailed error:", {
-      message: error instanceof Error ? error.message : String(error),
-      name: error instanceof Error ? error.name : 'Unknown',
-      stack: error instanceof Error ? error.stack : undefined,
-    });
-
-    return new Response(
-      JSON.stringify({
-        error: "Failed to fetch article",
-        details: error instanceof Error ? error.message : "Unknown error",
-      }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    console.error('Error fetching article:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    return new Response(`Failed to fetch article: ${errorMessage}`, { status: 400 });
   }
 }

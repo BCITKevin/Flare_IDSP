@@ -25,6 +25,7 @@ interface BingNewsArticle {
   provider: { name: string }[];
   datePublished: string;
   content?: string; // 전체 기사 내용
+  isProtected?: boolean;
 }
 
 type Category = "Local" | "Regional" | "National" | "Global";
@@ -41,7 +42,7 @@ export default function News() {
   const getQueryForTab = (tab: Category): string => {
     switch (tab) {
       case "Local":
-        return "Wildfires near me";
+        return "Wildfires vancouver";
       case "Regional":
         return "Wildfire B.C.";
       case "National":
@@ -121,40 +122,30 @@ export default function News() {
     return { highlighted, others };
   };
 
-  const handleArticleClick = async (article: BingNewsArticle) => {
+  const handleArticleClick = async (url: string) => {
     try {
-      const response = await fetch(
-        `/api/article?url=${encodeURIComponent(article.url)}`
-      );
-      
+      const response = await fetch(`/api/article?url=${encodeURIComponent(url)}`);
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`Failed to fetch article: HTTP error! status: ${response.status}`);
       }
+      const data = await response.json();
       
-      const fullArticle = await response.json();
-      
-      if (!fullArticle || !fullArticle.content) {
-        throw new Error('Invalid article data received');
-      }
+      // localStorage에 저장할 때 모든 필요한 데이터를 포함
+      const articleData = {
+        title: data.title,
+        content: data.content,
+        date: new Date().toISOString(),  // 또는 data.date
+        author: data.author || "Unknown",
+        image: data.image || "",
+        source: new URL(url).hostname,
+        isProtected: data.isProtected,  // 추가
+        url: data.url                   // 추가
+      };
 
-      localStorage.setItem(
-        "articleData",
-        JSON.stringify({
-          title: article.name,
-          date: new Date(article.datePublished).toLocaleDateString(),
-          author: article.provider[0]?.name || "Unknown Author",
-          content: fullArticle.content || "No content available",
-          image: article.image?.thumbnail?.contentUrl || "/images/logo_Flare.png",
-          source: article.provider[0]?.name,
-        })
-      );
-
-      router.push("/article");
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      console.error("Failed to fetch article:", errorMessage);
-      // 사용자에게 에러 표시 (선택사항)
-      alert("Failed to load the article. Please try again later.");
+      localStorage.setItem('articleData', JSON.stringify(articleData));
+      router.push('/article');
+    } catch (error) {
+      console.error('Error:', error);
     }
   };
 
@@ -223,7 +214,7 @@ export default function News() {
                       {highlighted && (
                         <div
                           className={`${styles.articleHighlight}`}
-                          onClick={() => handleArticleClick(highlighted)}
+                          onClick={() => handleArticleClick(highlighted.url)}
                         >
                           <Image
                             src={highlighted.image?.thumbnail?.contentUrl || "/images/logo_Flare.png"}
@@ -264,7 +255,7 @@ export default function News() {
                           return (
                             <div
                               key={index}
-                              onClick={() => handleArticleClick(article)}
+                              onClick={() => handleArticleClick(article.url)}
                             >
                               <ArticleCard article={transformedArticle} />
                             </div>
