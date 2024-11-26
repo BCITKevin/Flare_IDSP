@@ -1,3 +1,4 @@
+
 'use client';
 
 import Logo from "../public/images/flare_logo.svg";
@@ -5,7 +6,9 @@ import Image from "next/image";
 import styles from "./homepage.module.css";
 import { CircleHelp, Wind, Bell } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import BottomNavBar from "@/components/BottomNavBar";
+import WildfireRisk from "@/components/wildfireRisk/WildfireRisk";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import sendNotification from "@/lib/notification/sendNotification";
@@ -34,7 +37,16 @@ export default function HomePage() {
   const [weatherData, setWeatherData] = useState<any>(null);
   const [fireRisk, setFireRisk] = useState<string | undefined>();
   const [riskColour, setRiskColour] = useState<string | undefined>();
+  const [isWildfireRiskVisible, setIsWildfireRiskVisible] = useState(false);
 
+  const handleHelpClick = () => {
+    setIsWildfireRiskVisible(true);
+  };
+
+  const handlePopupClose = () => {
+    setIsWildfireRiskVisible(false);
+  };
+  
   async function handleNotification() {
     if (Notification.permission === "default") {
       const permission = await Notification.requestPermission();
@@ -124,6 +136,7 @@ export default function HomePage() {
   return (
     <div>
       <div className="homeLayout">
+       {isWildfireRiskVisible && <WildfireRisk onClose={handlePopupClose} />}
         <div className={styles.header}>
           <header className={`flex items-center ${styles.homeIcons}`}>
             <Image src={Logo} alt="Flare logo" className="w-12 h-12 mb-4" />
@@ -135,7 +148,7 @@ export default function HomePage() {
           <div className={`grid ${styles.contentContainer}`}>
             <div className={`grid grid-cols-2 gap-4 ${styles.fireRisk} ${riskColour}`}>
               <h2 className={styles.homeHeading}>Wildfire Risk: {fireRisk}</h2>
-              <CircleHelp size={24} />
+              <CircleHelp size={24} onClick={handleHelpClick} className="cursor-pointer"/>
             </div>
             <Link href="/map" className={styles.location}>
               <h3>{weatherData ? `${weatherData.cityName}` : "My Location"}</h3>
