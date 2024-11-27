@@ -25,8 +25,8 @@ export async function POST(req: Request) {
   const message: admin.messaging.Message = {
     token,
     data: {
-      title,
-      body, 
+      title: title,
+      body: body, 
       icon: "/images/logo_Flare.png",
       click_action: url || "/homepage",
     },
@@ -47,8 +47,6 @@ export async function POST(req: Request) {
   } catch (error) {
     if ((error as FirebaseError).code === "messaging/registration-token-not-registered") {
       console.log("Invalid FCM token. Deleting from server.");
-      // 클라이언트 토큰 삭제 로직 추가
-      // await deleteToken(clientId, token);
     } else {
       console.error("Error sending notification:", error);
     }
