@@ -25,13 +25,13 @@ self.addEventListener('push', function (event) {
   if (event.data) {
     try {
       const payload = event.data.json();
-      const notificationTitle = payload.title || "Default Title";
+      const notificationTitle = payload.data?.title || "Default Title";
       const notificationOptions = {
-        body: payload.body || "Default Body",
+        body: payload.data?.body || "Default Body",
         icon: '/images/logo_Flare.png',
-        image: payload.image || null,
+        image: payload.data?.image || null,
         data: {
-          click_action: payload.click_action || "/",
+          click_action: payload.data?.click_action || "/",
         },
       };
 
