@@ -52,38 +52,40 @@ export default function HomePage() {
     useEffect(() => {
         if (typeof window !== "undefined" && "serviceWorker" in navigator) {
             const requestPermission = async () => {
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted') {
-                    console.log('Notification permission granted.');
-                    await getToken(messaging, {
-                        vapidKey: 'BPXsQYDzZY2XA5zHU_rEawyf2hVSUK0Bb8uhndW9oPlCgtQF5npThPLcCTF5m81rPiDiFu6dJZEYhN3fMbqK23o',
-                    }).then(async (currentToken) => {
-                        if (currentToken) {
-                            console.log('FCM Token:', currentToken);
-                            const clientId = getOrCreateClientId();
-                            if (clientId) {
-                                await fetchSubscription(clientId, currentToken);
-                                await sendNotification(
-                                    clientId,
-                                    currentToken,
-                                    'Agreed notification',
-                                    'You have agreed notification from Flare',
-                                    { url: '/homepage' },
-                                )
+                if (messaging) {
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted') {
+                        console.log('Notification permission granted.');
+                        await getToken(messaging, {
+                            vapidKey: 'BPXsQYDzZY2XA5zHU_rEawyf2hVSUK0Bb8uhndW9oPlCgtQF5npThPLcCTF5m81rPiDiFu6dJZEYhN3fMbqK23o',
+                        }).then(async (currentToken) => {
+                            if (currentToken) {
+                                console.log('FCM Token:', currentToken);
+                                const clientId = getOrCreateClientId();
+                                if (clientId) {
+                                    await fetchSubscription(clientId, currentToken);
+                                    await sendNotification(
+                                        clientId,
+                                        currentToken,
+                                        'Agreed notification',
+                                        'You have agreed notification from Flare',
+                                        { url: '/homepage' },
+                                    )
+                                }
+                            } else {
+                                console.log('No registration token available.');
                             }
-                        } else {
-                            console.log('No registration token available.');
+                        }).catch((err) => {
+                            console.error('An error occurred while retrieving token. ', err);
+                        });
+                    } else if (permission === "denied") {
+                        console.log("Permission denied. Deleting token.");
+                        const clientId = getOrCreateClientId();
+                        const currentToken = await getToken(messaging);
+                        if (currentToken && clientId) {
+                            await deleteToken(messaging);
+                            await deleteTokenFromServer(clientId, currentToken);
                         }
-                    }).catch((err) => {
-                        console.error('An error occurred while retrieving token. ', err);
-                    });
-                } else if (permission === "denied") {
-                    console.log("Permission denied. Deleting token.");
-                    const clientId = getOrCreateClientId();
-                    const currentToken = await getToken(messaging);
-                    if (currentToken && clientId) {
-                        await deleteToken(messaging);
-                        await deleteTokenFromServer(clientId, currentToken);
                     }
                 }
             }

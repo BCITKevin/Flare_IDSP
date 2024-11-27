@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getMessaging, getToken, onMessage, isSupported, Messaging } from "firebase/messaging";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDF7wjcp7LRlKrJnbZuFP6CjFJnemV4u9w",
@@ -13,7 +13,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-let messaging;
+let messaging: Messaging | null = null;
+
 if (typeof window !== "undefined" && (await isSupported())) {
   messaging = getMessaging(app);
 }
