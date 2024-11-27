@@ -1,6 +1,7 @@
 
 
-export default async function sendNotification(cliendId: string, token: string, title: string, body: string, data?: string) {
+export default async function sendNotification(token: string, title: string, body: string, data?: string) {
+    console.log(token, title, body, data);
     const response = await fetch('/api/push', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

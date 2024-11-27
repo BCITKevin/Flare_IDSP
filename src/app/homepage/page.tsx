@@ -76,7 +76,6 @@ export default function HomePage() {
                             if (clientId) {
                                 await fetchSubscription(clientId, currentToken);
                                 await sendNotification(
-                                    clientId,
                                     currentToken,
                                     "Agreed notification",
                                     "You have agreed notification from Flare",
@@ -121,7 +120,6 @@ export default function HomePage() {
         if (tokens) {
             for (const token of tokens) {
                 await sendNotification(
-                    token.id,
                     token.data,
                     'New article released',
                     'New Article have been released! Go check it!',

@@ -24,19 +24,17 @@ const messaging = firebase.messaging();
 self.addEventListener('push', function (event) {
   if (event.data) {
     try {
-      // Push 이벤트의 데이터 파싱
       const payload = event.data.json();
-      const notificationTitle = payload.notification?.title || "Default Title";
+      const notificationTitle = payload.title || "Default Title";
       const notificationOptions = {
-        body: payload.notification?.body || "Default Body",
-        icon: '/images/logo_Flare.png', // 기본 아이콘 설정
-        image: payload.notification?.image || null, // 추가 이미지 설정
+        body: payload.body || "Default Body",
+        icon: '/images/logo_Flare.png',
+        image: payload.image || null,
         data: {
-          click_action: payload.data?.click_action || "/", // 클릭 액션 URL
+          click_action: payload.click_action || "/",
         },
       };
 
-      // 알림 표시
       event.waitUntil(
         self.registration.showNotification(notificationTitle, notificationOptions)
       );
@@ -50,15 +48,11 @@ self.addEventListener('push', function (event) {
 
 self.addEventListener("notificationclick", function (event) {
   event.preventDefault();
-  // 알림창 닫기
+
   event.notification.close();
 
-  // 이동할 url
-  // 아래의 event.notification.data는 위의 푸시 이벤트를 한 번 거쳐서 전달 받은 options.data에 해당한다. 
-  // api에 직접 전달한 데이터와 혼동 주의
   const urlToOpen = event.notification.data.click_action;
 
-  // 클라이언트에 해당 사이트가 열려있는지 체크
   const promiseChain = clients
     .matchAll({
       type: "window",
@@ -75,7 +69,6 @@ self.addEventListener("notificationclick", function (event) {
         }
       }
       
-      // 열려있다면 focus, 아니면 새로 open
       if (matchingClient) {
         return matchingClient.focus();
       } else {
