@@ -3,8 +3,13 @@ import storeSubscription from './actions';
 
 export async function POST(req: Request) {
     const { clientId, subscription } = await req.json();
+
+    // if (typeof subscription === 'string') {
+    // }
+    const formatSubs = subscription.replace(/^"|"$/g, '');
+
     try {
-        const res = await storeSubscription(clientId, subscription);
+        const res = await storeSubscription(clientId, formatSubs);
 
         if (res.message) {
             return NextResponse.json(

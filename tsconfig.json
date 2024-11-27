@@ -40,7 +40,7 @@
     ".next/types/**/*.ts",
     "public/server.js",
     "types/web-push.d.ts"
-  ],
+, "public/firebase-messaging-sw.js", "src/lib/firebase.js", "worker/index.js"  ],
   "exclude": [
     "node_modules"
   ]

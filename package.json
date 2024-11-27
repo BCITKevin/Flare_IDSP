@@ -36,6 +36,8 @@
     "drizzle-orm": "^0.35.3",
     "embla-carousel-autoplay": "^8.3.1",
     "embla-carousel-react": "^8.3.1",
+    "firebase": "^11.0.2",
+    "firebase-admin": "^13.0.1",
     "jsdom": "^25.0.1",
     "leaflet": "^1.9.4",
     "lucide": "^0.454.0",

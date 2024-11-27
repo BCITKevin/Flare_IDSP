@@ -1,27 +1,29 @@
-interface PushSubscription {
-    endpoint: string;
-    expirationTime: number | null;
-    keys?: {
-        p256dh: string | null;
-        auth: string | null;
-    };
+interface Data {
+    url: string;
 }
 
-export default async function sendNotification(msg: string, subscription: PushSubscription, url: string) {
-    const noti = await fetch('/api/push', {
+export default async function sendNotification(cliendId: string, token: string, title: string, body: string, data?: Data) {
+    const response = await fetch('/api/push', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ msg, subscription, url }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            token: token,
+            title: title,
+            body: body,
+            data: data,
+            cliendId: cliendId
+        }),
     });
 
-    if (!noti.ok) {
-        throw new Error('something wrong..');
+    const result = await response.json();
+    if (result.success) {
+        console.log('Notification sent successfully:', result.response);
+    } else {
+        console.error('Failed to send notification:', result.error);
     }
 }
 
-export async function fetchSubscription(id: string, subscription: PushSubscription) {
+export async function fetchSubscription(id: string, subscription: string) {
     const res = await fetch('/api/subscription', {
         method: 'POST',
         headers: {
@@ -40,4 +42,12 @@ export async function fetchSubscription(id: string, subscription: PushSubscripti
     } else {
         return data.error;
     }
+}
+
+export async function deleteTokenFromServer(clientId: string, token: string) {
+    await fetch("/api/push", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clientId, token }),
+    });
 }

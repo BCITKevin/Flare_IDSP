@@ -47,3 +47,5 @@ test
 # sw.*
 # workbox-*
 # swe-worker-*
+
+serviceAccountKey.json

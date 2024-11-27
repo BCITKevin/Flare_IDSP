@@ -1,18 +1,20 @@
 
 'use client';
 
+
 import Logo from "../public/images/flare_logo.svg";
 import Image from "next/image";
 import styles from "./homepage.module.css";
 import { CircleHelp, Wind, Bell } from "lucide-react";
 import Link from "next/link";
 import BottomNavBar from "@/components/BottomNavBar";
-import WildfireRisk from "@/components/wildfireRisk/WildfireRisk";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import sendNotification, { fetchSubscription } from "@/lib/notification/sendNotification";
+import sendNotification, { fetchSubscription, deleteTokenFromServer } from "@/lib/notification/sendNotification";
 import getAllSubscription from "./actions";
 import { fetchWeatherData } from "@/utils/fetchWeatherData";
+import { messaging, getToken } from '../../lib/firebase';
+import { isSupported, deleteToken } from "firebase/messaging";
 
 interface NavigatorStandalone extends Navigator {
     standalone?: boolean;
@@ -23,6 +25,7 @@ interface BeforeInstallPromptEvent extends Event {
     userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
+
 function getOrCreateClientId() {
     let clientId = localStorage.getItem("clientId");
     if (!clientId) {
@@ -30,22 +33,11 @@ function getOrCreateClientId() {
         localStorage.setItem("clientId", clientId);
     }
     return clientId;
-}
-
-function urlBase64ToUint8Array(base64String: string) {
-    const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding)
-        .replace(/-/g, "+")
-        .replace(/_/g, "/");
-
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-
-    for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
+    if (typeof window !== "undefined") {
     }
-    return outputArray;
+    return null;
 }
+
 
 export default function HomePage() {
     const [isIOS, setIsIOS] = useState(false);
@@ -57,41 +49,50 @@ export default function HomePage() {
     const [fireRisk, setFireRisk] = useState<string | undefined>();
     const [riskColour, setRiskColour] = useState<string | undefined>();
     const [isWildfireRiskVisible, setIsWildfireRiskVisible] = useState(false);
-    const [subscriptionRegistered, setSubscriptionRegistered] = useState(false);
 
     useEffect(() => {
-        async function requestPermissionAndSubscribe() {
-            if (Notification.permission === "default" && !subscriptionRegistered) {
+        if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+            const requestPermission = async () => {
                 const permission = await Notification.requestPermission();
-                if (permission === "granted") {
-                    const registration = await navigator.serviceWorker.register("/sw.js", {
-                        scope: "/",
-                        updateViaCache: "none",
+                if (permission === 'granted') {
+                    console.log('Notification permission granted.');
+                    await getToken(messaging, {
+                        vapidKey: 'BPXsQYDzZY2XA5zHU_rEawyf2hVSUK0Bb8uhndW9oPlCgtQF5npThPLcCTF5m81rPiDiFu6dJZEYhN3fMbqK23o',
+                    }).then(async (currentToken) => {
+                        if (currentToken) {
+                            console.log('FCM Token:', currentToken);
+                            const clientId = getOrCreateClientId();
+                            if (clientId) {
+                                await fetchSubscription(clientId, currentToken);
+                                await sendNotification(
+                                    clientId,
+                                    currentToken,
+                                    'Agreed notification',
+                                    'You have agreed notification from Flare',
+                                    { url: '/homepage' },
+                                )
+                            }
+                        } else {
+                            console.log('No registration token available.');
+                        }
+                    }).catch((err) => {
+                        console.error('An error occurred while retrieving token. ', err);
                     });
-                    const subscription = await registration.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: urlBase64ToUint8Array(
-                            process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
-                        ),
-                    });
-
+                } else if (permission === "denied") {
+                    console.log("Permission denied. Deleting token.");
                     const clientId = getOrCreateClientId();
-                    await fetchSubscription(clientId, subscription);
-                    setSubscriptionRegistered(true);
-
-                    const msg = "You have agreed to get a notification from our app";
-
-                    await sendNotification(msg, subscription, '/homepage');
+                    const currentToken = await getToken(messaging);
+                    if (currentToken && clientId) {
+                        await deleteToken(messaging);
+                        await deleteTokenFromServer(clientId, currentToken);
+                    }
                 }
             }
+            if (Notification.permission === 'default') {
+                requestPermission();
+            }
         }
-
-        if ("serviceWorker" in navigator && "PushManager" in window) {
-            requestPermissionAndSubscribe().catch((error) =>
-                console.error("Error during subscription:", error)
-            );
-        }
-    }, [subscriptionRegistered]);
+    }, []);
 
     const handleHelpClick = () => {
         setIsWildfireRiskVisible(true);
@@ -103,23 +104,18 @@ export default function HomePage() {
 
     async function handleNotification() {
         console.log('hit');
-        if (Notification.permission === "default") {
-            const permission = await Notification.requestPermission();
-            if (permission !== "granted") {
-                console.error("Notification permission not granted");
-                return;
-            }
-        }
-        const msg = "replace this to the proper msg later";
 
-        const clientId = localStorage.getItem("clientId");
-        if (clientId) {
-            const subData = await getAllSubscription(clientId);
-            if (subData) {
-                for (const sub of subData) {
-                    const subscription = JSON.parse(sub.data);
-                    await sendNotification(msg, subscription, '/article');
-                }
+        const tokens = await getAllSubscription();
+
+        if (tokens) {
+            for (const token of tokens) {
+                await sendNotification(
+                    token.id,
+                    token.data,
+                    'New article released',
+                    'New Article have been released! Go check it!',
+                    { url: '/news' },
+                )
             }
         }
     }
