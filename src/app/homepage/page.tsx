@@ -53,7 +53,11 @@ export default function HomePage() {
         if (typeof window !== "undefined" && "serviceWorker" in navigator) {
             const requestPermission = async () => {
                 const supported = await isSupported();
-                if (messaging && supported) {
+                if (!supported) {
+                    console.error("Firebase Messaging is not supported on this browser.");
+                    return;
+                }
+                if (messaging) {
                     const permission = await Notification.requestPermission();
                     if (permission === 'granted') {
                         console.log('Notification permission granted.');
