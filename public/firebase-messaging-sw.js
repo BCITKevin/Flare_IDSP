@@ -25,9 +25,9 @@ self.addEventListener('push', function (event) {
   if (event.data) {
     try {
       const payload = event.data.json();
-      const notificationTitle = payload.title || "Default Title";
+      const notificationTitle = payload.title || "New Article released";
       const notificationOptions = {
-        body: payload.body || "Default Body",
+        body: payload.body || "A new article have been released! Go check it!",
         icon: payload.icon || '/images/logo_Flare.png',
         data: {
           click_action: payload.click_action || "/",

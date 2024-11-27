@@ -15,6 +15,8 @@ if (!admin.apps.length) {
 export async function POST(req: Request) {
   const { token, title, body, url } = await req.json();
 
+  console.log(title, body);
+
   if (!token || !title || !body) {
     return NextResponse.json(
       { success: false, status: 400, error: "Missing required fields: token, title, or body" },
