@@ -12,9 +12,10 @@ export default async function getAllSubscription() {
         const formatData = data.map((d) => {
             return {
                 ...d,
-                data: d.data.replace(/^"|"$/g, ''),
+                data: d.data.replace(/^"|"$/g, ""),
             }
         })
+        console.log(formatData);
         return formatData;
     }
 }
