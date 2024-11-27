@@ -25,8 +25,8 @@ export async function POST(req: Request) {
   const message: admin.messaging.Message = {
     token,
     data: {
-      title: title,
-      body: body,
+      title,
+      body, 
       icon: "/images/logo_Flare.png",
       click_action: url || "/homepage",
     },
