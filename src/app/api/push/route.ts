@@ -14,6 +14,8 @@ export async function POST(req: Request) {
   const { msg, subscription } = await req.json();
   console.log(msg, subscription)
 
+  console.log(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY, process.env.VAPID_PRIVATE_KEY);
+
   if (!msg) {
     return NextResponse.json(
       { success: false, error: 'Message is required' },
