@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import ArticleCard from "../../components/news/ArticleCard";
 import BottomNavBar from "@/components/BottomNavBar";
 import styles from "./news.module.css";
-//import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -24,14 +23,14 @@ interface BingNewsArticle {
   description: string;
   provider: { name: string }[];
   datePublished: string;
-  content?: string; // 전체 기사 내용
+  content?: string;
   isProtected?: boolean;
 }
 
 type Category = "Local" | "Regional" | "National" | "Global";
 
 export default function News() {
-  const [query, setQuery] = useState<string>(""); // 빈 문자열로 초기화
+  const [query, setQuery] = useState<string>("");
   const [articles, setArticles] = useState<BingNewsArticle[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,20 +53,18 @@ export default function News() {
     }
   };
 
-  // 초기 로딩 및 탭 변경시 쿼리 업데이트
   useEffect(() => {
     const newQuery = getQueryForTab(tabState);
     setQuery(newQuery);
   }, [tabState]);
 
-  // 쿼리 변경시 뉴스 fetch
   useEffect(() => {
     if (!query) return;
 
     const fetchNews = async () => {
       setLoading(true);
       setError(null);
-      console.log('Fetching news with query:', query); // 쿼리 로깅
+      console.log('Fetching news with query:', query);
 
       try {
         const res = await fetch(
@@ -125,7 +122,7 @@ export default function News() {
   const handleArticleClick = async (url: string) => {
     try {
       const response = await fetch(
-        `/api/article?url=${encodeURIComponent(article.url)}`
+        `/api/article?url=${encodeURIComponent(url)}`
       );
 
       if (!response.ok) {
