@@ -1,0 +1,46 @@
+.hamburgerMenu {
+    position: fixed;
+    right: 300px;
+}
+
+.menuButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+.menu {
+    position: absolute;
+    right: 0;
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    text-decoration: none;
+    color: white;
+    padding: 23px 27px;
+    
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size:12px;
+}
+
+.navItem:hover {
+    background-color: #555;
+    color: #f0f0f0;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}

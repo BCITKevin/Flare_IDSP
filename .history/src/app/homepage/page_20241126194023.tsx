@@ -16,8 +16,8 @@ export default function HomePage() {
                     <div className={styles.header}>
                         <header className={`flex items-center ${styles.homeIcons}`}>
                             <Image src={Logo} alt="Flare logo" className="w-12 mb-4" />
-                            {/* <Bell size={32} color="white" /> */}
-                            <HamburgerMenu />
+                            <HamburgerMenu />{/* <Bell size={32} color="white" /> */}
+                            
                         </header>
                         <h1 className={`font-black ${styles.landingLogo}`}>FLARE</h1>
                     </div>

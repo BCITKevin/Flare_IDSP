@@ -1,0 +1,50 @@
+.hamburgerMenu {
+    position: absolute;
+    right: 200px;
+}
+
+.menuButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+.menu {
+    position: absolute;
+    right: 0;
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    text-decoration: none;
+    color: #888888;
+    padding: 13px 40px;
+    border-radius: 4px;
+    transition: color 0.3s, transform 0.3s, background-color 0.3s;
+    border-radius: 8px;
+}
+
+.navItem:hover {
+    transform: translateY(-2px);
+    background-color: #f0f0f0;
+}
+
+.active {
+    color: grey;
+    background-color: #2b2b2b;
+  }
+
+.icon {
+    width: 24px;
+    height: 24px;
+}
