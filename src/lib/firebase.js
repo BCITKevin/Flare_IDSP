@@ -12,6 +12,10 @@ const firebaseConfig = {
   };
 
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+
+let messaging;
+if (typeof window !== "undefined" && (await isSupported())) {
+  messaging = getMessaging(app);
+}
 
 export { messaging, getToken, onMessage };
