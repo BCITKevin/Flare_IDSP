@@ -1,3 +1,4 @@
+//path: src/app/article/page.tsx
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -15,6 +16,8 @@ interface ArticleData {
   content: string;
   image: string;
   source: string;
+  isProtected?: boolean;
+  url?: string;
 }
 
 export default function Article() {
@@ -39,8 +42,24 @@ export default function Article() {
           author={articleData.author}
           source={articleData.source}
         />
-        <ArticleHero imageUrl={articleData.image} />
-        <ArticleContent content={articleData.content} />
+        {articleData.isProtected ? (
+          <div className="p-4 text-center text-white">
+            <p className="mb-4">{articleData.content}</p>
+            <a 
+              href={articleData.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-blue-700 underline"
+            >
+              View Original Article
+            </a>
+          </div>
+        ) : (
+          <>
+            <ArticleHero imageUrl={articleData.image} />
+            <ArticleContent content={articleData.content} />
+          </>
+        )}
       </div>
       <BottomNavBar />
     </div>

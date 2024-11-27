@@ -1,11 +1,22 @@
 
+.contentPosition {
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .contentContainer {
     gap: 10px;
     color: var(--white);
+    font-family: Inter, sans-serif;
+    
 }
 
 .landingLogo {
     color: var(--white);
+    font-family: 'PPMori';
+    font-weight: bold;
 }
 
 .homeIcons {
@@ -21,7 +32,6 @@
     height: 120px;
 
     border-radius: 6px;
-    background: linear-gradient(45deg, #173124 0.25%, #2BA669 99.75%);
     grid-area: 1 / 1 / 2 / 3;
 
     display: flex;
@@ -40,6 +50,8 @@
 
     padding: 21px;
     color: var(--white);
+
+    overflow: hidden;
 
 }
 
@@ -66,4 +78,9 @@
     grid-area: 2 / 2 / 4 / 3;
 
     padding: 21px;
+}
+
+.newsItemOne {
+    object-fit: cover;
+    background-image: url("https://images.pexels.com/photos/28317514/pexels-photo-28317514/free-photo-of-dramatic-nighttime-forest-fire-in-california.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
 }

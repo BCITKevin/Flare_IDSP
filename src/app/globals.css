@@ -65,16 +65,21 @@
   font-style: italic;
 }
 
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900; /* Variable font weights range */
+  font-style: normal;
+}
+
 /* Global Body Styling */
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Outfit', sans-serif;
   width: 440px;
-  height: 990px;
+  height: 100vh;
   margin: 0 auto;
-  overflow: hidden;
   background-color: var(--d-grey);
   padding-bottom: 60px;
-  /* Prevent content from hiding behind the BottomNavBar */
 }
 
 /* Typography Styles */
@@ -112,6 +117,17 @@ h5 {
 
 .landingHead {
   color: var(--white);
+  font-family: 'PPMori';
+}
+
+.landingLayout {
+  opacity: 1;
+  transition: opacity 1s ease-out;
+}
+
+.fade-out {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Tailwind Layer Utilities */
@@ -232,7 +248,7 @@ h5 {
 .appLayout {
   height: 100vh;
   padding: 20px;
-
+  overflow-y: auto;
 }
 
 .newsLayout,
@@ -240,6 +256,7 @@ h5 {
   height: 100vh;
   padding: 20px;
   background-color: var(--black);
+  overflow-y: auto;
 }
 
 .homeLayout {
@@ -256,8 +273,8 @@ h5 {
   background: linear-gradient(204deg, #111 19.23%, #1F1108 80.77%);
 }
 
-
 /* Custom scrollbar for dark theme */
+/*
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -275,7 +292,7 @@ h5 {
 ::-webkit-scrollbar-thumb:hover {
   background: #4a4a4a;
 }
-
+*/
 /* Customizing shadcn Popover for dark theme */
 [role="dialog"] {
   background-color: #1a1a1a !important;

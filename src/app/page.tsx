@@ -1,43 +1,51 @@
-"use client"
+"use client";
 
 import Logo from "./public/images/flare_logo 2.svg";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { useEffect } from 'react'
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react'
 import sendNotification, { fetchSubscription } from "@/lib/notification/sendNotification";
 
 
 
 
 function getOrCreateClientId() {
-
-    let clientId = localStorage.getItem('clientId');
-    console.log(clientId);
+    let clientId = localStorage.getItem("clientId");
     if (!clientId) {
         clientId = crypto.randomUUID();
-        localStorage.setItem('clientId', clientId);
-        return clientId;
+        localStorage.setItem("clientId", clientId);
     }
     return clientId;
 }
 
 function urlBase64ToUint8Array(base64String: string) {
-    const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
+    const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
     const base64 = (base64String + padding)
-        .replace(/\\-/g, '+')
-        .replace(/_/g, '/')
+        .replace(/-/g, "+")
+        .replace(/_/g, "/");
 
-    const rawData = window.atob(base64)
-    const outputArray = new Uint8Array(rawData.length)
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
 
     for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i)
+        outputArray[i] = rawData.charCodeAt(i);
     }
-    return outputArray
+    return outputArray;
 }
 
 export default function Main() {
+    const [fadeOut, setFadeOut] = useState(false);
+    const router = useRouter();
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setFadeOut(true);
+            setTimeout(() => {
+                router.push("/homepage");
+            }, 1000);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, [router]);
     useEffect(() => {
         async function requestPermissionAndSubscribe() {
             if (Notification.permission === "default") {
@@ -55,7 +63,6 @@ export default function Main() {
                     });
 
                     const clientId = getOrCreateClientId();
-
                     await fetchSubscription(clientId, subscription);
 
                     const msg = "You have agreed to get a notification from our app";
@@ -66,25 +73,25 @@ export default function Main() {
         }
 
         if ("serviceWorker" in navigator && "PushManager" in window) {
-            requestPermissionAndSubscribe().catch((error) => console.error("Error during subscription:", error));
+            requestPermissionAndSubscribe().catch((error) =>
+                console.error("Error during subscription:", error)
+            );
         }
     }, []);
 
     return (
-        <>
-            <div className="flex flex-col landingLayout items-center justify-center">
-                <Image
-                    src={Logo}
-                    alt="logo of Flare"
-                    width={191}
-                    height={191}
-                    priority
-                />
-                <h1 className="landingHead font-black">FLARE</h1>
-                <Link href={"/homepage"} >
-                    <Button className="bg-gray-300 text-neutral-800">Placeholder Start</Button>
-                </Link>
-            </div>
-        </>
-    )
+        <div
+            className={`flex flex-col landingLayout items-center justify-center ${fadeOut ? "fade-out" : ""
+                }`}
+        >
+            <Image
+                src={Logo}
+                alt="logo of Flare"
+                width={191}
+                height={191}
+                priority
+            />
+            <h1 className="landingHead">FLARE</h1>
+        </div>
+    );
 }
