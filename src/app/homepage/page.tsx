@@ -80,7 +80,7 @@ export default function HomePage() {
                                     currentToken,
                                     "Agreed notification",
                                     "You have agreed notification from Flare",
-                                    { url: "/homepage" },
+                                    "/homepage",
                                 );
                             }
                         } else {
@@ -125,7 +125,7 @@ export default function HomePage() {
                     token.data,
                     'New article released',
                     'New Article have been released! Go check it!',
-                    { url: '/news' },
+                    "/news",
                 )
             }
         }

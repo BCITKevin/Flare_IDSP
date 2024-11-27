@@ -1,8 +1,6 @@
-interface Data {
-    url: string;
-}
 
-export default async function sendNotification(cliendId: string, token: string, title: string, body: string, data?: Data) {
+
+export default async function sendNotification(cliendId: string, token: string, title: string, body: string, data?: string) {
     const response = await fetch('/api/push', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
