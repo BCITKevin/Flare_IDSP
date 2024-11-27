@@ -10,12 +10,8 @@ import BottomNavBar from "@/components/BottomNavBar";
 import WildfireRisk from "@/components/wildfireRisk/WildfireRisk";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import sendNotification from "@/lib/notification/sendNotification";
+import sendNotification, { fetchSubscription } from "@/lib/notification/sendNotification";
 import getAllSubscription from "./actions";
-import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
-import { useRouter } from "next/router";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 import { fetchWeatherData } from "@/utils/fetchWeatherData";
 
 interface NavigatorStandalone extends Navigator {
@@ -25,6 +21,30 @@ interface NavigatorStandalone extends Navigator {
 interface BeforeInstallPromptEvent extends Event {
     prompt: () => void;
     userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
+}
+
+function getOrCreateClientId() {
+    let clientId = localStorage.getItem("clientId");
+    if (!clientId) {
+        clientId = crypto.randomUUID();
+        localStorage.setItem("clientId", clientId);
+    }
+    return clientId;
+}
+
+function urlBase64ToUint8Array(base64String: string) {
+    const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding)
+        .replace(/-/g, "+")
+        .replace(/_/g, "/");
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
 }
 
 export default function HomePage() {
@@ -37,6 +57,41 @@ export default function HomePage() {
     const [fireRisk, setFireRisk] = useState<string | undefined>();
     const [riskColour, setRiskColour] = useState<string | undefined>();
     const [isWildfireRiskVisible, setIsWildfireRiskVisible] = useState(false);
+    const [subscriptionRegistered, setSubscriptionRegistered] = useState(false);
+
+    useEffect(() => {
+        async function requestPermissionAndSubscribe() {
+            if (Notification.permission === "default" && !subscriptionRegistered) {
+                const permission = await Notification.requestPermission();
+                if (permission === "granted") {
+                    const registration = await navigator.serviceWorker.register("/sw.js", {
+                        scope: "/",
+                        updateViaCache: "none",
+                    });
+                    const subscription = await registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array(
+                            process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
+                        ),
+                    });
+
+                    const clientId = getOrCreateClientId();
+                    await fetchSubscription(clientId, subscription);
+                    setSubscriptionRegistered(true);
+
+                    const msg = "You have agreed to get a notification from our app";
+
+                    await sendNotification(msg, subscription, '/homepage');
+                }
+            }
+        }
+
+        if ("serviceWorker" in navigator && "PushManager" in window) {
+            requestPermissionAndSubscribe().catch((error) =>
+                console.error("Error during subscription:", error)
+            );
+        }
+    }, [subscriptionRegistered]);
 
     const handleHelpClick = () => {
         setIsWildfireRiskVisible(true);
@@ -47,6 +102,7 @@ export default function HomePage() {
     };
 
     async function handleNotification() {
+        console.log('hit');
         if (Notification.permission === "default") {
             const permission = await Notification.requestPermission();
             if (permission !== "granted") {

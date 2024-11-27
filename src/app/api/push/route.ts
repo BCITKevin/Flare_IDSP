@@ -12,6 +12,7 @@ if (vapidKeys.publicKey !== undefined && vapidKeys.privateKey !== undefined) {
 
 export async function POST(req: Request) {
   const { msg, subscription } = await req.json();
+  console.log(msg, subscription)
 
   if (!msg) {
     return NextResponse.json(

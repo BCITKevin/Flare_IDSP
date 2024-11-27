@@ -38,12 +38,12 @@ next-env.d.ts
 #alli's
 test
 
-# Auto Generated PWA files
-**/public/sw.js
-**/public/workbox-*.js
-certificates
+# # Auto Generated PWA files
+# **/public/sw.js
+# **/public/workbox-*.js
+# certificates
 
 
-sw.*
-workbox-*
-swe-worker-*
+# sw.*
+# workbox-*
+# swe-worker-*

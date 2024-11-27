@@ -5,6 +5,12 @@ export async function POST(req: Request) {
     const { clientId, subscription } = await req.json();
     try {
         const res = await storeSubscription(clientId, subscription);
+
+        if (res.message) {
+            return NextResponse.json(
+                { status: 200 }
+            )
+        }
         
         if (!res.success) {
             throw new Error('Failed to fetch subscription');
