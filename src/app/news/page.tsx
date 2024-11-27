@@ -41,7 +41,7 @@ export default function News() {
   const getQueryForTab = (tab: Category): string => {
     switch (tab) {
       case "Local":
-        return "Wildfires vancouver";
+        return "BC Wildfires";
       case "Regional":
         return "Wildfire B.C.";
       case "National":
@@ -49,7 +49,7 @@ export default function News() {
       case "Global":
         return "Wildfire";
       default:
-        return "BC wildfires";
+        return "BC Wildfires";
     }
   };
 
@@ -64,7 +64,7 @@ export default function News() {
     const fetchNews = async () => {
       setLoading(true);
       setError(null);
-      console.log('Fetching news with query:', query);
+      console.log("Fetching news with query:", query);
 
       try {
         const res = await fetch(
@@ -74,8 +74,18 @@ export default function News() {
           throw new Error(`API 요청 실패: ${res.statusText}`);
         }
         const data: { value: BingNewsArticle[] } = await res.json();
-        console.log('Fetched news articles:', data.value); // 뉴스 데이터 로깅
-        setArticles(data.value || []);
+        console.log("Fetched news articles:", data.value); // 뉴스 데이터 로깅
+
+        // 필터링 로직 추가
+        const filteredArticles = data.value.filter(
+          (article) =>
+            article.name.toLowerCase().includes("wildfire") ||
+            article.description.toLowerCase().includes("wildfire") ||
+            article.name.toLowerCase().includes("arson") ||
+            article.description.toLowerCase().includes("arson")
+        );
+
+        setArticles(filteredArticles || []);
       } catch (err) {
         console.error(
           "Client error:",
@@ -126,7 +136,9 @@ export default function News() {
       );
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch article: HTTP error! status: ${response.status}`);
+        throw new Error(
+          `Failed to fetch article: HTTP error! status: ${response.status}`
+        );
       }
       const data = await response.json();
 
@@ -134,18 +146,18 @@ export default function News() {
       const articleData = {
         title: data.title,
         content: data.content,
-        date: new Date().toISOString(),  // 또는 data.date
+        date: new Date().toISOString(), // 또는 data.date
         author: data.author || "Unknown",
         image: data.image || "",
         source: new URL(url).hostname,
-        isProtected: data.isProtected,  // 추가
-        url: data.url                   // 추가
+        isProtected: data.isProtected, // 추가
+        url: data.url, // 추가
       };
 
-      localStorage.setItem('articleData', JSON.stringify(articleData));
-      router.push('/article');
+      localStorage.setItem("articleData", JSON.stringify(articleData));
+      router.push("/article");
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
@@ -217,7 +229,10 @@ export default function News() {
                           onClick={() => handleArticleClick(highlighted.url)}
                         >
                           <Image
-                            src={highlighted.image?.thumbnail?.contentUrl || "/images/logo_Flare.png"}
+                            src={
+                              highlighted.image?.thumbnail?.contentUrl ||
+                              "/images/logo_Flare.png"
+                            }
                             alt={highlighted.name}
                             width={400}
                             height={251}
@@ -230,11 +245,18 @@ export default function News() {
                               {highlighted.name}
                             </h5>
                             <div className="flex pb-3 text-gray-500">
-                              <p>{highlighted.provider[0]?.name || "Unknown Source"}</p>
                               <p>
-                                {isNaN(new Date(highlighted.datePublished).getTime())
+                                {highlighted.provider[0]?.name ||
+                                  "Unknown Source"}
+                              </p>
+                              <p>
+                                {isNaN(
+                                  new Date(highlighted.datePublished).getTime()
+                                )
                                   ? "Invalid Date"
-                                  : new Date(highlighted.datePublished).toLocaleDateString()}
+                                  : new Date(
+                                      highlighted.datePublished
+                                    ).toLocaleDateString()}
                               </p>
                             </div>
                           </div>
