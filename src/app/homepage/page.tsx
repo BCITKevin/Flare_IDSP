@@ -1,4 +1,3 @@
-
 'use client';
 
 
@@ -27,13 +26,13 @@ interface BeforeInstallPromptEvent extends Event {
 
 
 function getOrCreateClientId() {
-    let clientId = localStorage.getItem("clientId");
-    if (!clientId) {
-        clientId = crypto.randomUUID();
-        localStorage.setItem("clientId", clientId);
-    }
-    return clientId;
     if (typeof window !== "undefined") {
+        let clientId = localStorage.getItem("clientId");
+        if (!clientId) {
+            clientId = crypto.randomUUID();
+            localStorage.setItem("clientId", clientId);
+        }
+        return clientId;
     }
     return null;
 }
@@ -103,8 +102,6 @@ export default function HomePage() {
     };
 
     async function handleNotification() {
-        console.log('hit');
-
         const tokens = await getAllSubscription();
 
         if (tokens) {
