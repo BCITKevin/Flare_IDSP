@@ -52,7 +52,8 @@ export default function HomePage() {
     useEffect(() => {
         if (typeof window !== "undefined" && "serviceWorker" in navigator) {
             const requestPermission = async () => {
-                if (messaging) {
+                const supported = await isSupported();
+                if (messaging && supported) {
                     const permission = await Notification.requestPermission();
                     if (permission === 'granted') {
                         console.log('Notification permission granted.');
