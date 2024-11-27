@@ -13,7 +13,7 @@ if (!admin.apps.length) {
 }
 
 export async function POST(req: Request) {
-  const { clientId, token, title, body, url } = await req.json();
+  const { token, title, body, url } = await req.json();
 
   if (!token || !title || !body) {
     return NextResponse.json(

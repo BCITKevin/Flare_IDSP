@@ -10,8 +10,7 @@ export default async function sendNotification(cliendId: string, token: string, 
             token: token,
             title: title,
             body: body,
-            data: data,
-            cliendId: cliendId
+            url: data,
         }),
     });
 

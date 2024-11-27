@@ -50,55 +50,62 @@ export default function HomePage() {
     const [isWildfireRiskVisible, setIsWildfireRiskVisible] = useState(false);
 
     useEffect(() => {
-        if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-            const requestPermission = async () => {
-                const supported = await isSupported();
-                if (!supported) {
-                    console.error("Firebase Messaging is not supported on this browser.");
-                    return;
-                }
-                if (messaging) {
-                    const permission = await Notification.requestPermission();
-                    if (permission === 'granted') {
-                        console.log('Notification permission granted.');
-                        await getToken(messaging, {
-                            vapidKey: 'BPXsQYDzZY2XA5zHU_rEawyf2hVSUK0Bb8uhndW9oPlCgtQF5npThPLcCTF5m81rPiDiFu6dJZEYhN3fMbqK23o',
-                        }).then(async (currentToken) => {
-                            if (currentToken) {
-                                console.log('FCM Token:', currentToken);
-                                const clientId = getOrCreateClientId();
-                                if (clientId) {
-                                    await fetchSubscription(clientId, currentToken);
-                                    await sendNotification(
-                                        clientId,
-                                        currentToken,
-                                        'Agreed notification',
-                                        'You have agreed notification from Flare',
-                                        { url: '/homepage' },
-                                    )
-                                }
-                            } else {
-                                console.log('No registration token available.');
+        const requestPermission = async () => {
+            // Notification API와 Service Worker 지원 여부 확인
+            if (typeof Notification === "undefined" || typeof navigator.serviceWorker === "undefined") {
+                console.error("Notifications or Service Workers are not supported in this browser.");
+                return;
+            }
+
+            const supported = await isSupported();
+            if (!supported) {
+                console.error("Firebase Messaging is not supported on this browser.");
+                return;
+            }
+
+            if (messaging) {
+                const permission = await Notification.requestPermission();
+                if (permission === "granted") {
+                    console.log("Notification permission granted.");
+                    await getToken(messaging, {
+                        vapidKey: 'BPXsQYDzZY2XA5zHU_rEawyf2hVSUK0Bb8uhndW9oPlCgtQF5npThPLcCTF5m81rPiDiFu6dJZEYhN3fMbqK23o',
+                    }).then(async (currentToken) => {
+                        if (currentToken) {
+                            console.log("FCM Token:", currentToken);
+                            const clientId = getOrCreateClientId();
+                            if (clientId) {
+                                await fetchSubscription(clientId, currentToken);
+                                await sendNotification(
+                                    clientId,
+                                    currentToken,
+                                    "Agreed notification",
+                                    "You have agreed notification from Flare",
+                                    { url: "/homepage" },
+                                );
                             }
-                        }).catch((err) => {
-                            console.error('An error occurred while retrieving token. ', err);
-                        });
-                    } else if (permission === "denied") {
-                        console.log("Permission denied. Deleting token.");
-                        const clientId = getOrCreateClientId();
-                        const currentToken = await getToken(messaging);
-                        if (currentToken && clientId) {
-                            await deleteToken(messaging);
-                            await deleteTokenFromServer(clientId, currentToken);
+                        } else {
+                            console.log("No registration token available.");
                         }
+                    }).catch((err) => {
+                        console.error("An error occurred while retrieving token. ", err);
+                    });
+                } else if (permission === "denied") {
+                    console.log("Permission denied. Deleting token.");
+                    const clientId = getOrCreateClientId();
+                    const currentToken = await getToken(messaging);
+                    if (currentToken && clientId) {
+                        await deleteToken(messaging);
+                        await deleteTokenFromServer(clientId, currentToken);
                     }
                 }
             }
-            if (Notification.permission === 'default') {
-                requestPermission();
-            }
+        };
+
+        if (Notification.permission === "default") {
+            requestPermission();
         }
     }, []);
+
 
     const handleHelpClick = () => {
         setIsWildfireRiskVisible(true);
