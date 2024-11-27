@@ -3,10 +3,12 @@ import { NextResponse } from 'next/server';
 import deleteToken from './actions';
 
 if (!admin.apps.length) {
-  const serviceAccount = require('../../../../serviceAccountKey.json');
-
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    }),
   });
 }
 
