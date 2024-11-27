@@ -24,7 +24,7 @@ interface BingNewsArticle {
   description: string;
   provider: { name: string }[];
   datePublished: string;
-  content?: string; // 전체 기사 내용
+  content?: string;
 }
 
 type Category = "Local" | "Regional" | "National" | "Global";
@@ -126,13 +126,13 @@ export default function News() {
       const response = await fetch(
         `/api/article?url=${encodeURIComponent(article.url)}`
       );
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const fullArticle = await response.json();
-      
+
       if (!fullArticle || !fullArticle.content) {
         throw new Error('Invalid article data received');
       }

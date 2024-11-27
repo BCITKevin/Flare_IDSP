@@ -3,10 +3,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     Card,
-    // CardContent,
+    CardContent,
     // CardDescription,
     // CardFooter,
-    // CardHeader,
+    CardHeader,
     // CardTitle,
 } from "@/components/ui/card"
 import styles from "./safety.module.css"
@@ -28,7 +28,6 @@ type Message = {
 
 export default function Safety() {
     const [showChat, setShowChat] = useState(false);
-    // const [error, setError] = useState<null | string>(null);
     const [prevMsg, setMsg] = useState<Message[]>([
         { text: "Hello! Is there anything about wildfires I could help you with today?", sender: 'bot' },
     ]);
@@ -161,7 +160,7 @@ export default function Safety() {
                     <h3 className="text-2xl font-bold">
                         Safety Tips
                     </h3>
-                </div>                
+                </div>
                 <div className="mt-2">
                     <Tabs defaultValue="account" className="w-full flex flex-col">
                         <TabsList className="space-x-8">
@@ -216,9 +215,9 @@ export default function Safety() {
 
                                     {/* Body */}
                                     <div className="relative p-6 flex-auto bg-neutral-800 h-full flex flex-col justify-between overflow-y-auto">
-                                        
+
                                         <div className="chat-messages flex flex-col space-y-4">
-                                        
+
                                             {prevMsg.map((msg, i) => (
                                                 <>
                                                     <div key={i} className="chat-message">
@@ -266,7 +265,7 @@ export default function Safety() {
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </>
                 ) : <></>}
-                  <button 
+                <button
                     className="fixed bottom-24 right-8 bg-neutral-800 hover:bg-neutral-700 
                               text-white rounded-full shadow-lg transition-all duration-300 
                               flex items-center gap-2 px-6 py-3"

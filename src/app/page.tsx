@@ -5,7 +5,10 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEffect } from 'react'
-import sendNotification from "@/lib/notification/sendNotification";
+import sendNotification, { fetchSubscription } from "@/lib/notification/sendNotification";
+
+
+
 
 function getOrCreateClientId() {
 
@@ -34,27 +37,6 @@ function urlBase64ToUint8Array(base64String: string) {
     return outputArray
 }
 
-export async function fetchSubscription(id: string, subscription: any) {
-    const res = await fetch('/api/subscription', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            clientId: id,
-            subscription: subscription,
-        }),
-    });
-
-    const data = await res.json();
-
-    if (data.ok) {
-        return true;
-    } else {
-        return data.error;
-    }
-}
-
 export default function Main() {
     useEffect(() => {
         async function requestPermissionAndSubscribe() {
@@ -78,7 +60,7 @@ export default function Main() {
 
                     const msg = "You have agreed to get a notification from our app";
 
-                    sendNotification(msg, subscription);
+                    await sendNotification(msg, subscription, '/homepage');
                 }
             }
         }

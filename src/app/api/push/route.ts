@@ -8,7 +8,7 @@ const vapidKeys = {
 
 if (vapidKeys.publicKey !== undefined && vapidKeys.privateKey !== undefined) {
   webPush.setVapidDetails('mailto:flaireidsp@gmail.com', vapidKeys.publicKey, vapidKeys.privateKey);
-} 
+}
 
 export async function POST(req: Request) {
   const { msg, subscription } = await req.json();

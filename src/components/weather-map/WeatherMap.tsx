@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Loader2, Info, Cloud, Thermometer, SunSnow, Waves, Wind, Sun  } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { WeatherWidget } from './WeatherWidget';
 import { Legend } from './Legend';
 import { createRoot } from 'react-dom/client';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Loader } from '@googlemaps/js-api-loader';
 import styles from './WeatherMap.module.css';
 import CitySearch from './CitySearch';
@@ -81,8 +81,8 @@ const fetchWeatherData = async (lat: number, lon: number): Promise<WeatherData> 
     const currentDangerRating = fwiData?.list?.[0]?.danger_rating?.description || 'Unknown';
 
     // Get next 5 days timestamps
-    const daily_fwi: Array<{fwi: number; danger_rating: string }> = [];
-    for(let i = 0; i < 5; i++) {
+    const daily_fwi: Array<{ fwi: number; danger_rating: string }> = [];
+    for (let i = 0; i < 5; i++) {
       const date = new Date();
       date.setDate(date.getDate() + i);
       const timestamp = Math.floor(date.getTime() / 1000);
@@ -92,7 +92,7 @@ const fetchWeatherData = async (lat: number, lon: number): Promise<WeatherData> 
           `https://api.openweathermap.org/data/2.5/fwi?lat=${lat}&lon=${lon}&dt=${timestamp}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`
         );
         const dayFwiData = await dayFwiResponse.json();
-        
+
         daily_fwi.push({
           fwi: dayFwiData?.list?.[0]?.main?.fwi || currentFWI,
           danger_rating: dayFwiData?.list?.[0]?.danger_rating?.description || currentDangerRating
@@ -133,6 +133,9 @@ const WeatherMap: React.FC = () => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
+    if (error) {
+      console.error(error);
+    }
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -176,35 +179,35 @@ const WeatherMap: React.FC = () => {
         });
 
         googleMapRef.current = map;
-  
+
         // Create Search Container
         const searchContainer = document.createElement('div');
         searchContainer.className = styles.searchContainer;
         const searchRoot = createRoot(searchContainer);
         searchRoot.render(
           <div className={styles.searchForm}>
-            <CitySearch 
+            <CitySearch
               onCitySelect={async (city) => {
-                  setLoading(true);
-                  setError('');
-                  try {
-                    const weatherData = await fetchWeatherData(city.lat, city.lon);
-                    
-                    if (markerRef.current) {
-                      markerRef.current.map = null;
-                    }
-  
-                    const fwiInfo = getFWILevel(weatherData.fwi);
-  
-                    const pinElement = new google.maps.marker.PinElement({
-                      background: fwiInfo.color,
-                      scale: 1.2,
-                      borderColor: fwiInfo.color === '#FFEB3B' ? '#000000' : fwiInfo.color,
-                      glyphColor: fwiInfo.color === '#FFEB3B' ? '#000000' : '#FFFFFF'
-                    });
-  
-                    const infoTab = new google.maps.InfoWindow({
-                      content: `
+                setLoading(true);
+                setError('');
+                try {
+                  const weatherData = await fetchWeatherData(city.lat, city.lon);
+
+                  if (markerRef.current) {
+                    markerRef.current.map = null;
+                  }
+
+                  const fwiInfo = getFWILevel(weatherData.fwi);
+
+                  const pinElement = new google.maps.marker.PinElement({
+                    background: fwiInfo.color,
+                    scale: 1.2,
+                    borderColor: fwiInfo.color === '#FFEB3B' ? '#000000' : fwiInfo.color,
+                    glyphColor: fwiInfo.color === '#FFEB3B' ? '#000000' : '#FFFFFF'
+                  });
+
+                  const infoTab = new google.maps.InfoWindow({
+                    content: `
                       <style>
 
                       
@@ -327,9 +330,9 @@ const WeatherMap: React.FC = () => {
           <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 1rem; color: #ffffff;">5-Day Forecast of Risk</h4>
 <div style="display: flex; flex-direction: column; gap: 8px;">
   ${weatherData.daily.slice(0, 5).map((day, index) => {
-    const dayFWI = weatherData.daily_fwi[index].fwi;
-    const dayFWIInfo = getFWILevel(dayFWI);
-    return `
+                      const dayFWI = weatherData.daily_fwi[index].fwi;
+                      const dayFWIInfo = getFWILevel(dayFWI);
+                      return `
       <div style="
         display: flex;
         justify-content: space-between;
@@ -363,23 +366,23 @@ const WeatherMap: React.FC = () => {
         </div>
       </div>
     `;
-  }).join('')}
+                    }).join('')}
 </div>
 
         </div>
                     
                           <!-- Weather Alerts -->
-                          ${weatherData.alerts && weatherData.alerts.length > 0 ? 
-                            `<div style="margin-top: 16px;">
+                          ${weatherData.alerts && weatherData.alerts.length > 0 ?
+                        `<div style="margin-top: 16px;">
                               <h4 style="font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #ffffff;">Weather Alerts</h4>
                               ${weatherData.alerts.map(alert => `
                                 <div style="margin-top: 8px; padding: 8px; background-color: #2a2a2a; border: 1px solid #DC2626; border-radius: 4px;">
                                   <strong style="color: #DC2626;">${alert.event}</strong>
                                   <div style="font-size: 12px; margin-top: 4px; color: #ffffff;">
-                                    ${alert.description ? 
-                                      alert.description.split('\n')[0] : 
-                                      'No additional details available'
-                                    }
+                                    ${alert.description ?
+                            alert.description.split('\n')[0] :
+                            'No additional details available'
+                          }
                                   </div>
                                   <div style="font-size: 11px; color: #888888; margin-top: 4px;">
                                     ${new Date(alert.start * 1000).toLocaleString()} - 
@@ -388,69 +391,70 @@ const WeatherMap: React.FC = () => {
                                 </div>
                               `).join('')}
                             </div>`
-                            : ''
-                          }
+                        : ''
+                      }
                         </div>
                       `,
 
-                        backgroundColor: '#000000',
-                        minWidth: 300,
-                        maxWidth: 350,
-                        zIndex: 1000,
-                      
-                    });
-                    const markerElement = new google.maps.marker.AdvancedMarkerElement({
-                      map: googleMapRef.current,
-                      position: { lat: city.lat, lng: city.lon },
-                      title: city.label,
-                      content: pinElement.element
-                    });
-  
-                    markerElement.addListener('click', () => {
-                      infoTab.open({
-                        anchor: markerElement,
-                        map: googleMapRef.current
-                      });
-                    });
+                    // backgroundColor: '#000000',
+                    minWidth: 300,
+                    maxWidth: 350,
+                    zIndex: 1000,
 
-                    google.maps.event.addListener(infoTab, 'domready', () => {
-                      // Locate the InfoWindow container
-                      const infoWindowContainer = document.querySelector('.gm-style-iw');
-                      console.log('InfoWindow Container:', infoWindowContainer); // Debugging: Ensure the element exists
-                    
-                      if (infoWindowContainer) {
-                        // Hide the default close button
-                        const closeButton = document.querySelector('.gm-ui-hover-effect') as HTMLElement;
-                        if (closeButton) {
-                          closeButton.style.display = 'none'; // Hide the default close button
-                        }
-                  }});
-                  
-                    google.maps.event.addListener(googleMapRef.current!, 'click', () => {
-                      infoTab.close();
-                    });
-                
-                    
-  
-                    markerRef.current = markerElement;
-                    googleMapRef.current?.panTo({ lat: city.lat, lng: city.lon });
-                    googleMapRef.current?.setZoom(13);
+                  });
+                  const markerElement = new google.maps.marker.AdvancedMarkerElement({
+                    map: googleMapRef.current,
+                    position: { lat: city.lat, lng: city.lon },
+                    title: city.label,
+                    content: pinElement.element
+                  });
+
+                  markerElement.addListener('click', () => {
                     infoTab.open({
                       anchor: markerElement,
                       map: googleMapRef.current
                     });
-  
-                  } catch (err) {
-                    console.error('Error:', err);
-                    if (err instanceof Error) {
-                      setError(err.message || 'Failed to fetch weather data');
-                    } else {
-                      setError('Failed to fetch weather data');
+                  });
+
+                  google.maps.event.addListener(infoTab, 'domready', () => {
+                    // Locate the InfoWindow container
+                    const infoWindowContainer = document.querySelector('.gm-style-iw');
+                    console.log('InfoWindow Container:', infoWindowContainer); // Debugging: Ensure the element exists
+
+                    if (infoWindowContainer) {
+                      // Hide the default close button
+                      const closeButton = document.querySelector('.gm-ui-hover-effect') as HTMLElement;
+                      if (closeButton) {
+                        closeButton.style.display = 'none'; // Hide the default close button
+                      }
                     }
-                  } finally {
-                    setLoading(false);
+                  });
+
+                  google.maps.event.addListener(googleMapRef.current!, 'click', () => {
+                    infoTab.close();
+                  });
+
+
+
+                  markerRef.current = markerElement;
+                  googleMapRef.current?.panTo({ lat: city.lat, lng: city.lon });
+                  googleMapRef.current?.setZoom(13);
+                  infoTab.open({
+                    anchor: markerElement,
+                    map: googleMapRef.current
+                  });
+
+                } catch (err) {
+                  console.error('Error:', err);
+                  if (err instanceof Error) {
+                    setError(err.message || 'Failed to fetch weather data');
+                  } else {
+                    setError('Failed to fetch weather data');
                   }
-                }} 
+                } finally {
+                  setLoading(false);
+                }
+              }}
             />
             {loading && (
               <div className="ml-2">
@@ -460,14 +464,14 @@ const WeatherMap: React.FC = () => {
           </div>
         );
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(searchContainer);
-        
-    
+
+
         // Create Legend Container
         const legendContainer = document.createElement('div');
         const legendRoot = createRoot(legendContainer);
         legendRoot.render(<Legend />);
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legendContainer);
-    
+
         // Create Weather Widget Container
         const weatherContainer = document.createElement('div');
         const weatherRoot = createRoot(weatherContainer);
@@ -475,24 +479,24 @@ const WeatherMap: React.FC = () => {
           <WeatherWidget temperature={26} />
         );
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(weatherContainer);
-        
+
       } catch (error) {
         console.error('Error loading Google Maps:', error);
         setError('Failed to load map');
       }
     };
-  
+
     if (typeof window !== 'undefined' && !googleMapRef.current) {
       initializeMap();
     }
   }, [isMobile]);
 
- 
 
-return (
-  <Card className={styles.mapContainer}>
-    <div ref={mapRef} className={styles.mapWrapper} />
-  </Card>
-);
+
+  return (
+    <Card className={styles.mapContainer}>
+      <div ref={mapRef} className={styles.mapWrapper} />
+    </Card>
+  );
 }
 export default WeatherMap;

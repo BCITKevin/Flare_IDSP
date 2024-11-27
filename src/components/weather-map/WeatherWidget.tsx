@@ -1,7 +1,6 @@
 import React from 'react';
 import { Cloud } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import styles from "./WeatherWidget.module.css"
 
 interface WeatherWidgetProps {
   temperature: number;

@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "lib": [
-      "dom",
-      "dom.iterable",
       "esnext",
+      "dom",
+      "webworker"
     ],
     "target": "ES2017",
     "baseUrl": ".",
@@ -30,7 +30,8 @@
     },
     "types": [
       "leaflet"
-    ]
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
@@ -38,7 +39,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "public/server.js",
-    "types/web-push.d.ts",
+    "types/web-push.d.ts"
   ],
   "exclude": [
     "node_modules"

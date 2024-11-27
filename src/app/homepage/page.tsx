@@ -24,7 +24,6 @@ export default function HomePage() {
     const [isInstallable, setIsInstallable] = useState(false);
 
     async function handleNotifiaction() {
-        // console.log('handleNotifiaction');
         if (Notification.permission === 'default') {
             const permission = await Notification.requestPermission();
             if (permission !== 'granted') {
@@ -32,7 +31,7 @@ export default function HomePage() {
                 return;
             }
         }
-        const msg = 'replace this to the proper msg later';
+        const msg = 'New news alert!';
 
         const clientId = localStorage.getItem('clientId');
         console.log(clientId);
@@ -43,7 +42,7 @@ export default function HomePage() {
             if (subData) {
                 for (const sub of subData) {
                     const subscription = JSON.parse(sub.data);
-                    await sendNotification(msg, subscription);
+                    await sendNotification(msg, subscription, '/article');
                 }
             }
 
@@ -127,14 +126,14 @@ export default function HomePage() {
 
                         <Link href="/news" className={styles.news}>
                             <h3>News</h3>
-                            <p>Vancouver’s Unique Coastal Climate: A Balance of Rain and Mild Temperatures: mild, wet winters and pleasantly warm summers</p>
+                            <p>Vancouver&rsquo;s Unique Coastal Climate: A Balance of Rain and Mild Temperatures: mild, wet winters and pleasantly warm summers</p>
                         </Link>
                     </div>
                     {!isStandalone && isIOS && (
                         // Description how to install the app on IOS& Safari
                         <div>
                             <p className="text-white">
-                                To install this app, tap <span className="share-icon">⬆️</span> and select "Add to Home Screen".
+                                To install this app, tap <span className="share-icon">⬆️</span> and select &quot;Add to Home Screen&quot;.
                             </p>
                         </div>
                     )}
