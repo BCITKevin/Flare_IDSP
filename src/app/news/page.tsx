@@ -125,7 +125,7 @@ export default function News() {
   const handleArticleClick = async (url: string) => {
     try {
       const response = await fetch(
-        `/api/article?url=${encodeURIComponent(article.url)}`
+        `/api/article?url=${encodeURIComponent(url)}`
       );
 
       if (!response.ok) {
