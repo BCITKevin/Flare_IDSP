@@ -15,6 +15,7 @@ import prepareHero from "../public/images/prepareHero.png"
 import evacHero from "../public/images/EvacHero.png"
 import emergencyHero from "../public/images/EmergencyHero.png"
 import BottomNavBar from "@/components/BottomNavBar";
+import React from "react";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -28,9 +29,11 @@ type Message = {
 
 export default function Safety() {
     const [showChat, setShowChat] = useState(false);
+    const [activeTab, setActiveTab] = useState('Prepare');
     const [prevMsg, setMsg] = useState<Message[]>([
         { text: "Hello! Is there anything about wildfires I could help you with today?", sender: 'bot' },
     ]);
+    
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -68,59 +71,84 @@ export default function Safety() {
     }
 
     const prepareText = `
-    <strong>Stay informed:</strong> Monitor emergency alerts and evacuation orders from local authorities.
-    <br><br>
-    <strong>Prepare to leave immediately:</strong> 
-    - Gather essential items, including:
-    <br><br>
-    <ul>
-        <li>- Medications</li>
-        <li>- Important documents (ID, insurance)</li>
-        <li>- Emergency kit (water, food, flashlight)</li>
-    </ul>
-    <br>
-    <strong>Follow evacuation routes:</strong> Use the safest, predefined routes recommended by local authorities.
-    <br><br>
-    <strong>Leave as early as possible:</strong> Don't wait for the last moment. Protect your safety and others.
-    <br><br>
-    <strong>Assist neighbors if possible:</strong> Especially the elderly or those with disabilities.
-    <br><br>
-    <strong>Keep your vehicle ready:</strong> Full gas tank, keys accessible, and parked facing outward.
-    `;
-
-    const emergencyText = `
-    <strong>If you are in danger, contact emergency services immediately.</strong>
-    <br><br>
-    <strong>Stay inside if safe:</strong> If you can't evacuate, move to a safe room with minimal windows.
-    <br><br>
-    <strong>Block air entry:</strong> Seal windows and doors to prevent smoke from entering.
-    <br><br>
-    <strong>Listen to official information:</strong> Use radio or mobile apps for updates.
-    <br><br>
-    <strong>Use face coverings:</strong> Wet towels or N95 masks can help filter smoke.
-    <br><br>
-    <strong>Stay hydrated:</strong> Drink plenty of water to combat heat and smoke inhalation effects.
-    `;
-
-    const evacuationText = `
-    <strong>Create a defensible space around your home:</strong> Clear away flammable materials like dry leaves and wood piles.
-    <br><br>
-    <strong>Develop a family emergency plan:</strong> Include meeting spots, communication strategies, and escape routes.
+    <strong>Stay informed:</strong> It’s crucial to stay updated on emergency alerts and evacuation orders issued by local authorities. Regularly check with Flare and turn on notifications and stay updated with the news. These alerts provide critical information about wildfire locations, safe zones, and road closures.
     <br><br>
     <strong>Assemble an emergency kit:</strong> Include:
     <ul>
-        <li>- First aid supplies</li>
-        <li>- Non-perishable food and water (enough for 3 days)</li>
-        <li>- Flashlights, batteries, and a whistle</li>
+        <li>- First aid supplies, such as bandages, antiseptics, and pain relievers.</li>
+        <li>- Enough non-perishable food and water to sustain your household for at least 3 days.</li>
+        <li>- Flashlights with spare batteries, a multi-tool, a whistle for signaling, and a fire extinguisher.</li>
+        <li>- Personal hygiene items, blankets, and clothing suitable for various weather conditions.</li>
     </ul>
     <br>
-    <strong>Keep important documents ready:</strong> Store them in a fireproof safe or have digital backups.
+    <strong>Follow evacuation routes:</strong> Use the safest, predefined routes recommended by local authorities. Avoid unfamiliar roads that could be blocked or unsafe. Always have a physical map in case of GPS or mobile network failure.
     <br><br>
-    <strong>Know your local risk level:</strong> Stay informed about wildfire risks in your area and practice evacuation drills.
+    <strong>Leave as early as possible:</strong> Don’t wait until the last moment to evacuate. Early action reduces risks and allows emergency responders to focus on critical areas. Traffic congestion and panic during last-minute evacuations can pose additional dangers.
     <br><br>
-    <strong>Sign up for emergency alerts:</strong> Subscribe to local wildfire and weather warning systems.
+    <strong>Assist neighbors if possible:</strong> Check on those in your community who may need help, especially the elderly, people with disabilities, or families without transportation. Offer support by carpooling or sharing resources.
+    <br><br>
+    <strong>Keep your vehicle ready:</strong> Ensure your vehicle is in good condition with a full gas tank. Keep the keys easily accessible, park the car facing outward for a quick exit, and load essential items in advance to save time during an emergency.
+    <br><br>
+    <strong>Practice your evacuation plan:</strong> Conduct regular drills with your household to ensure everyone knows their roles and responsibilities. Familiarity with the process can reduce stress and confusion during an actual emergency.
+    <br><br>
+    <strong>Create a defensible space around your home:</strong> Clear dry leaves, branches, and other flammable materials at least 30 feet from your home. Trim tree branches to a height of at least 6 feet to prevent fire from climbing. Regularly maintain gutters and roofs by removing debris. Store firewood and other combustible items far from structures.
+    <br><br>
     `;
+    
 
+    const emergencyText = `
+    <strong>If you are in danger, contact emergency services immediately:</strong> Dial the emergency hotline 911 if your safety is compromised. Or  call 1 800 663-5555 toll-free or <strong>*5555</strong> on a cellphone to report a wildfire. Clearly state your location and the nature of the emergency to ensure responders can locate you quickly. Avoid using the line for non-critical updates to keep it free for those in immediate need.
+    <br><br>
+    <strong>Stay inside if safe:</strong> If evacuation is not possible, shelter in place in a safe room. Select an area with minimal windows and external doors, preferably one located at the center of your home or on the opposite side of the fire’s path. Keep the space stocked with basic necessities, including water, flashlights, and communication devices.
+    <br><br>
+    <strong>Block air entry:</strong> Use duct tape, wet towels, or other materials to seal gaps around doors and windows to prevent smoke infiltration. Shut off HVAC systems and close vents to further limit the entry of hazardous air.
+    <br><br>
+    <strong>Listen to official information:</strong> Stay tuned to updates from local authorities via radio, mobile apps, or reliable online sources. Avoid spreading or acting on unverified information that may cause unnecessary panic.
+    <br><br>
+    <strong>Use face coverings:</strong> If you need to go outside or smoke enters your shelter, use wet towels, bandanas, or certified N95 masks to filter harmful particles. This is especially important for individuals with respiratory issues, the elderly, and young children.
+    <br><br>
+    <strong>Stay hydrated:</strong> Drink plenty of water to combat dehydration caused by heat and smoke inhalation. Avoid alcohol or caffeinated drinks, which can exacerbate dehydration. If possible, keep oral rehydration salts or electrolyte drinks on hand.
+    <br><br>
+    <strong>Be prepared for power outages:</strong> Wildfires may disrupt electricity. Keep flashlights, extra batteries, and a manual crank radio available. Charge your devices in advance and consider using portable power banks.
+    <br><br>
+    <strong>Plan for communication:</strong> If mobile networks are down, use walkie-talkies or pre-established signals with neighbors and family to communicate effectively.
+    <br><br>
+    <strong>Protect pets and livestock:</strong> Keep your pets in a secure area with food and water. If possible, move livestock to open areas far from fire hazards.
+    <br><br>
+    <strong>Monitor air quality:</strong> Use air purifiers indoors if available and check air quality levels through official channels to minimize smoke-related health risks.
+    `;
+    
+
+    const evacuationText = `
+    <strong>Develop a family emergency plan:</strong> Create a detailed emergency plan that includes designated meeting spots, multiple communication strategies, and escape routes for different scenarios. Assign responsibilities to each family member and rehearse the plan frequently to ensure everyone is prepared.
+    <br><br>
+    <strong>Prepare to leave immediately:</strong> 
+    - Ensure you have gathered all essential items ahead of time to avoid delays. These include:
+    <br><br>
+    <ul>
+        <li>- <strong>Medications</strong>, including prescription drugs and a basic first aid kit for minor injuries.</li>
+        <li>- <strong>Important documents</strong>, such as government-issued IDs, insurance papers, property deeds, and emergency contact information.</li>
+        <li>- Your <strong>emergency kit</strong> as outlined in the prepare section</li>
+        <li>- Personal items like clothing, toiletries, and any essential supplies for infants, pets, or elderly family members.</li>
+    </ul>
+    <br>
+    <strong>Keep important documents ready:</strong> Store essential documents like birth certificates, passports, medical records, and insurance policies in a waterproof, fireproof safe. Back up digital copies to cloud storage or an external hard drive.
+    <br><br>
+    <strong>Know your local risk level:</strong> Familiarize yourself with wildfire risks in your area by consulting local government websites and fire risk maps. Participate in community evacuation drills to understand the best practices and routes in case of an emergency.
+    <br><br>
+    <strong>Sign up for emergency alerts:</strong> Subscribe to wildfire and weather warning systems offered by local authorities.
+    <br><br>
+    <strong>Invest in fire-resistant building materials:</strong> Upgrade your home with fire-resistant roofing, siding, and windows. Install ember-resistant vents to prevent sparks from entering your home.
+    <br><br>
+    <strong>Prepare your vehicle:</strong> Keep your car in good working condition, with a full gas tank and an emergency kit inside. Include maps, a spare tire, tools, and extra supplies to ensure mobility during an evacuation.
+    <br><br>
+    <strong>Coordinate with your neighbors:</strong> Work together with your community to create a wildfire response plan. Share resources, such as tools and safety tips, to enhance collective preparedness.
+    <br><br>
+    <strong>Learn fire suppression techniques:</strong> Take basic training on how to use a fire extinguisher and other suppression tools effectively. Know when to evacuate instead of attempting to combat the fire yourself.
+    <br><br>
+    <strong>Advocate for local safety measures:</strong> Encourage local governments to implement wildfire prevention strategies, such as controlled burns, community fuel breaks, and infrastructure upgrades.
+    `;
+    
 
 
 
@@ -135,7 +163,7 @@ export default function Safety() {
                         Learn how to prepare and stay safe during wildfire season
                     </p>
                 </div>
-                <Card className="p-5 mt-3 transition-all duration-300 hover:shadow-lg border-l-4 border-l-orange-500">
+                {/* <Card className="p-5 mt-3 transition-all duration-300 hover:shadow-lg border-l-4 border-l-orange-500">
                     <CardHeader className="p-0 mb-3">
                         <div className="flex items-center gap-2">
                             <strong className={`${styles.articleBody} text-lg`}>
@@ -155,35 +183,35 @@ export default function Safety() {
                             </ul>
                         </div>
                     </CardContent>
-                </Card>
+                </Card> */}
                 <div className={`${styles.safetyHeading} mb-6 mt-6`}>
                     <h3 className="text-2xl font-bold">
                         Safety Tips
                     </h3>
                 </div>
                 <div className="mt-2">
-                    <Tabs defaultValue="account" className="w-full flex flex-col">
-                        <TabsList className="space-x-8">
-                            <TabsTrigger value="Prepare" className="w-full">Prepare</TabsTrigger>
-                            <TabsTrigger value="Emergency" className="w-full">Emergency</TabsTrigger>
-                            <TabsTrigger value="Evacuation" className="w-full">Evacuation</TabsTrigger>
+                <Tabs defaultValue="Prepare" className="w-full flex flex-col" onValueChange={setActiveTab}>
+                        <TabsList className="space-x-8 p-6">
+                            <TabsTrigger value="Prepare" className={`w-full ${activeTab === 'Prepare' ? styles.activeTab : ''}`}>Prepare</TabsTrigger>
+                            <TabsTrigger value="Emergency" className={`w-full ${activeTab === 'Emergency' ? styles.activeTab : ''}`}>Emergency</TabsTrigger>
+                            <TabsTrigger value="Evacuation" className={`w-full ${activeTab === 'Evacuation' ? styles.activeTab : ''}`}>Evacuation</TabsTrigger>
                         </TabsList>
                         <TabsContent value="Prepare">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
                                 <Image src={prepareHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Flag color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: prepareText }} className={styles.articleBody} />
                             </Card>
                         </TabsContent>
                         <TabsContent value="Emergency">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
                                 <Image src={emergencyHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Backpack color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: emergencyText }} className={styles.articleBody} />
                             </Card>
                         </TabsContent>
                         <TabsContent value="Evacuation">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
                                 <Image src={evacHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Map color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: evacuationText }} className={styles.articleBody} />
@@ -194,86 +222,70 @@ export default function Safety() {
                 {showChat ? (
                     <>
                         <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                            <div className="relative w-[calc(100%-20px)] h-[calc(100%-200px)] mx-auto my-6">
-                                {/* Content */}
+                            <div className="relative w-full h-full mx-auto max-w-3xl px-4 pt-6 pb-24">
                                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
                                     {/* Header */}
-                                    <div className="flex items-center justify-between p-4 border-b border-solid border-gray-200 rounded-t">
-                                        <div className="flex items-center space-x-2">
-                                            <img src="/icons/laugh.svg" alt="smile icon" width={24} />
-                                            <p className={` text-xl `}>Flare Chatbot</p>
-                                        </div>
+                                    <div className="flex items-center justify-between p-4 border-b border-solid border-gray-200">
+                                        <h3 className="text-lg font-semibold text-gray-900">Flare Assistant</h3>
                                         <button
-                                            className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                            className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold"
                                             onClick={() => setShowChat(false)}
                                         >
-                                            <span className="flex items-center h-6 w-6 text-2xl block outline-none focus:outline-none">
-                                                x
-                                            </span>
+                                            ×
                                         </button>
                                     </div>
-
-                                    {/* Body */}
-                                    <div className="relative p-6 flex-auto bg-neutral-800 h-full flex flex-col justify-between overflow-y-auto">
-
-                                        <div className="chat-messages flex flex-col space-y-4">
-
-                                            {prevMsg.map((msg, i) => (
-                                                <>
-                                                    <div key={i} className="chat-message">
-                                                        <div className={msg.sender === "bot" ? "flex items-end text-base" : "flex items-end justify-end text-base"}>
-                                                            <div className={msg.sender === "bot" ? "text-base flex flex-col space-y-2 max-w-xs mx-2 order-2 items-start" : "flex flex-col space-y-2 max-w-xs mx-2 order-1 items-end"}>
-                                                                <div>
-                                                                    <span className={msg.sender === "bot" ? "text-base px-4 py-2 rounded-lg inline-block rounded-bl-none bg-neutral-900 text-gray-100" : "px-4 py-2 rounded-lg inline-block rounded-br-none bg-gray-200 text-black"}>
-                                                                        {msg.text}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            ))}
-                                        </div>
+                                    
+                                    {/* Chat Messages */}
+                                    <div className="relative p-4 flex-auto overflow-y-auto">
+                                        {prevMsg.map((msg, i) => (
+                                            <div key={i} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4`}>
+                                                <div className={`rounded-lg px-4 py-2 max-w-[80%] ${
+                                                    msg.sender === 'user' 
+                                                    ? 'bg-[var(--p-highlight)] text-white' 
+                                                    : 'bg-gray-100 text-gray-800'
+                                                }`}>
+                                                    {msg.text}
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
 
-                                    {/* Footer */}
-                                    <div className="border-t-2 border-gray-200 px-4 py-4">
-                                        <div className="relative flex items-center space-x-2 w-full">
-                                            {/* <span className="absolute inset-y-0 flex items-center">
-                                                <button type="button" className="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6 text-gray-600">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-                                                    </svg>
-                                                </button>
-                                            </span> */}
-                                            <form onSubmit={handleSubmit} className="flex w-full items-center space-x-2">
-                                                <input
-                                                    type="text"
-                                                    id="message"
-                                                    placeholder="Enter your Message..."
-                                                    className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3"
-                                                />
-                                                <button type="submit" className="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white hover:bg-gray-400 focus:outline-none">
-                                                    <img src="/icons/send.svg" alt="send icon" />
-                                                </button>
-                                            </form>
-                                        </div>
+                                    {/* Input Form */}
+                                    <div className="border-t border-solid border-gray-200 p-4">
+                                        <form onSubmit={handleSubmit} className="flex gap-2">
+                                            <input
+                                                type="text"
+                                                id="message"
+                                                placeholder="Type your message..."
+                                                className="flex-grow px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-[var(--p-highlight)]"
+                                            />
+                                            <button
+                                                type="submit"
+                                                className="bg-[var(--p-highlight)] text-white rounded-full px-6 py-2"
+                                            >
+                                                Send
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </>
-                ) : <></>}
-                <button
-                    className="fixed bottom-24 right-8 bg-neutral-800 hover:bg-neutral-700 
-                              text-white rounded-full shadow-lg transition-all duration-300 
-                              flex items-center gap-2 px-6 py-3"
-                    onClick={() => setShowChat(true)}
-                >
-                    <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-6 h-6" />
-                    <span>Ask me questions</span>
-                </button>
+                ) : null}
+                <div className="flex flex-col fixed bottom-24 rounded-md px-6 py-3 m-2 items-center gap-4 transition-all duration-300">
+                    {/* <div>
+                        <span className="flex justify-center text-white ">Flare Assistant</span>
+                        <p className="text-white text-base">Ask us about how you can stay safe</p>
+                    </div> */}
+                    <button 
+                        className="flex justify-center bg-[var(--p-highlight)] text-white rounded-full shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
+                        onClick={() => setShowChat(true)}
+                    >
+                        <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-5 h-5 filter invert brightness-0" />
+                        <span>Chat now</span>
+                    </button>
+                </div>
             </div>
             <BottomNavBar />
         </body>
