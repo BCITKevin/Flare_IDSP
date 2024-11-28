@@ -291,15 +291,19 @@ export default function Safety() {
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </>
                 ) : <></>}
-                <button
-                    className="fixed bottom-24 right-8 bg-neutral-800 hover:bg-neutral-700 
-                              text-white rounded-full shadow-lg transition-all duration-300 
-                              flex items-center gap-2 px-6 py-3"
-                    onClick={() => setShowChat(true)}
-                >
-                    <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-6 h-6" />
-                    <span>Ask me questions</span>
-                </button>
+                <div className="flex flex-col fixed bottom-24 bg-neutral-700 rounded-md shadow-lg px-6 py-3 m-2 items-center gap-4 transition-all duration-300 box-border">
+                    <div>
+                        {/* <span className="flex justify-center text-white ">Flare Assistant</span> */}
+                        <p className="text-white text-base">Ask us about how you can stay safe</p>
+                    </div>
+                    <button 
+                        className="flex justify-center bg-[var(--p-highlight)] text-white rounded-full shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border"
+                        onClick={() => setShowChat(true)}
+                    >
+                        <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-5 h-5 filter invert brightness-0" />
+                        <span>Chat now</span>
+                    </button>
+                </div>
             </div>
             <BottomNavBar />
         </body>
