@@ -33,6 +33,7 @@ export default function Safety() {
     const [prevMsg, setMsg] = useState<Message[]>([
         { text: "Hello! Is there anything about wildfires I could help you with today?", sender: 'bot' },
     ]);
+    
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -89,6 +90,7 @@ export default function Safety() {
     <strong>Keep your vehicle ready:</strong> Ensure your vehicle is in good condition with a full gas tank. Keep the keys easily accessible, park the car facing outward for a quick exit, and load essential items in advance to save time during an emergency.
     <br><br>
     <strong>Practice your evacuation plan:</strong> Conduct regular drills with your household to ensure everyone knows their roles and responsibilities. Familiarity with the process can reduce stress and confusion during an actual emergency.
+    <br><br>
     <strong>Create a defensible space around your home:</strong> Clear dry leaves, branches, and other flammable materials at least 30 feet from your home. Trim tree branches to a height of at least 6 feet to prevent fire from climbing. Regularly maintain gutters and roofs by removing debris. Store firewood and other combustible items far from structures.
     <br><br>
     `;
@@ -220,84 +222,64 @@ export default function Safety() {
                 {showChat ? (
                     <>
                         <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                            <div className="relative w-[calc(100%-20px)] h-[calc(100%-200px)] mx-auto my-6">
-                                {/* Content */}
+                            <div className="relative w-full h-full mx-auto max-w-3xl px-4 pt-6 pb-24">
                                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
                                     {/* Header */}
-                                    <div className="flex items-center justify-between p-4 border-b border-solid border-gray-200 rounded-t">
-                                        <div className="flex items-center space-x-2">
-                                            <img src="/icons/laugh.svg" alt="smile icon" width={24} />
-                                            <p className={` text-xl `}>Flare Chatbot</p>
-                                        </div>
+                                    <div className="flex items-center justify-between p-4 border-b border-solid border-gray-200">
+                                        <h3 className="text-lg font-semibold text-gray-900">Flare Assistant</h3>
                                         <button
-                                            className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                            className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold"
                                             onClick={() => setShowChat(false)}
                                         >
-                                            <span className="flex items-center h-6 w-6 text-2xl block outline-none focus:outline-none">
-                                                x
-                                            </span>
+                                            ×
                                         </button>
                                     </div>
-
-                                    {/* Body */}
-                                    <div className="relative p-6 flex-auto bg-neutral-800 h-full flex flex-col justify-between overflow-y-auto">
-
-                                        <div className="chat-messages flex flex-col space-y-4">
-
-                                            {prevMsg.map((msg, i) => (
-                                                <>
-                                                    <div key={i} className="chat-message">
-                                                        <div className={msg.sender === "bot" ? "flex items-end text-base" : "flex items-end justify-end text-base"}>
-                                                            <div className={msg.sender === "bot" ? "text-base flex flex-col space-y-2 max-w-xs mx-2 order-2 items-start" : "flex flex-col space-y-2 max-w-xs mx-2 order-1 items-end"}>
-                                                                <div>
-                                                                    <span className={msg.sender === "bot" ? "text-base px-4 py-2 rounded-lg inline-block rounded-bl-none bg-neutral-900 text-gray-100" : "px-4 py-2 rounded-lg inline-block rounded-br-none bg-gray-200 text-black"}>
-                                                                        {msg.text}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            ))}
-                                        </div>
+                                    
+                                    {/* Chat Messages */}
+                                    <div className="relative p-4 flex-auto overflow-y-auto">
+                                        {prevMsg.map((msg, i) => (
+                                            <div key={i} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4`}>
+                                                <div className={`rounded-lg px-4 py-2 max-w-[80%] ${
+                                                    msg.sender === 'user' 
+                                                    ? 'bg-[var(--p-highlight)] text-white' 
+                                                    : 'bg-gray-100 text-gray-800'
+                                                }`}>
+                                                    {msg.text}
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
 
-                                    {/* Footer */}
-                                    <div className="border-t-2 border-gray-200 px-4 py-4">
-                                        <div className="relative flex items-center space-x-2 w-full">
-                                            {/* <span className="absolute inset-y-0 flex items-center">
-                                                <button type="button" className="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6 text-gray-600">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-                                                    </svg>
-                                                </button>
-                                            </span> */}
-                                            <form onSubmit={handleSubmit} className="flex w-full items-center space-x-2">
-                                                <input
-                                                    type="text"
-                                                    id="message"
-                                                    placeholder="Enter your Message..."
-                                                    className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3"
-                                                />
-                                                <button type="submit" className="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white hover:bg-gray-400 focus:outline-none">
-                                                    <img src="/icons/send.svg" alt="send icon" />
-                                                </button>
-                                            </form>
-                                        </div>
+                                    {/* Input Form */}
+                                    <div className="border-t border-solid border-gray-200 p-4">
+                                        <form onSubmit={handleSubmit} className="flex gap-2">
+                                            <input
+                                                type="text"
+                                                id="message"
+                                                placeholder="Type your message..."
+                                                className="flex-grow px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-[var(--p-highlight)]"
+                                            />
+                                            <button
+                                                type="submit"
+                                                className="bg-[var(--p-highlight)] text-white rounded-full px-6 py-2"
+                                            >
+                                                Send
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </>
-                ) : <></>}
-                <div className="flex flex-col fixed bottom-24 bg-neutral-700 rounded-md shadow-lg px-6 py-3 m-2 items-center gap-4 transition-all duration-300 box-border">
-                    <div>
-                        {/* <span className="flex justify-center text-white ">Flare Assistant</span> */}
+                ) : null}
+                <div className="flex flex-col fixed bottom-24 rounded-md px-6 py-3 m-2 items-center gap-4 transition-all duration-300">
+                    {/* <div>
+                        <span className="flex justify-center text-white ">Flare Assistant</span>
                         <p className="text-white text-base">Ask us about how you can stay safe</p>
-                    </div>
+                    </div> */}
                     <button 
-                        className="flex justify-center bg-[var(--p-highlight)] text-white rounded-full shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border"
+                        className="flex justify-center bg-[var(--p-highlight)] text-white rounded-full shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
                         onClick={() => setShowChat(true)}
                     >
                         <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-5 h-5 filter invert brightness-0" />
