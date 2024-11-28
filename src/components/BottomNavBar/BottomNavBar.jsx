@@ -6,7 +6,7 @@ import styles from "./BottomNavBar.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { HomeIcon, NewspaperIcon, CogIcon, ShieldCheck, MapIcon } from "lucide-react";
+import { HomeIcon, NewspaperIcon, Settings, ShieldCheck, CloudSunIcon } from "lucide-react";
 
 
 // interface NavItem {
@@ -56,45 +56,50 @@ import { HomeIcon, NewspaperIcon, CogIcon, ShieldCheck, MapIcon } from "lucide-r
 
 export default function BottomNavBar() {
   const IconProps = {
-    IconSize: 48,
+    IconSize: 42,
   }
 
   return (
-    <div>
-      <Link href={"/homepage"}>
+    <div className={styles.navContainer}>
+      <Link href={"/homepage"} className={styles.navIcon}>
         <HomeIcon
           size={IconProps.IconSize}
           alt="Home Icon"
           className={styles.icon}
         />
+        <p>Home</p>
       </Link>
-      <Link href={"/news"}>
+      <Link href={"/news"} className={styles.navIcon}>
         <NewspaperIcon
           size={IconProps.IconSize}
           alt="News Icon"
           className={styles.icon}
         />
+        <p>News</p>
       </Link>
-      <Link href={"/map"}>
-        <MapIcon
+      <Link href={"/map"} className={styles.navIcon}>
+        <CloudSunIcon
           size={IconProps.IconSize}
           alt="Map Icon"
           className={styles.icon}
         />
+        <p>Map</p>
       </Link>
-      <Link href={"/safety"}>
+      <Link href={"/safety"} className={styles.navIcon}>
         <ShieldCheck
           size={IconProps.IconSize}
           alt="Safety Icon"
           className={styles.icon}
         />
+        <p>Safety</p>
       </Link>
-      <Link href={"/settings"}>
-        <CogIcon
+      <Link href={"/settings"} className={styles.navIcon}>
+        <Settings
           size={IconProps.IconSize}
           alt="Settings Icon"
           className={styles.icon}
         />
+        <h>Setting</h>
       </Link>
     </div>
   );
