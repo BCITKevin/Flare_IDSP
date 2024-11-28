@@ -15,6 +15,7 @@ import prepareHero from "../public/images/prepareHero.png"
 import evacHero from "../public/images/EvacHero.png"
 import emergencyHero from "../public/images/EmergencyHero.png"
 import BottomNavBar from "@/components/BottomNavBar";
+import React from "react";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -68,59 +69,83 @@ export default function Safety() {
     }
 
     const prepareText = `
-    <strong>Stay informed:</strong> Monitor emergency alerts and evacuation orders from local authorities.
+    <strong>Stay informed:</strong> It’s crucial to stay updated on emergency alerts and evacuation orders issued by local authorities. Regularly check with Flare and turn on notifications and stay updated with the news. These alerts provide critical information about wildfire locations, safe zones, and road closures.
     <br><br>
     <strong>Prepare to leave immediately:</strong> 
-    - Gather essential items, including:
+    - Ensure you have gathered all essential items ahead of time to avoid delays. These include:
     <br><br>
     <ul>
-        <li>- Medications</li>
-        <li>- Important documents (ID, insurance)</li>
-        <li>- Emergency kit (water, food, flashlight)</li>
+        <li>- <strong>Medications</strong>, including prescription drugs and a basic first aid kit for minor injuries.</li>
+        <li>- <strong>Important documents</strong>, such as government-issued IDs, insurance papers, property deeds, and emergency contact information.</li>
+        <li>- An <strong>emergency kit</strong> containing bottled water, non-perishable food items, a flashlight with extra batteries, and a portable phone charger or power bank.</li>
+        <li>- Personal items like clothing, toiletries, and any essential supplies for infants, pets, or elderly family members.</li>
     </ul>
     <br>
-    <strong>Follow evacuation routes:</strong> Use the safest, predefined routes recommended by local authorities.
+    <strong>Follow evacuation routes:</strong> Use the safest, predefined routes recommended by local authorities. Avoid unfamiliar roads that could be blocked or unsafe. Always have a physical map in case of GPS or mobile network failure.
     <br><br>
-    <strong>Leave as early as possible:</strong> Don't wait for the last moment. Protect your safety and others.
+    <strong>Leave as early as possible:</strong> Don’t wait until the last moment to evacuate. Early action reduces risks and allows emergency responders to focus on critical areas. Traffic congestion and panic during last-minute evacuations can pose additional dangers.
     <br><br>
-    <strong>Assist neighbors if possible:</strong> Especially the elderly or those with disabilities.
+    <strong>Assist neighbors if possible:</strong> Check on those in your community who may need help, especially the elderly, people with disabilities, or families without transportation. Offer support by carpooling or sharing resources.
     <br><br>
-    <strong>Keep your vehicle ready:</strong> Full gas tank, keys accessible, and parked facing outward.
+    <strong>Keep your vehicle ready:</strong> Ensure your vehicle is in good condition with a full gas tank. Keep the keys easily accessible, park the car facing outward for a quick exit, and load essential items in advance to save time during an emergency.
+    <br><br>
+    <strong>Practice your evacuation plan:</strong> Conduct regular drills with your household to ensure everyone knows their roles and responsibilities. Familiarity with the process can reduce stress and confusion during an actual emergency.
     `;
+    
 
     const emergencyText = `
-    <strong>If you are in danger, contact emergency services immediately.</strong>
+    <strong>If you are in danger, contact emergency services immediately:</strong> Dial the emergency hotline 911 if your safety is compromised. Or  call 1 800 663-5555 toll-free or <strong>*5555</strong> on a cellphone to report a wildfire. Clearly state your location and the nature of the emergency to ensure responders can locate you quickly. Avoid using the line for non-critical updates to keep it free for those in immediate need.
     <br><br>
-    <strong>Stay inside if safe:</strong> If you can't evacuate, move to a safe room with minimal windows.
+    <strong>Stay inside if safe:</strong> If evacuation is not possible, shelter in place in a safe room. Select an area with minimal windows and external doors, preferably one located at the center of your home or on the opposite side of the fire’s path. Keep the space stocked with basic necessities, including water, flashlights, and communication devices.
     <br><br>
-    <strong>Block air entry:</strong> Seal windows and doors to prevent smoke from entering.
+    <strong>Block air entry:</strong> Use duct tape, wet towels, or other materials to seal gaps around doors and windows to prevent smoke infiltration. Shut off HVAC systems and close vents to further limit the entry of hazardous air.
     <br><br>
-    <strong>Listen to official information:</strong> Use radio or mobile apps for updates.
+    <strong>Listen to official information:</strong> Stay tuned to updates from local authorities via radio, mobile apps, or reliable online sources. Avoid spreading or acting on unverified information that may cause unnecessary panic.
     <br><br>
-    <strong>Use face coverings:</strong> Wet towels or N95 masks can help filter smoke.
+    <strong>Use face coverings:</strong> If you need to go outside or smoke enters your shelter, use wet towels, bandanas, or certified N95 masks to filter harmful particles. This is especially important for individuals with respiratory issues, the elderly, and young children.
     <br><br>
-    <strong>Stay hydrated:</strong> Drink plenty of water to combat heat and smoke inhalation effects.
+    <strong>Stay hydrated:</strong> Drink plenty of water to combat dehydration caused by heat and smoke inhalation. Avoid alcohol or caffeinated drinks, which can exacerbate dehydration. If possible, keep oral rehydration salts or electrolyte drinks on hand.
+    <br><br>
+    <strong>Be prepared for power outages:</strong> Wildfires may disrupt electricity. Keep flashlights, extra batteries, and a manual crank radio available. Charge your devices in advance and consider using portable power banks.
+    <br><br>
+    <strong>Plan for communication:</strong> If mobile networks are down, use walkie-talkies or pre-established signals with neighbors and family to communicate effectively.
+    <br><br>
+    <strong>Protect pets and livestock:</strong> Keep your pets in a secure area with food and water. If possible, move livestock to open areas far from fire hazards.
+    <br><br>
+    <strong>Monitor air quality:</strong> Use air purifiers indoors if available and check air quality levels through official channels to minimize smoke-related health risks.
     `;
+    
 
     const evacuationText = `
-    <strong>Create a defensible space around your home:</strong> Clear away flammable materials like dry leaves and wood piles.
+    <strong>Create a defensible space around your home:</strong> Clear dry leaves, branches, and other flammable materials at least 30 feet from your home. Trim tree branches to a height of at least 6 feet to prevent fire from climbing. Regularly maintain gutters and roofs by removing debris. Store firewood and other combustible items far from structures.
     <br><br>
-    <strong>Develop a family emergency plan:</strong> Include meeting spots, communication strategies, and escape routes.
+    <strong>Develop a family emergency plan:</strong> Create a detailed emergency plan that includes designated meeting spots, multiple communication strategies, and escape routes for different scenarios. Assign responsibilities to each family member and rehearse the plan frequently to ensure everyone is prepared.
     <br><br>
     <strong>Assemble an emergency kit:</strong> Include:
     <ul>
-        <li>- First aid supplies</li>
-        <li>- Non-perishable food and water (enough for 3 days)</li>
-        <li>- Flashlights, batteries, and a whistle</li>
+        <li>- First aid supplies, such as bandages, antiseptics, and pain relievers.</li>
+        <li>- Enough non-perishable food and water to sustain your household for at least 3 days.</li>
+        <li>- Flashlights with spare batteries, a multi-tool, a whistle for signaling, and a fire extinguisher.</li>
+        <li>- Personal hygiene items, blankets, and clothing suitable for various weather conditions.</li>
     </ul>
     <br>
-    <strong>Keep important documents ready:</strong> Store them in a fireproof safe or have digital backups.
+    <strong>Keep important documents ready:</strong> Store essential documents like birth certificates, passports, medical records, and insurance policies in a waterproof, fireproof safe. Back up digital copies to cloud storage or an external hard drive.
     <br><br>
-    <strong>Know your local risk level:</strong> Stay informed about wildfire risks in your area and practice evacuation drills.
+    <strong>Know your local risk level:</strong> Familiarize yourself with wildfire risks in your area by consulting local government websites and fire risk maps. Participate in community evacuation drills to understand the best practices and routes in case of an emergency.
     <br><br>
-    <strong>Sign up for emergency alerts:</strong> Subscribe to local wildfire and weather warning systems.
+    <strong>Sign up for emergency alerts:</strong> Subscribe to wildfire and weather warning systems offered by local authorities. Apps and SMS alerts can provide timely information and updates.
+    <br><br>
+    <strong>Invest in fire-resistant building materials:</strong> Upgrade your home with fire-resistant roofing, siding, and windows. Install ember-resistant vents to prevent sparks from entering your home.
+    <br><br>
+    <strong>Prepare your vehicle:</strong> Keep your car in good working condition, with a full gas tank and an emergency kit inside. Include maps, a spare tire, tools, and extra supplies to ensure mobility during an evacuation.
+    <br><br>
+    <strong>Coordinate with your neighbors:</strong> Work together with your community to create a wildfire response plan. Share resources, such as tools and safety tips, to enhance collective preparedness.
+    <br><br>
+    <strong>Learn fire suppression techniques:</strong> Take basic training on how to use a fire extinguisher and other suppression tools effectively. Know when to evacuate instead of attempting to combat the fire yourself.
+    <br><br>
+    <strong>Advocate for local safety measures:</strong> Encourage local governments to implement wildfire prevention strategies, such as controlled burns, community fuel breaks, and infrastructure upgrades.
     `;
-
+    
 
 
 
