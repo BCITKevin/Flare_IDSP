@@ -1,12 +1,8 @@
-"use client";
-
 import styles from "./WildfireRisk.module.css";
-
 // Define the props type
 interface WildfireRiskProps {
   onClose: () => void; // Specify that onClose is a function with no arguments and no return value
 }
-
 export default function WildfireRisk({ onClose }: WildfireRiskProps) {
   return (
     <div className={styles.container}>

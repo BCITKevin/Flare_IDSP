@@ -3,7 +3,7 @@ import { Switch } from "@/components/ui/switch";
 import { Sun, Bell, Languages, Info } from 'lucide-react';
 import { Combobox } from "@/components/ui/combobox";
 import './settings.css';
-import BottomNavBar from "@/components/BottomNavBar";
+import BottomNavBar from "@/components/BottomNavBar/BottomNavBar";
 
 
 function Settings() {
