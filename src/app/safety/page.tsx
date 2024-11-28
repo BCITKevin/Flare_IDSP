@@ -29,6 +29,7 @@ type Message = {
 
 export default function Safety() {
     const [showChat, setShowChat] = useState(false);
+    const [activeTab, setActiveTab] = useState('Prepare');
     const [prevMsg, setMsg] = useState<Message[]>([
         { text: "Hello! Is there anything about wildfires I could help you with today?", sender: 'bot' },
     ]);
@@ -71,14 +72,12 @@ export default function Safety() {
     const prepareText = `
     <strong>Stay informed:</strong> It’s crucial to stay updated on emergency alerts and evacuation orders issued by local authorities. Regularly check with Flare and turn on notifications and stay updated with the news. These alerts provide critical information about wildfire locations, safe zones, and road closures.
     <br><br>
-    <strong>Prepare to leave immediately:</strong> 
-    - Ensure you have gathered all essential items ahead of time to avoid delays. These include:
-    <br><br>
+    <strong>Assemble an emergency kit:</strong> Include:
     <ul>
-        <li>- <strong>Medications</strong>, including prescription drugs and a basic first aid kit for minor injuries.</li>
-        <li>- <strong>Important documents</strong>, such as government-issued IDs, insurance papers, property deeds, and emergency contact information.</li>
-        <li>- An <strong>emergency kit</strong> containing bottled water, non-perishable food items, a flashlight with extra batteries, and a portable phone charger or power bank.</li>
-        <li>- Personal items like clothing, toiletries, and any essential supplies for infants, pets, or elderly family members.</li>
+        <li>- First aid supplies, such as bandages, antiseptics, and pain relievers.</li>
+        <li>- Enough non-perishable food and water to sustain your household for at least 3 days.</li>
+        <li>- Flashlights with spare batteries, a multi-tool, a whistle for signaling, and a fire extinguisher.</li>
+        <li>- Personal hygiene items, blankets, and clothing suitable for various weather conditions.</li>
     </ul>
     <br>
     <strong>Follow evacuation routes:</strong> Use the safest, predefined routes recommended by local authorities. Avoid unfamiliar roads that could be blocked or unsafe. Always have a physical map in case of GPS or mobile network failure.
@@ -90,6 +89,8 @@ export default function Safety() {
     <strong>Keep your vehicle ready:</strong> Ensure your vehicle is in good condition with a full gas tank. Keep the keys easily accessible, park the car facing outward for a quick exit, and load essential items in advance to save time during an emergency.
     <br><br>
     <strong>Practice your evacuation plan:</strong> Conduct regular drills with your household to ensure everyone knows their roles and responsibilities. Familiarity with the process can reduce stress and confusion during an actual emergency.
+    <strong>Create a defensible space around your home:</strong> Clear dry leaves, branches, and other flammable materials at least 30 feet from your home. Trim tree branches to a height of at least 6 feet to prevent fire from climbing. Regularly maintain gutters and roofs by removing debris. Store firewood and other combustible items far from structures.
+    <br><br>
     `;
     
 
@@ -117,23 +118,23 @@ export default function Safety() {
     
 
     const evacuationText = `
-    <strong>Create a defensible space around your home:</strong> Clear dry leaves, branches, and other flammable materials at least 30 feet from your home. Trim tree branches to a height of at least 6 feet to prevent fire from climbing. Regularly maintain gutters and roofs by removing debris. Store firewood and other combustible items far from structures.
-    <br><br>
     <strong>Develop a family emergency plan:</strong> Create a detailed emergency plan that includes designated meeting spots, multiple communication strategies, and escape routes for different scenarios. Assign responsibilities to each family member and rehearse the plan frequently to ensure everyone is prepared.
     <br><br>
-    <strong>Assemble an emergency kit:</strong> Include:
+    <strong>Prepare to leave immediately:</strong> 
+    - Ensure you have gathered all essential items ahead of time to avoid delays. These include:
+    <br><br>
     <ul>
-        <li>- First aid supplies, such as bandages, antiseptics, and pain relievers.</li>
-        <li>- Enough non-perishable food and water to sustain your household for at least 3 days.</li>
-        <li>- Flashlights with spare batteries, a multi-tool, a whistle for signaling, and a fire extinguisher.</li>
-        <li>- Personal hygiene items, blankets, and clothing suitable for various weather conditions.</li>
+        <li>- <strong>Medications</strong>, including prescription drugs and a basic first aid kit for minor injuries.</li>
+        <li>- <strong>Important documents</strong>, such as government-issued IDs, insurance papers, property deeds, and emergency contact information.</li>
+        <li>- Your <strong>emergency kit</strong> as outlined in the prepare section</li>
+        <li>- Personal items like clothing, toiletries, and any essential supplies for infants, pets, or elderly family members.</li>
     </ul>
     <br>
     <strong>Keep important documents ready:</strong> Store essential documents like birth certificates, passports, medical records, and insurance policies in a waterproof, fireproof safe. Back up digital copies to cloud storage or an external hard drive.
     <br><br>
     <strong>Know your local risk level:</strong> Familiarize yourself with wildfire risks in your area by consulting local government websites and fire risk maps. Participate in community evacuation drills to understand the best practices and routes in case of an emergency.
     <br><br>
-    <strong>Sign up for emergency alerts:</strong> Subscribe to wildfire and weather warning systems offered by local authorities. Apps and SMS alerts can provide timely information and updates.
+    <strong>Sign up for emergency alerts:</strong> Subscribe to wildfire and weather warning systems offered by local authorities.
     <br><br>
     <strong>Invest in fire-resistant building materials:</strong> Upgrade your home with fire-resistant roofing, siding, and windows. Install ember-resistant vents to prevent sparks from entering your home.
     <br><br>
@@ -160,7 +161,7 @@ export default function Safety() {
                         Learn how to prepare and stay safe during wildfire season
                     </p>
                 </div>
-                <Card className="p-5 mt-3 transition-all duration-300 hover:shadow-lg border-l-4 border-l-orange-500">
+                {/* <Card className="p-5 mt-3 transition-all duration-300 hover:shadow-lg border-l-4 border-l-orange-500">
                     <CardHeader className="p-0 mb-3">
                         <div className="flex items-center gap-2">
                             <strong className={`${styles.articleBody} text-lg`}>
@@ -180,18 +181,18 @@ export default function Safety() {
                             </ul>
                         </div>
                     </CardContent>
-                </Card>
+                </Card> */}
                 <div className={`${styles.safetyHeading} mb-6 mt-6`}>
                     <h3 className="text-2xl font-bold">
                         Safety Tips
                     </h3>
                 </div>
                 <div className="mt-2">
-                    <Tabs defaultValue="account" className="w-full flex flex-col">
-                        <TabsList className="space-x-8">
-                            <TabsTrigger value="Prepare" className="w-full">Prepare</TabsTrigger>
-                            <TabsTrigger value="Emergency" className="w-full">Emergency</TabsTrigger>
-                            <TabsTrigger value="Evacuation" className="w-full">Evacuation</TabsTrigger>
+                <Tabs defaultValue="Prepare" className="w-full flex flex-col" onValueChange={setActiveTab}>
+                        <TabsList className="space-x-8 p-6">
+                            <TabsTrigger value="Prepare" className={`w-full ${activeTab === 'Prepare' ? styles.activeTab : ''}`}>Prepare</TabsTrigger>
+                            <TabsTrigger value="Emergency" className={`w-full ${activeTab === 'Emergency' ? styles.activeTab : ''}`}>Emergency</TabsTrigger>
+                            <TabsTrigger value="Evacuation" className={`w-full ${activeTab === 'Evacuation' ? styles.activeTab : ''}`}>Evacuation</TabsTrigger>
                         </TabsList>
                         <TabsContent value="Prepare">
                             <Card className={`${styles.card} p-6 flex flex-col items-center`}>
