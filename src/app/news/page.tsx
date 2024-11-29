@@ -229,7 +229,7 @@ export default function News() {
                             >
                               {highlighted.name}
                             </h5>
-                            <div className="flex pb-3 text-gray-500">
+                            <div className="flex pb-3">
                               <p>{highlighted.provider[0]?.name || "Unknown Source"}</p>
                               <p>
                                 {isNaN(new Date(highlighted.datePublished).getTime())
@@ -240,7 +240,7 @@ export default function News() {
                           </div>
                         </div>
                       )}
-                      <div className="mt-4">
+                      <div className={`mt-4 ${styles.articles}`}>
                         {others.map((article, index) => {
                           const transformedArticle = {
                             id: index.toString(),
