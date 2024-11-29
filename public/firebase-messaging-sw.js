@@ -27,7 +27,7 @@ self.addEventListener('push', function (event) {
       const payload = event.data.json();
       const notificationTitle = payload.title || "New Article released";
       const notificationOptions = {
-        body: payload.body || "A new article have been released! Go check it!",
+        body: payload.body || "Wildfire on SilverStar Mountain",
         icon: payload.icon || '/images/logo_Flare.png',
         data: {
           click_action: payload.click_action || "/",
