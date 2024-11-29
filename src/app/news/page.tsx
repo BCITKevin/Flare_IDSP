@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from "react";
 import ArticleCard from "../../components/news/ArticleCard";
-import BottomNavBar from "@/components/BottomNavBar";
+import BottomNavBar from "@/components/BottomNavBar/BottomNavBar";
 import styles from "./news.module.css";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";

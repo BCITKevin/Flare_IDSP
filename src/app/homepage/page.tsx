@@ -6,7 +6,6 @@ import Image from "next/image";
 import styles from "./homepage.module.css";
 import { CircleHelp, Wind, Bell } from "lucide-react";
 import Link from "next/link";
-import BottomNavBar from "@/components/BottomNavBar";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import sendNotification, { fetchSubscription, deleteTokenFromServer } from "@/lib/notification/sendNotification";
@@ -20,6 +19,8 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay"
+import WildfireRisk from "@/components/wildfireRisk/WildfireRisk";
+import BottomNavBar from "@/components/BottomNavBar/BottomNavBar";
 
 
 interface NavigatorStandalone extends Navigator {
@@ -54,6 +55,14 @@ export default function HomePage() {
   const [fireRisk, setFireRisk] = useState<string | undefined>();
   const [riskColour, setRiskColour] = useState<string | undefined>();
   const [isWildfireRiskVisible, setIsWildfireRiskVisible] = useState(false);
+
+  const handleHelpClick = () => {
+    setIsWildfireRiskVisible(true);
+  };
+
+  const handlePopupClose = () => {
+    setIsWildfireRiskVisible(false);
+  };
 
   useEffect(() => {
     const requestPermission = async () => {
@@ -110,15 +119,6 @@ export default function HomePage() {
       requestPermission();
     }
   }, []);
-
-
-  const handleHelpClick = () => {
-    setIsWildfireRiskVisible(true);
-  };
-
-  const handlePopupClose = () => {
-    setIsWildfireRiskVisible(false);
-  };
 
   async function handleNotification() {
     const tokens = await getAllSubscription();
@@ -214,7 +214,10 @@ export default function HomePage() {
           <div className={`grid ${styles.contentContainer}`}>
             <div className={`grid grid-cols-2 gap-4 ${styles.fireRisk} ${riskColour}`}>
               <h2 className={styles.homeHeading}>Wildfire Risk: {fireRisk}</h2>
-              <CircleHelp size={24} />
+
+              <div onClick={handleHelpClick} className="cursor-pointer" >
+                <CircleHelp size={24} />
+              </div>
             </div>
 
             <Link href="/map" className={styles.location}>
@@ -292,7 +295,7 @@ export default function HomePage() {
           </button>
         </div>
         <BottomNavBar />
-      </div>
+      </div >
     </>
   )
 }

@@ -7,7 +7,7 @@ import ArticleNavigation from "./articleNavigation";
 import ArticleInfo from "./articleInfo";
 import ArticleHero from "./articleHero";
 import ArticleContent from "./articleContent";
-import BottomNavBar from "@/components/BottomNavBar";
+import BottomNavBar from "@/components/BottomNavBar/BottomNavBar.jsx";
 
 interface ArticleData {
   title: string;
