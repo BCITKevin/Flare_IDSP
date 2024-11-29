@@ -6,15 +6,15 @@
 :root {
   font-size: 14px;
 
-  --white: #EBEBEB;
-  --black: #0F0F0F;
-  --l-grey: #A1A1A1;
-  --d-grey: #202020;
+  --white: #FAF8F8;
+  --black: #121313;
+  --l-grey: #A39E9D;
+  --d-grey: #232222;
 
-  --p-highlight: #F45D01;
-  --s-highlight: #FFD035;
-  --p-compliment: #00BCD4;
-  --s-compliment: #00838F;
+  --orange: #F45D01;
+  --yellow: #FFD035;
+  --cyan: #00BCD4;
+  --teal: #00838F;
 
   width: 100vw;
   height: 100vh;
@@ -85,6 +85,7 @@ body {
 /* Typography Styles */
 h1 {
   font-size: 48px;
+  font-weight: bold;
 }
 
 h2 {

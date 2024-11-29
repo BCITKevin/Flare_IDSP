@@ -241,7 +241,7 @@ export default function Safety() {
                                             <div key={i} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4`}>
                                                 <div className={`rounded-lg px-4 py-2 max-w-[80%] ${
                                                     msg.sender === 'user' 
-                                                    ? 'bg-[var(--p-highlight)] text-white' 
+                                                    ? 'bg-[var(--orange)] text-white' 
                                                     : 'bg-gray-100 text-gray-800'
                                                 }`}>
                                                     {msg.text}
@@ -257,11 +257,11 @@ export default function Safety() {
                                                 type="text"
                                                 id="message"
                                                 placeholder="Type your message..."
-                                                className="flex-grow px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-[var(--p-highlight)]"
+                                                className="flex-grow px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-[var(--orange)]"
                                             />
                                             <button
                                                 type="submit"
-                                                className="bg-[var(--p-highlight)] text-white rounded-full px-6 py-2"
+                                                className="bg-[var(--orange)] text-white rounded-full px-6 py-2"
                                             >
                                                 Send
                                             </button>
@@ -279,7 +279,7 @@ export default function Safety() {
                         <p className="text-white text-base">Ask us about how you can stay safe</p>
                     </div> */}
                     <button 
-                        className="flex justify-center bg-[var(--p-highlight)] text-white rounded-full shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
+                        className="flex justify-center bg-[var(--orange)] text-white rounded-full shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
                         onClick={() => setShowChat(true)}
                     >
                         <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-5 h-5 filter invert brightness-0" />

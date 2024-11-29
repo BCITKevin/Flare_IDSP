@@ -8,9 +8,9 @@
     margin-top: 6px;
 
     border-radius: 8px;
-    background: var(--Light-Ink, #000);
+    background: var(--black, #000);
 
-    color: var(--Text_White);
+    color: var(--white);
 }
 
 .articleImage {
