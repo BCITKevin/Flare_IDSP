@@ -4,6 +4,9 @@ import Logo from "./public/images/flare_logo 2.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from 'react'
+import React from "react";
+import logoAnimation from './public/videos/LogoAnimation.json'
+import Lottie from "lottie-react";
 // import sendNotification, { fetchSubscription } from "@/lib/notification/sendNotification";
 
 
@@ -40,7 +43,7 @@ export default function Main() {
             setTimeout(() => {
                 router.push("/homepage");
             }, 1000);
-        }, 1000);
+        }, 4000);
 
         return () => clearTimeout(timer);
     }, [router]);
@@ -81,15 +84,26 @@ export default function Main() {
         <div
             className={`flex flex-col landingLayout items-center justify-center ${fadeOut ? "fade-out" : ""
                 }`}
+            style={{
+                objectFit: 'cover',
+                width:'440px',
+                overflow:'hidden',
+                display:'flex',
+                justifyContent:'center',
+                alignItems:'center'
+            }}
         >
-            <Image
-                src={Logo}
-                alt="logo of Flare"
-                width={191}
-                height={191}
-                priority
-            />
-            <h1 className="landingHead">FLARE</h1>
+            
+            <div>
+                <Lottie
+                    animationData={logoAnimation}
+                    loop={false}
+                    style={{ 
+                        width:'80rem',
+                    }}
+                />
+            </div>
+
         </div>
     );
 }
