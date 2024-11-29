@@ -221,12 +221,18 @@ export default function HomePage() {
             </div>
 
             <Link href="/map" className={styles.location}>
-              <h3>My Location</h3>
-              <h1>26°</h1>
-              <div className="flex space-x-6">
-                <h3>Windy</h3>
-                <Wind size={32} />
-              </div>
+              <h3>{weatherData ? `${weatherData.cityName}` : <p>My Location</p>}</h3>
+              {weatherData ? (
+                <>
+                  <h1>{weatherData.current.temp.toFixed(0)}°C</h1>
+                  <div className="flex space-x-6 items-center">
+                    <p className="">{weatherData.current.weather[0].description}</p>
+                    <Wind size={32} />
+                  </div>
+                </>
+              ) : (
+                <h1>Loading...</h1>
+              )}
             </Link>
 
             <Link href="/safety" className={styles.safety}>
