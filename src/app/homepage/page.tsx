@@ -211,97 +211,100 @@ export default function HomePage() {
             <h1 className={`font-black ${styles.landingLogo}`}>FLARE</h1>
           </div>
 
-          <div className={`grid ${styles.contentContainer}`}>
-            <div className={`grid grid-cols-2 gap-4 ${styles.fireRisk} ${riskColour}`}>
-              <h2 className={styles.homeHeading}>Wildfire Risk: {fireRisk}</h2>
+          <div className={`${styles.contentPosition}`}>
+            <div className={`grid ${styles.contentContainer}`}>
+              <div className={`grid grid-cols-2 gap-4 ${styles.fireRisk} ${riskColour}`}>
+                <h2 className={styles.homeHeading}>Wildfire Risk: {fireRisk}</h2>
 
-              <div onClick={handleHelpClick} className="cursor-pointer" >
-                <CircleHelp size={24} />
+                <div onClick={handleHelpClick} className="cursor-pointer" >
+                  <CircleHelp size={24} />
+                </div>
               </div>
+
+              <Link href="/map" className={styles.location}>
+                <h3>{weatherData ? `${weatherData.cityName}` : <p>My Location</p>}</h3>
+                {weatherData ? (
+                  <>
+                    <h1>{weatherData.current.temp.toFixed(0)}°C</h1>
+                    <div className="flex space-x-6 items-center">
+                      <p className="">{weatherData.current.weather[0].description}</p>
+                      <Wind size={32} />
+                    </div>
+                  </>
+                ) : (
+                  <h1>Loading...</h1>
+                )}
+              </Link>
+
+              <Link href="/safety" className={styles.safety}>
+                <h3>Safety</h3>
+                <p>Learn how to prepare for a wildfire. Learn the early signs</p>
+              </Link>
+
+              <Link href="/news" className={`${styles.news} ${styles.newsItemOne}`}>
+                <Carousel
+                  className="w-full h-full"
+                  plugins={[
+                    Autoplay({
+                      delay: 2000,
+                    }),
+                  ]}
+                >
+                  <CarouselContent className={`w-full h-full`}>
+                    <CarouselItem className={`w-full h-full`}>
+                      <h3>News</h3>
+                      <p>
+                        Vancouver’s Unique Coastal Climate: A Balance of Rain and Mild Temperatures: mild,
+                        wet winters and pleasantly warm summers
+                      </p>
+                    </CarouselItem>
+                    <CarouselItem className={`w-full h-full`}>
+                      <h3>News</h3>
+                      <p>
+                        How Vancouver’s Rain Shapes Urban Life: The city receives around 160 days of rain each
+                        year...
+                      </p>
+                    </CarouselItem>
+                    <CarouselItem className={`w-full h-full`}>
+                      <h3>News</h3>
+                      <p>
+                        The Best and Worst Seasons to Visit Vancouver: Weather Insights for Travelers: For those
+                        planning a trip...
+                      </p>
+                    </CarouselItem>
+                  </CarouselContent>
+                </Carousel>
+              </Link>
             </div>
-
-            <Link href="/map" className={styles.location}>
-              <h3>{weatherData ? `${weatherData.cityName}` : <p>My Location</p>}</h3>
-              {weatherData ? (
-                <>
-                  <h1>{weatherData.current.temp.toFixed(0)}°C</h1>
-                  <div className="flex space-x-6 items-center">
-                    <p className="">{weatherData.current.weather[0].description}</p>
-                    <Wind size={32} />
-                  </div>
-                </>
-              ) : (
-                <h1>Loading...</h1>
-              )}
-            </Link>
-
-            <Link href="/safety" className={styles.safety}>
-              <h3>Safety</h3>
-              <p>Learn how to prepare for a wildfire. Learn the early signs</p>
-            </Link>
-
-            <Link href="/news" className={`${styles.news} ${styles.newsItemOne}`}>
-              <Carousel
-                className="w-full h-full"
-                plugins={[
-                  Autoplay({
-                    delay: 2000,
-                  }),
-                ]}
-              >
-                <CarouselContent className={`w-full h-full`}>
-                  <CarouselItem className={`w-full h-full`}>
-                    <h3>News</h3>
-                    <p>
-                      Vancouver’s Unique Coastal Climate: A Balance of Rain and Mild Temperatures: mild,
-                      wet winters and pleasantly warm summers
-                    </p>
-                  </CarouselItem>
-                  <CarouselItem className={`w-full h-full`}>
-                    <h3>News</h3>
-                    <p>
-                      How Vancouver’s Rain Shapes Urban Life: The city receives around 160 days of rain each
-                      year...
-                    </p>
-                  </CarouselItem>
-                  <CarouselItem className={`w-full h-full`}>
-                    <h3>News</h3>
-                    <p>
-                      The Best and Worst Seasons to Visit Vancouver: Weather Insights for Travelers: For those
-                      planning a trip...
-                    </p>
-                  </CarouselItem>
-                </CarouselContent>
-              </Carousel>
-            </Link>
+            {!isStandalone && isIOS && (
+              // Description how to install the app on IOS& Safari
+              <div>
+                <p className="text-white">
+                  To install this app, tap <span className="share-icon">⬆️</span> and select &quot;Add to Home Screen&quot;.
+                </p>
+              </div>
+            )}
+            {isInstallable && (
+              // Install button for Android
+              <Button onClick={handleInstallClick}>
+                Install App
+              </Button>
+            )}
+            <button
+              onClick={() => handleNotification()}
+              style={{
+                width: '100px',
+                height: '50px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+              }}>
+            </button>
           </div>
-          {!isStandalone && isIOS && (
-            // Description how to install the app on IOS& Safari
-            <div>
-              <p className="text-white">
-                To install this app, tap <span className="share-icon">⬆️</span> and select &quot;Add to Home Screen&quot;.
-              </p>
-            </div>
-          )}
-          {isInstallable && (
-            // Install button for Android
-            <Button onClick={handleInstallClick}>
-              Install App
-            </Button>
-          )}
-          <button
-            onClick={() => handleNotification()}
-            style={{
-              width: '100px',
-              height: '50px',
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-            }}>
-          </button>
-        </div>
+        </div >
         <BottomNavBar />
-      </div >
+      </div>
+
     </>
   )
 }
