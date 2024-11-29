@@ -30,11 +30,11 @@
 }
 
 .newsOrg{
-    color: var(--p-highlight, #00BCD4);
+    color: var(--orange);
 }
 
 .area{
-    color: var(--p-highlight);
+    color: var(--orange);
 }
 
 .articleTitle{
@@ -46,7 +46,7 @@
 }
 
 .org{
-    color: var(--p-compliment);
+    color: var(--cyan);
 }
 
 

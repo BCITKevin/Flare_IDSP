@@ -1,14 +1,14 @@
 
 .safetyHeading {
-    color: var(--p-highlight);
+    color: var(--orange);
 }
 
 .articleBody {
-    color: var(--text-black);
+    color: var(--black);
 }
 
 .articleBody *{
-    color: var(--text-black);
+    color: var(--black);
 }
 
 .whiteText {
