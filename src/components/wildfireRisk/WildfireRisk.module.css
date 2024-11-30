@@ -1,9 +1,5 @@
 .container{
   z-index: 1000;
-  position: absolute;
-
-  filter: drop-shadow(0 100px 100px var(--black));
-  animation: popIn 1s;
 }
 
 .card {
@@ -65,7 +61,7 @@
   background-color: white;
   color: #2d2d2d;
   padding: 0.5rem 1rem;
-  border-radius: 999px;
+  border-radius: 0.25rem;
   font-weight: 600;
   text-align: center;
   cursor: pointer;
@@ -73,15 +69,4 @@
 
 .button:hover {
   background-color: #f3f4f6;
-}
-
-@keyframes popIn {
-  0% {
-      transform: translateY(1000px);
-      z-index: 1000;
-  }
-  100% {
-      transform: translateY(0);
-      z-index: 1000;
-  }
 }
