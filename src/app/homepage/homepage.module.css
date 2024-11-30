@@ -94,7 +94,27 @@
     justify-content: center;
 }
 
-.location:hover , .news:hover , .safety:hover , .fireRisk:hover {
+.notification {
+    position: relative;
+}
+
+
+.location:hover,
+.news:hover,
+.safety:hover,
+.fireRisk:hover {
     filter: drop-shadow(0px 0px 4px var(--d-grey));
     z-index: 0;
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }

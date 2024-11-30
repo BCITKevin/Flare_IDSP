@@ -1,0 +1,29 @@
+.notifyMessage {
+    position: absolute;
+    top: 60px;
+    left: -170px;
+    width: 200px;
+    padding: 8px;
+
+    color: var(--orange);
+
+    border-radius: 8px 0px 8px 8px;
+    opacity: 0.8;
+    background: var(--d-grey, #121313);
+
+    animation: bounce 0.5s ease-in-out;
+}
+
+.notiLink {
+    border: none;
+    border-color: none;
+}
+
+.notiArticle {
+    display: flex;
+    flex-direction: row;
+}
+
+.notifyImage {
+    border-radius: 8px;
+}

@@ -24,6 +24,7 @@ import TextLogo from "@/components/staticComponents/logo";
 import { Card } from "@/components/ui/card";
 import { Dot } from "lucide-react";
 import NotificationBell from "@/components/ui/NotificationBell/NotificationBell";
+import NotificationMessage from "@/components/NotificationMessage/NotificationMessage";
 
 
 interface NavigatorStandalone extends Navigator {
@@ -218,8 +219,12 @@ export default function HomePage() {
             <header className={`flex items-center ${styles.homeIcons}`}>
               <Image src={Logo} alt="Flare logo" className="w-12 mb-4" />
               <TextLogo />
-              <div>
+              <div className={`${styles.notification}`}>
                 <NotificationBell clearNotifications={clearNotifications} handleNotification={handleNotification} notify={notify} />
+                {/* {notifyMessage && */}
+                <NotificationMessage />
+
+                {/* } */}
               </div>
             </header>
           </div>
@@ -302,7 +307,7 @@ export default function HomePage() {
           }}>
         </button>
         <BottomNavBar />
-      </div>
+      </div >
     </>
   )
 }
