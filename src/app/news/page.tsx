@@ -186,7 +186,7 @@ export default function News() {
             className="w-full flex flex-col"
             onValueChange={(value) => setTabState(value as Category)}
           >
-            <TabsList className="space-x-8 p-6">
+            <TabsList className="space-x-8 p-6 my-6">
               <TabsTrigger value="Local" className={`w-full ${tabState === 'Local' ? styles.activeTab : ''}`}>
                 Local
               </TabsTrigger>
@@ -230,7 +230,7 @@ export default function News() {
                               >
                                 {highlighted.name}
                               </h5>
-                              <div className="flex pb-3">
+                              <div className="flex pb-3 text-[color:--l-grey]">
                                 <p>{highlighted.provider[0]?.name || "Unknown Source"}</p>
                                 <p>
                                   {isNaN(new Date(highlighted.datePublished).getTime())
@@ -276,7 +276,6 @@ export default function News() {
             </TabsContent>
           </Tabs>
         </div>
-
       </div>
       <BottomNavBar />
     </body>

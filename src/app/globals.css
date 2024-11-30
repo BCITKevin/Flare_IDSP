@@ -259,10 +259,14 @@ h5 {
 
 .newsLayout,
 .safetyLayout {
-  height: 100vh;
+  height:100vh;
   padding: 20px;
   background-color: var(--black);
   /* overflow-y: auto; */
+}
+
+.newsLayout{
+  padding-bottom: 8rem;
 }
 
 .homeLayout {
