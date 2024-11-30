@@ -64,7 +64,6 @@ export default function HomePage() {
     console.log("Toggle Infograph")
   }
 
-
   useEffect(() => {
     const requestPermission = async () => {
       // Notification API와 Service Worker 지원 여부 확인
@@ -128,18 +127,18 @@ export default function HomePage() {
 
   async function handleNotification() {
     setNotify(true);
-    const tokens = await getAllSubscription();
+    // const tokens = await getAllSubscription();
 
-    if (tokens) {
-      for (const token of tokens) {
-        await sendNotification(
-          token.data,
-          'New article released',
-          'New Article have been released! Go check it!',
-          "/news",
-        )
-      }
-    }
+    // if (tokens) {
+    //   for (const token of tokens) {
+    //     await sendNotification(
+    //       token.data,
+    //       'New article released',
+    //       'New Article have been released! Go check it!',
+    //       "/news",
+    //     )
+    //   }
+    // }
   }
 
   const handleInstallClick = async () => {
