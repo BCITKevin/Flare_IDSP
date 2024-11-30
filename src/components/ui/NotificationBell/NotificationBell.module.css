@@ -1,0 +1,25 @@
+.notification {
+  position: relative;
+}
+
+.dot {
+  position: absolute;
+  top: -20px;
+  left: 0px;
+}
+
+.dot:active {
+    animation: flicker;
+}
+
+@keyframes flicker {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(50px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
