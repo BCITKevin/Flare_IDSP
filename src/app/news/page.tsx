@@ -150,13 +150,13 @@ export default function News() {
   };
 
   return (
-    <div>
-      <div className="newsLayout">
+    <body>
+      <div className="newsLayout h-full overflow-y-auto mb-44">
         <header>
           <h1 className={`${styles.newsHeading}`}>News</h1>
-          <h4 className={`${styles.newsSubHeading} mt-5`}>
+          {/* <h4 className={`${styles.newsSubHeading}`}>
             Get the latest Information
-          </h4>
+          </h4> */}
           <p className={styles.newsDate}>
             {new Date().toLocaleDateString("en-CA", {
               year: "numeric",
@@ -165,7 +165,7 @@ export default function News() {
             })}
           </p>
         </header>
-        <svg
+        {/* <svg
           xmlns="http://www.w3.org/2000/svg"
           width="404"
           height="4"
@@ -178,104 +178,107 @@ export default function News() {
             strokeWidth="4"
             strokeLinecap="round"
           />
-        </svg>
+        </svg> */} 
+        {/* this causing problems with page moving left and right */}
+        <div className="mt-2">
+          <Tabs
+            defaultValue="Local"
+            className="w-full flex flex-col"
+            onValueChange={(value) => setTabState(value as Category)}
+          >
+            <TabsList className="space-x-8 p-6">
+              <TabsTrigger value="Local" className={`w-full ${tabState === 'Local' ? styles.activeTab : ''}`}>
+                Local
+              </TabsTrigger>
+              <TabsTrigger value="Regional"  className={`w-full ${tabState === 'Regional' ? styles.activeTab : ''}`}>
+                Regional
+              </TabsTrigger>
+              <TabsTrigger value="National"  className={`w-full ${tabState === 'National' ? styles.activeTab : ''}`}>
+                National
+              </TabsTrigger>
+              <TabsTrigger value="Global" className={`w-full ${tabState === 'Global' ? styles.activeTab : ''}`}>
+                Global
+              </TabsTrigger>
+            </TabsList>
+            <h2 className={`mt-3 ${styles.newsHeading}`}>{tabState}</h2>
+            <TabsContent value={tabState}>
+              {loading && <p className={styles.loading}>Loading...</p>}
+              {error && <p className={styles.error}>Error: {error}</p>}
 
-        <Tabs
-          defaultValue="Local"
-          className="w-full flex flex-col"
-          onValueChange={(value) => setTabState(value as Category)}
-        >
-          <TabsList className={`grid-cols-4 ${styles.tabTriggerContainer}`}>
-            <TabsTrigger value="Local" className={styles.tabTrigger}>
-              Local
-            </TabsTrigger>
-            <TabsTrigger value="Regional" className={styles.tabTrigger}>
-              Regional
-            </TabsTrigger>
-            <TabsTrigger value="National" className={styles.tabTrigger}>
-              National
-            </TabsTrigger>
-            <TabsTrigger value="Global" className={styles.tabTrigger}>
-              Global
-            </TabsTrigger>
-          </TabsList>
-          <h2 className={`mt-3 ${styles.newsHeading}`}>{tabState}</h2>
-          <TabsContent value={tabState}>
-            {loading && <p className={styles.loading}>Loading...</p>}
-            {error && <p className={styles.error}>Error: {error}</p>}
-
-            {!loading && !error && (
-              <>
-                {(() => {
-                  const { highlighted, others } =
-                    getHighlightedAndOthers(tabState);
-                  return (
-                    <>
-                      {highlighted && (
-                        <div
-                          className={`${styles.articleHighlight}`}
-                          onClick={() => handleArticleClick(highlighted.url)}
-                        >
-                          <Image
-                            src={highlighted.image?.thumbnail?.contentUrl || "/images/logo_Flare.png"}
-                            alt={highlighted.name}
-                            width={400}
-                            height={251}
-                            className={`rounded-lg ${styles.articleHighlightImage}`}
-                          />
-                          <div className="indent-6">
-                            <h5
-                              className={`${styles.articleHighlightTitle} text-xl font-bold m-auto p-3`}
-                            >
-                              {highlighted.name}
-                            </h5>
-                            <div className="flex pb-3">
-                              <p>{highlighted.provider[0]?.name || "Unknown Source"}</p>
-                              <p>
-                                {isNaN(new Date(highlighted.datePublished).getTime())
-                                  ? "Invalid Date"
-                                  : new Date(highlighted.datePublished).toLocaleDateString()}
-                              </p>
+              {!loading && !error && (
+                <>
+                  {(() => {
+                    const { highlighted, others } =
+                      getHighlightedAndOthers(tabState);
+                    return (
+                      <>
+                        {highlighted && (
+                          <div
+                            className={`${styles.articleHighlight}`}
+                            onClick={() => handleArticleClick(highlighted.url)}
+                          >
+                            <Image
+                              src={highlighted.image?.thumbnail?.contentUrl || "/images/logo_Flare.png"}
+                              alt={highlighted.name}
+                              width={400}
+                              height={251}
+                              className={`rounded-lg ${styles.articleHighlightImage}`}
+                            />
+                            <div className="indent-6">
+                              <h5
+                                className={`${styles.articleHighlightTitle} text-xl font-bold m-auto p-3`}
+                              >
+                                {highlighted.name}
+                              </h5>
+                              <div className="flex pb-3">
+                                <p>{highlighted.provider[0]?.name || "Unknown Source"}</p>
+                                <p>
+                                  {isNaN(new Date(highlighted.datePublished).getTime())
+                                    ? "Invalid Date"
+                                    : new Date(highlighted.datePublished).toLocaleDateString()}
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )}
-                      <div className={`mt-4 ${styles.articles}`}>
-                        {others.map((article, index) => {
-                          const transformedArticle = {
-                            id: index.toString(),
-                            image:
-                              article.image?.thumbnail?.contentUrl ||
-                              "/images/logo_Flare.png",
-                            title: article.name,
-                            date: article.datePublished,
-                            author:
-                              article.provider[0]?.name || "Unknown Author",
-                          };
-                          return (
-                            <div
-                              key={index}
-                              onClick={() => handleArticleClick(article.url)}
-                            >
-                              <ArticleCard article={transformedArticle} />
-                            </div>
-                          );
-                        })}
-                        {others.length === 0 && (
-                          <p className={styles.noResults}>
-                            No {tabState.toLowerCase()} news articles found.
-                          </p>
                         )}
-                      </div>
-                    </>
-                  );
-                })()}
-              </>
-            )}
-          </TabsContent>
-        </Tabs>
+                        <div className={`mt-4 ${styles.articles}`}>
+                          {others.map((article, index) => {
+                            const transformedArticle = {
+                              id: index.toString(),
+                              image:
+                                article.image?.thumbnail?.contentUrl ||
+                                "/images/logo_Flare.png",
+                              title: article.name,
+                              date: article.datePublished,
+                              author:
+                                article.provider[0]?.name || "Unknown Author",
+                            };
+                            return (
+                              <div
+                                key={index}
+                                onClick={() => handleArticleClick(article.url)}
+                              >
+                                <ArticleCard article={transformedArticle} />
+                              </div>
+                            );
+                          })}
+                          {others.length === 0 && (
+                            <p className={styles.noResults}>
+                              No {tabState.toLowerCase()} news articles found.
+                            </p>
+                          )}
+                        </div>
+                      </>
+                    );
+                  })()}
+                </>
+              )}
+            </TabsContent>
+          </Tabs>
+        </div>
+
       </div>
       <BottomNavBar />
-    </div>
+    </body>
   );
 }

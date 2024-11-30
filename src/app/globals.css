@@ -22,6 +22,11 @@
 
 }
 
+html {
+  overflow-x: hidden;
+  overflow-y: hidden;
+} /* Prevents scrolling for X*/
+
 /* Font-face definitions */
 @font-face {
   font-family: 'PPMori';
@@ -257,7 +262,7 @@ h5 {
   height: 100vh;
   padding: 20px;
   background-color: var(--black);
-  overflow-y: auto;
+  /* overflow-y: auto; */
 }
 
 .homeLayout {
