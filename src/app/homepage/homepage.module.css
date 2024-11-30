@@ -96,6 +96,7 @@
 
 .notification {
     position: relative;
+    cursor: pointer;
 }
 
 .wildFireRisk {
@@ -109,11 +110,19 @@
     overflow: hidden;
 }
 
+.location,
+.news,
+.safety,
+.fireRisk {
+    transition: 0.1s ease-in-out;
+}
+
 .location:hover,
 .news:hover,
 .safety:hover,
 .fireRisk:hover {
     filter: drop-shadow(0px 0px 4px var(--d-grey));
+    transform: scale(102%);
     z-index: 0;
 }
 
@@ -121,9 +130,11 @@
     0% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(10px);
     }
+
     100% {
         transform: translateY(0);
     }
