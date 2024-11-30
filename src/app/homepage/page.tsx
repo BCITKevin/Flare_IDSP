@@ -21,8 +21,6 @@ import Autoplay from "embla-carousel-autoplay"
 import WildfireRisk from "@/components/wildfireRisk/WildfireRisk";
 import BottomNavBar from "@/components/BottomNavBar/BottomNavBar";
 import TextLogo from "@/components/staticComponents/logo";
-import { Card } from "@/components/ui/card";
-import { Dot } from "lucide-react";
 import NotificationBell from "@/components/ui/NotificationBell/NotificationBell";
 import NotificationMessage from "@/components/NotificationMessage/NotificationMessage";
 
@@ -48,7 +46,6 @@ function getOrCreateClientId() {
   return null;
 }
 
-
 export default function HomePage() {
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
@@ -62,13 +59,11 @@ export default function HomePage() {
   const [notify, setNotify] = useState(false)
   const [notifyMessage, setNotifyMessage] = useState(false)
 
-  const handleHelpClick = () => {
-    setIsWildfireRiskVisible(true);
-  };
+  const toggleWildfireRisk = () => {
+    setIsWildfireRiskVisible(!isWildfireRiskVisible)
+    console.log("Toggle Infograph")
+  }
 
-  const handlePopupClose = () => {
-    setIsWildfireRiskVisible(false);
-  };
 
   useEffect(() => {
     const requestPermission = async () => {
@@ -214,6 +209,11 @@ export default function HomePage() {
   return (
     <>
       <div>
+        {isWildfireRiskVisible &&
+          <div className={`${styles.wildFireRisk}`}>
+            <WildfireRisk onClose={toggleWildfireRisk} />
+          </div>
+        }
         <div className="homeLayout">
           <div className={styles.header}>
             <header className={`flex items-center ${styles.homeIcons}`}>
@@ -221,10 +221,7 @@ export default function HomePage() {
               <TextLogo />
               <div className={`${styles.notification}`}>
                 <NotificationBell clearNotifications={clearNotifications} handleNotification={handleNotification} notify={notify} />
-                {/* {notifyMessage && */}
-                <NotificationMessage />
-
-                {/* } */}
+                {notifyMessage && <NotificationMessage />}
               </div>
             </header>
           </div>
@@ -233,7 +230,7 @@ export default function HomePage() {
             <div className={`grid ${styles.contentContainer}`}>
               <div className={`grid grid-cols-2 gap-4 ${styles.fireRisk} ${riskColour}`}>
                 <h3 className={styles.homeHeading}>Wildfire Risk: <span className="font-bold">{fireRisk}</span></h3>
-                <div onClick={handleHelpClick} className="cursor-pointer" >
+                <div onClick={toggleWildfireRisk} className="cursor-pointer" >
                   <CircleHelp size={24} />
                 </div>
               </div>

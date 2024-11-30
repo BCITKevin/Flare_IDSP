@@ -98,6 +98,16 @@
     position: relative;
 }
 
+.wildFireRisk {
+    position: absolute;
+    width: 440px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
 
 .location:hover,
 .news:hover,
