@@ -20,7 +20,7 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import WildfireRisk from "@/components/wildfireRisk/WildfireRisk";
 import BottomNavBar from "@/components/BottomNavBar/BottomNavBar";
-import TextLogo from "@/components/staticComponents/logo";
+import TextLogo from "../public/images/FLARE.svg";
 import NotificationBell from "@/components/ui/NotificationBell/NotificationBell";
 import NotificationMessage from "@/components/NotificationMessage/NotificationMessage";
 
@@ -217,8 +217,8 @@ export default function HomePage() {
         <div className="homeLayout">
           <div className={styles.header}>
             <header className={`flex items-center ${styles.homeIcons}`}>
-              <Image src={Logo} alt="Flare logo" className="w-12 mb-4" />
-              <TextLogo />
+              <Image src={Logo} alt="Flare logo" className="w-12" />
+              <Image src={TextLogo} alt="Flare Text Logo" className="w-18" />
               <div className={`${styles.notification}`}>
                 <NotificationBell clearNotifications={clearNotifications} handleNotification={handleNotification} notify={notify} />
                 {notifyMessage && <NotificationMessage />}
