@@ -128,18 +128,18 @@ export default function HomePage() {
 
   async function handleNotification() {
     setNotify(true);
-    const tokens = await getAllSubscription();
+    // const tokens = await getAllSubscription();
 
-    if (tokens) {
-      for (const token of tokens) {
-        await sendNotification(
-          token.data,
-          'New article released',
-          'New Article have been released! Go check it!',
-          "/news",
-        )
-      }
-    }
+    // if (tokens) {
+    //   for (const token of tokens) {
+    //     await sendNotification(
+    //       token.data,
+    //       'New article released',
+    //       'New Article have been released! Go check it!',
+    //       "/news",
+    //     )
+    //   }
+    // }
   }
 
   const handleInstallClick = async () => {
@@ -218,7 +218,7 @@ export default function HomePage() {
           <div className={styles.header}>
             <header className={`flex items-center ${styles.homeIcons}`}>
               <Image src={Logo} alt="Flare logo" className="w-12" />
-              <Image src={TextLogo} alt="Flare Text Logo" className="w-18" />
+              <Image src={TextLogo} alt="Flare logo" className="w-26" />
               <div className={`${styles.notification}`}>
                 <NotificationBell clearNotifications={clearNotifications} handleNotification={handleNotification} notify={notify} />
                 {notifyMessage && <NotificationMessage />}
