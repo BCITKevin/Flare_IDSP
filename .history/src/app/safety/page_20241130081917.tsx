@@ -197,21 +197,21 @@ export default function Safety() {
                             <TabsTrigger value="Evacuation" className={`w-full ${activeTab === 'Evacuation' ? styles.activeTab : ''}`}>Evacuation</TabsTrigger>
                         </TabsList>
                         <TabsContent value="Prepare">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24 rounded-lg`}>
                                 <Image src={prepareHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Flag color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: prepareText }} className={styles.articleBody} />
                             </Card>
                         </TabsContent>
                         <TabsContent value="Emergency">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24 rounded-lg`}>
                                 <Image src={emergencyHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Backpack color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: emergencyText }} className={styles.articleBody} />
                             </Card>
                         </TabsContent>
                         <TabsContent value="Evacuation">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24 rounded-lg`}>
                                 <Image src={evacHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Map color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: evacuationText }} className={styles.articleBody} />

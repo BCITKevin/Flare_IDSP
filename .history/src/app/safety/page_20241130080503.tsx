@@ -191,7 +191,7 @@ export default function Safety() {
                 </div>
                 <div className="mt-2">
                 <Tabs defaultValue="Prepare" className="w-full flex flex-col" onValueChange={setActiveTab}>
-                        <TabsList className="space-x-8 p-6 my-2 rounded-lg">
+                        <TabsList className="space-x-8 p-6 my-2">
                             <TabsTrigger value="Prepare" className={`w-full ${activeTab === 'Prepare' ? styles.activeTab : ''}`}>Prepare</TabsTrigger>
                             <TabsTrigger value="Emergency" className={`w-full ${activeTab === 'Emergency' ? styles.activeTab : ''}`}>Emergency</TabsTrigger>
                             <TabsTrigger value="Evacuation" className={`w-full ${activeTab === 'Evacuation' ? styles.activeTab : ''}`}>Evacuation</TabsTrigger>
@@ -222,7 +222,7 @@ export default function Safety() {
                 {showChat ? (
                     <>
                         <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                            <div className="relative w-full h-full mx-auto max-w-3xl px-4 pt-6 pb-24">
+                            <div className="relative w-full h-full mx-auto max-w-2xl px-4 pt-6 pb-24">
                                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
                                     {/* Header */}
                                     <div className="flex items-center justify-between p-4 border-b border-solid border-gray-200">
@@ -257,11 +257,11 @@ export default function Safety() {
                                                 type="text"
                                                 id="message"
                                                 placeholder="Type your message..."
-                                                className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[var(--orange)]"
+                                                className="flex-grow px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-[var(--orange)]"
                                             />
                                             <button
                                                 type="submit"
-                                                className="bg-[var(--orange)] text-white rounded-lg px-6 py-2"
+                                                className="bg-[var(--orange)] text-white rounded-full px-6 py-2"
                                             >
                                                 Send
                                             </button>
@@ -273,13 +273,13 @@ export default function Safety() {
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </>
                 ) : null}
-                <div className="flex flex-col fixed bottom-24 rounded-lg px-6 py-3 m-2 items-center gap-4 transition-all duration-300">
+                <div className="flex flex-col fixed bottom-24 rounded-md px-6 py-3 m-2 items-center gap-4 transition-all duration-300">
                     {/* <div>
                         <span className="flex justify-center text-white ">Flare Assistant</span>
                         <p className="text-white text-base">Ask us about how you can stay safe</p>
                     </div> */}
                     <button 
-                        className="flex justify-center bg-[var(--orange)] text-white rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
+                        className="flex justify-center bg-[var(--orange)] text-white rounded-full shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
                         onClick={() => setShowChat(true)}
                     >
                         <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-5 h-5 filter invert brightness-0" />

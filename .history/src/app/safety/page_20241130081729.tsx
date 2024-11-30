@@ -197,21 +197,21 @@ export default function Safety() {
                             <TabsTrigger value="Evacuation" className={`w-full ${activeTab === 'Evacuation' ? styles.activeTab : ''}`}>Evacuation</TabsTrigger>
                         </TabsList>
                         <TabsContent value="Prepare">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24 rounded-lg`}>
                                 <Image src={prepareHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Flag color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: prepareText }} className={styles.articleBody} />
                             </Card>
                         </TabsContent>
                         <TabsContent value="Emergency">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24 rounded-lg`}>
                                 <Image src={emergencyHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Backpack color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: emergencyText }} className={styles.articleBody} />
                             </Card>
                         </TabsContent>
                         <TabsContent value="Evacuation">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24 rounded-lg`}>
                                 <Image src={evacHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Map color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: evacuationText }} className={styles.articleBody} />
@@ -279,7 +279,7 @@ export default function Safety() {
                         <p className="text-white text-base">Ask us about how you can stay safe</p>
                     </div> */}
                     <button 
-                        className="flex justify-center bg-[var(--orange)] text-white rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
+                        className="flex justify-center bg-[var(--orange)] text-white rounded-full shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
                         onClick={() => setShowChat(true)}
                     >
                         <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-5 h-5 filter invert brightness-0" />

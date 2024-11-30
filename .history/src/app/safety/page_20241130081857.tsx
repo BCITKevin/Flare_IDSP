@@ -204,14 +204,14 @@ export default function Safety() {
                             </Card>
                         </TabsContent>
                         <TabsContent value="Emergency">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24 rounded-lg`}>
                                 <Image src={emergencyHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Backpack color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: emergencyText }} className={styles.articleBody} />
                             </Card>
                         </TabsContent>
                         <TabsContent value="Evacuation">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24 rounded-lg`}>
                                 <Image src={evacHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Map color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: evacuationText }} className={styles.articleBody} />

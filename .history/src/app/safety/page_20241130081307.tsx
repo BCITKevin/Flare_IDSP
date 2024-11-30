@@ -257,11 +257,11 @@ export default function Safety() {
                                                 type="text"
                                                 id="message"
                                                 placeholder="Type your message..."
-                                                className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[var(--orange)]"
+                                                className="flex-grow px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-[var(--orange)]"
                                             />
                                             <button
                                                 type="submit"
-                                                className="bg-[var(--orange)] text-white rounded-lg px-6 py-2"
+                                                className="bg-[var(--orange)] text-white rounded-full px-6 py-2"
                                             >
                                                 Send
                                             </button>
@@ -273,13 +273,13 @@ export default function Safety() {
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </>
                 ) : null}
-                <div className="flex flex-col fixed bottom-24 rounded-lg px-6 py-3 m-2 items-center gap-4 transition-all duration-300">
+                <div className="flex flex-col fixed bottom-24 rounded-md px-6 py-3 m-2 items-center gap-4 transition-all duration-300">
                     {/* <div>
                         <span className="flex justify-center text-white ">Flare Assistant</span>
                         <p className="text-white text-base">Ask us about how you can stay safe</p>
                     </div> */}
                     <button 
-                        className="flex justify-center bg-[var(--orange)] text-white rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
+                        className="flex justify-center bg-[var(--orange)] text-white rounded-full shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
                         onClick={() => setShowChat(true)}
                     >
                         <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-5 h-5 filter invert brightness-0" />
