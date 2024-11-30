@@ -4,7 +4,7 @@ interface WildfireRiskProps {
   onClose: () => void;
 }
 
-export default function WildfireRisk({ onClose }) {
+export default function WildfireRisk({ onClose }: WildfireRiskProps) {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
