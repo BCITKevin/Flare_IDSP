@@ -155,13 +155,13 @@ export default function Safety() {
     return (
         <body className="min-h-screen overflow-y-auto">
             <div className="safetyLayout h-full overflow-y-auto mb-44">
-                <div className={styles.safetyHeading}>
+                <div className={`mb-12 ${styles.safetyHeading}`}>
                     <h1>
                         Wildfire Safety Guide
                     </h1>
-                    <p className={styles.whiteText}>
+                    <h3 className={`${styles.whiteText} text-lg `}>
                         Learn how to prepare and stay safe during wildfire season
-                    </p>
+                    </h3>
                 </div>
                 {/* <Card className="p-5 mt-3 transition-all duration-300 hover:shadow-lg border-l-4 border-l-orange-500">
                     <CardHeader className="p-0 mb-3">
@@ -191,7 +191,7 @@ export default function Safety() {
                 </div>
                 <div className="mt-2">
                 <Tabs defaultValue="Prepare" className="w-full flex flex-col" onValueChange={setActiveTab}>
-                        <TabsList className="space-x-8 p-6 my-6">
+                        <TabsList className="space-x-8 p-6">
                             <TabsTrigger value="Prepare" className={`w-full ${activeTab === 'Prepare' ? styles.activeTab : ''}`}>Prepare</TabsTrigger>
                             <TabsTrigger value="Emergency" className={`w-full ${activeTab === 'Emergency' ? styles.activeTab : ''}`}>Emergency</TabsTrigger>
                             <TabsTrigger value="Evacuation" className={`w-full ${activeTab === 'Evacuation' ? styles.activeTab : ''}`}>Evacuation</TabsTrigger>
