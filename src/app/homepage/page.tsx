@@ -1,6 +1,7 @@
 'use client';
 
-import Logo from "../public/images/flare_logo.svg"
+
+import Logo from "../public/images/flare_logo.svg";
 import Image from "next/image";
 import styles from "./homepage.module.css";
 import { CircleHelp, Wind, Bell } from "lucide-react";
@@ -25,6 +26,7 @@ import NotificationBell from "@/components/ui/NotificationBell/NotificationBell"
 import NotificationMessage from "@/components/NotificationMessage/NotificationMessage";
 
 
+
 interface NavigatorStandalone extends Navigator {
   standalone?: boolean;
 }
@@ -46,6 +48,7 @@ function getOrCreateClientId() {
   return null;
 }
 
+
 export default function HomePage() {
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
@@ -56,14 +59,14 @@ export default function HomePage() {
   const [fireRisk, setFireRisk] = useState<string | undefined>();
   const [riskColour, setRiskColour] = useState<string | undefined>();
   const [isWildfireRiskVisible, setIsWildfireRiskVisible] = useState(false);
-  const [notify, setNotify] = useState(false)
-  const [notifyMessage, setNotifyMessage] = useState(false)
 
-  const toggleWildfireRisk = () => {
-    setIsWildfireRiskVisible(!isWildfireRiskVisible)
-    console.log("Toggle Infograph")
-  }
+  const handleHelpClick = () => {
+    setIsWildfireRiskVisible(true);
+  };
 
+  const handlePopupClose = () => {
+    setIsWildfireRiskVisible(false);
+  };
 
   useEffect(() => {
     const requestPermission = async () => {
@@ -121,25 +124,19 @@ export default function HomePage() {
     }
   }, []);
 
-  function clearNotifications() {
-    setNotify(false);
-    setNotifyMessage(!notifyMessage)
-  }
-
   async function handleNotification() {
-    setNotify(true);
-    // const tokens = await getAllSubscription();
+    const tokens = await getAllSubscription();
 
-    // if (tokens) {
-    //   for (const token of tokens) {
-    //     await sendNotification(
-    //       token.data,
-    //       'New article released',
-    //       'New Article have been released! Go check it!',
-    //       "/news",
-    //     )
-    //   }
-    // }
+    if (tokens) {
+      for (const token of tokens) {
+        await sendNotification(
+          token.data,
+          'New article released',
+          'New Article have been released! Go check it!',
+          "/news",
+        )
+      }
+    }
   }
 
   const handleInstallClick = async () => {
@@ -195,13 +192,13 @@ export default function HomePage() {
       const temp = weatherData.current.temp.toFixed(0);
       if (temp < 16) {
         setFireRisk("Low");
-        setRiskColour("bg-gradient-to-r from-emerald-900 to-emerald-500");
+        setRiskColour("bg-gradient-to-r from-green-800 to-green-500");
       } else if (temp < 25) {
         setFireRisk("Medium");
-        setRiskColour("bg-gradient-to-r from-yellow-900 to-yellow-500");
+        setRiskColour("bg-gradient-to-r from-yellow-800 to-yellow-500");
       } else {
         setFireRisk("High");
-        setRiskColour("bg-gradient-to-r from-red-900 to-red-500");
+        setRiskColour("bg-gradient-to-r from-red-800 to-red-500");
       }
     }
   }, [weatherData]);
@@ -209,11 +206,6 @@ export default function HomePage() {
   return (
     <>
       <div>
-        {isWildfireRiskVisible &&
-          <div className={`${styles.wildFireRisk}`}>
-            <WildfireRisk onClose={toggleWildfireRisk} />
-          </div>
-        }
         <div className="homeLayout">
           <div className={styles.header}>
             <header className={`flex items-center ${styles.homeIcons}`}>
@@ -224,25 +216,27 @@ export default function HomePage() {
                 {notifyMessage && <NotificationMessage />}
               </div>
             </header>
+            <h1 className={`font-black ${styles.landingLogo}`}>FLARE</h1>
           </div>
 
           <div className={`${styles.contentPosition}`}>
             <div className={`grid ${styles.contentContainer}`}>
               <div className={`grid grid-cols-2 gap-4 ${styles.fireRisk} ${riskColour}`}>
-                <h3 className={styles.homeHeading}>Wildfire Risk: <span className="font-bold">{fireRisk}</span></h3>
-                <div onClick={toggleWildfireRisk} className="cursor-pointer" >
+                <h2 className={styles.homeHeading}>Wildfire Risk: {fireRisk}</h2>
+
+                <div onClick={handleHelpClick} className="cursor-pointer" >
                   <CircleHelp size={24} />
                 </div>
               </div>
 
               <Link href="/map" className={styles.location}>
-                <h5>{weatherData ? `${weatherData.cityName}` : <p>My Location</p>}</h5>
+                <h3>{weatherData ? `${weatherData.cityName}` : <p>My Location</p>}</h3>
                 {weatherData ? (
                   <>
                     <h1>{weatherData.current.temp.toFixed(0)}°C</h1>
                     <div className="flex space-x-6 items-center">
-                      <p className="leading-5">{weatherData.current.weather[0].description}</p>
-                      <Wind size={48} />
+                      <p className="">{weatherData.current.weather[0].description}</p>
+                      <Wind size={32} />
                     </div>
                   </>
                 ) : (
@@ -252,7 +246,7 @@ export default function HomePage() {
 
               <Link href="/safety" className={styles.safety}>
                 <h3>Safety</h3>
-                <p className="h-full flex items-center leading-5">Learn how to prepare for a wildfire. Learn the early signs</p>
+                <p>Learn how to prepare for a wildfire. Learn the early signs</p>
               </Link>
 
               <Link href="/news" className={`${styles.news} ${styles.newsItemOne}`}>
@@ -260,14 +254,14 @@ export default function HomePage() {
                   className="w-full h-full"
                   plugins={[
                     Autoplay({
-                      delay: 6000,
+                      delay: 2000,
                     }),
                   ]}
                 >
                   <CarouselContent className={`w-full h-full`}>
                     <CarouselItem className={`w-full h-full`}>
                       <h3>News</h3>
-                      <p className="leading-5">
+                      <p>
                         Vancouver’s Unique Coastal Climate: A Balance of Rain and Mild Temperatures: mild,
                         wet winters and pleasantly warm summers
                       </p>
@@ -290,21 +284,35 @@ export default function HomePage() {
                 </Carousel>
               </Link>
             </div>
+            {!isStandalone && isIOS && (
+              // Description how to install the app on IOS& Safari
+              <div>
+                <p className="text-white">
+                  To install this app, tap <span className="share-icon">⬆️</span> and select &quot;Add to Home Screen&quot;.
+                </p>
+              </div>
+            )}
+            {isInstallable && (
+              // Install button for Android
+              <Button onClick={handleInstallClick}>
+                Install App
+              </Button>
+            )}
+            <button
+              onClick={() => handleNotification()}
+              style={{
+                width: '100px',
+                height: '50px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+              }}>
+            </button>
           </div>
         </div >
-        <button
-          onClick={() => handleNotification()}
-          style={{
-            width: '100px',
-            height: '50px',
-            border: 'none',
-            cursor: 'pointer',
-            position: 'absolute',
-            bottom: '250px'
-          }}>
-        </button>
         <BottomNavBar />
-      </div >
+      </div>
+
     </>
   )
 }
