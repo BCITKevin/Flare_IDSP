@@ -185,9 +185,9 @@ export default function Safety() {
                     </CardContent>
                 </Card> */}
                 <div className={`${styles.safetyHeading} mb-6 mt-6`}>
-                    {/* <h4>
+                    <h4>
                         Safety Tips
-                    </h4> */}
+                    </h4>
                 </div>
                 <div className="mt-2">
                 <Tabs defaultValue="Prepare" className="w-full flex flex-col" onValueChange={setActiveTab}>
