@@ -63,6 +63,42 @@ const getFWILevel = (fwiValue: number | null | undefined): FWIInfo => {
 
 const fetchWeatherData = async (lat: number, lon: number): Promise<WeatherData> => {
 
+   // Mock data for Vernon
+   if (lat === 50.2671 && lon === -119.2720) {
+    return {
+      current: {
+        temp: 37.8,
+        feels_like: 40.2,
+        humidity: 12,
+        wind_speed: 35.5,
+        uvi: 9.8
+      },
+      daily: Array(7).fill(null).map((_, i) => ({
+        dt: Math.floor(Date.now() / 1000) + i * 86400,
+        temp: {
+          max: 36.5 - i * 0.5,
+        },
+      })),
+      alerts: [
+        {
+          event: "Extreme Fire Risk Warning",
+          description: "Dangerous fire conditions. High temperatures, low humidity, and strong winds creating extreme fire risk.",
+          start: Math.floor(Date.now() / 1000),
+          end: Math.floor(Date.now() / 1000) + 172800
+        }
+      ],
+      fwi: 45.2,
+      danger_rating: "Very High",
+      daily_fwi: [
+        { fwi: 45.2, danger_rating: "Very High" },
+        { fwi: 43.8, danger_rating: "Very High" },
+        { fwi: 42.5, danger_rating: "Very High" },
+        { fwi: 40.1, danger_rating: "Very High" },
+        { fwi: 38.7, danger_rating: "Very High" }
+      ]
+    };
+  }
+
   try {
     // Fetch regular weather data
     const weatherResponse = await fetch(
@@ -361,6 +397,7 @@ const WeatherMap: React.FC = () => {
           border-radius: 4px;
           font-size: 12px;
           width: 30%;
+          white-space: nowrap;
         ">
           ${weatherData.daily_fwi[index].danger_rating}
         </div>
