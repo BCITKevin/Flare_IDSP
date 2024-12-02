@@ -99,7 +99,7 @@ export default function BottomNavBar() {
           alt="Settings Icon"
           className={styles.icon}
         />
-        <h>Setting</h>
+        <p>Setting</p>
       </Link>
     </div>
   );
