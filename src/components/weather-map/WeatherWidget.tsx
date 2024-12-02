@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Cloud } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import styles from './WeatherWidget.module.css';
 
 interface WeatherWidgetProps {
   temperature?: number;
@@ -36,8 +37,8 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ temperature: initi
 
   return (
     <div className="absolute top-4 left-4 z-10">
-      <Card className="bg-[#1a1a1a] border-gray-700 p-3 flex items-center gap-2">
-        <Cloud className="h-5 w-5 text-[#00b8d4]" />
+      <Card className={`${styles.weatherWidget} bg-black border-gray-700 p-3 flex items-center gap-2`}>
+        <Cloud size={18} className="text-cyan" />
         <span className="text-white font-medium">
           {temperature !== null ? `${temperature}°C` : '...'}
         </span>

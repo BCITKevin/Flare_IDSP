@@ -198,7 +198,7 @@ const WeatherMap: React.FC = () => {
           fullscreenControl: false,
           zoomControl: true,
           zoomControlOptions: {
-            position: google.maps.ControlPosition.RIGHT_BOTTOM
+            position: google.maps.ControlPosition.RIGHT_BOTTOM,
           },
           clickableIcons: false,
           styles: [
@@ -210,7 +210,7 @@ const WeatherMap: React.FC = () => {
               "featureType": "water",
               "elementType": "labels.text.stroke",
               "stylers": [{ "color": "#17263c" }]
-            },
+            }
           ]
         });
 
