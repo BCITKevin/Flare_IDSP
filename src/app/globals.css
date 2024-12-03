@@ -22,6 +22,11 @@
 
 }
 
+html {
+  overflow-x: hidden;
+  overflow-y: hidden;
+} /* Prevents scrolling for X*/
+
 /* Font-face definitions */
 @font-face {
   font-family: 'PPMori';
@@ -254,10 +259,14 @@ h5 {
 
 .newsLayout,
 .safetyLayout {
-  height: 100vh;
+  height:100vh;
   padding: 20px;
   background-color: var(--black);
-  overflow-y: auto;
+  /* overflow-y: auto; */
+}
+
+.newsLayout{
+  padding-bottom: 8rem;
 }
 
 .homeLayout {

@@ -143,7 +143,7 @@ export default function Safety() {
 
 
     return (
-        <body className="min-h-screen overflow-y-auto">
+        <body className="min-h-screen">
             <div className="safetyLayout h-full overflow-y-auto mb-44">
                 <div className={styles.safetyHeading}>
                     <h1>

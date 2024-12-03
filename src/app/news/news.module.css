@@ -18,6 +18,12 @@
     display: none;
 }
 
+.activeTab {
+    box-shadow: 0 4px 6px rgba(0,0,0, 0.3);
+    font-weight: bold;
+    transition: ease-in-out 0.2s;
+}
+
 .tabTriggerContainer {
     display: flex;
     width: 400px;
@@ -83,7 +89,8 @@
 
 .articleHighlightImage {
     display: flex;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     height: 251px;
     justify-content: center;
     align-items: center;
@@ -119,6 +126,8 @@
     top: 0;
     z-index: 10;
     background-color: var(--d-grey);
+    width: 100%;
+    max-width: 400px;
 }
 
 .articleHighlight {
@@ -157,12 +166,17 @@
 .newsDate {
     color: var(--white);
     text-align: left;
-    margin-top: 8px;
     margin-bottom: 16px;
+    margin-top: -0.5rem;
     font-size: 1rem;
-    color: var(--white);
+    color: var(--l-grey);
 } 
 
 .error {
     color: var(--white);
+}
+
+
+.articles:hover{
+    cursor: pointer;
 }
