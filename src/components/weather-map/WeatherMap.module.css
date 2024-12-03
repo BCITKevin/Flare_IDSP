@@ -1,7 +1,7 @@
 .mapContainer {
   width: 100%;
   height: calc(100vh - 80px - 60px);
-  background: #1a1a1a;
+  background: var(--black);
   position: relative;
   border-radius: 0;
   overflow: visible;
@@ -28,7 +28,7 @@
 .searchContainer {
   width: 375px;
   position: static;
-  padding: 10px;
+  padding: 8px;
   pointer-events: auto;
   background: transparent;
 }
@@ -47,7 +47,7 @@
 /* Map Controls */
 .mapWrapper [class*="gm-control-active"],
 .mapWrapper [class*="gm-fullscreen-control"] {
-  background-color: black !important;
+  background-color: var(--black) !important;
   border: none !important;
   box-shadow: none !important;
   border-radius: 0 !important;
@@ -72,7 +72,7 @@
 }
 
 .mapWrapper [class*="gm-bundled-control"] [class*="gmnoprint"] {
-  background-color: black !important;
+  background-color: var(--black) !important;
   border-radius: 0 !important;
   margin: 0 !important;
   z-index: 11;

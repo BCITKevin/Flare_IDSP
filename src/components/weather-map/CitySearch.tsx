@@ -14,6 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import styles from './CitySearch.module.css';
 
 // BC Cities data with coordinates
 const bcCities = [
@@ -87,12 +88,12 @@ const CitySearch: React.FC<CitySearchProps> = ({ onCitySelect }) => {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between bg-black text-white border-gray-700 hover:bg-gray-900"
+          className={`${styles.button} w-full justify-between bg-black text-white border-gray-700 hover:bg-gray-900`}
         >
           {value
             ? bcCities.find((city) => city.value === value)?.label
             : "Search for a city in BC..."}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown size={18} className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[250px] p-0">
@@ -119,6 +120,7 @@ const CitySearch: React.FC<CitySearchProps> = ({ onCitySelect }) => {
                 className="cursor-pointer hover:bg-gray-800 text-white"
               >
                 <Check
+                  size={18}
                   className={cn(
                     "mr-2 h-4 w-4",
                     value === city.value ? "opacity-100" : "opacity-0"

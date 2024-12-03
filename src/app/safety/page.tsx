@@ -3,11 +3,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     Card,
-    CardContent,
-    // CardDescription,
-    // CardFooter,
-    CardHeader,
-    // CardTitle,
 } from "@/components/ui/card"
 import styles from "./safety.module.css"
 import { Backpack, Map, Flag } from "lucide-react";
@@ -26,23 +21,21 @@ type Message = {
 };
 
 // Card can be reformatted into a reusable component
-
 export default function Safety() {
     const [showChat, setShowChat] = useState(false);
     const [activeTab, setActiveTab] = useState('Prepare');
     const [prevMsg, setMsg] = useState<Message[]>([
         { text: "Hello! Is there anything about wildfires I could help you with today?", sender: 'bot' },
     ]);
-    
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault()
+        e.preventDefault();
 
         try {
-            const message = (document.querySelector('#message') as HTMLInputElement)?.value;
-            (document.querySelector('#message') as HTMLInputElement).value = '';
+            const messageInput = e.currentTarget.elements.namedItem('message') as HTMLInputElement;
+            const message = messageInput?.value || '';
+            messageInput.value = '';
 
-            console.log(message);
             setMsg((prevMsg) => [...prevMsg, { text: message, sender: 'user' }]);
 
             const res = await fetch('/api/safety', {
@@ -54,18 +47,15 @@ export default function Safety() {
             });
 
             if (!res.ok) {
-                console.error();
-                throw new Error('OPPPS, SOMETHIN WRONG WITH BOT');
+                throw new Error('Oops, something went wrong with the bot');
             }
-            const data = await res.json();
 
+            const data = await res.json();
             const botResponse = data.chat.content || "Sorry, I can't process your request. Please try again";
 
             setMsg((prevMsg) => [...prevMsg, { text: botResponse, sender: 'bot' }]);
-
-            console.log('from gpt: ', botResponse);
-        }
-        catch (err) {
+            console.log('From GPT:', botResponse);
+        } catch (err) {
             console.error(err);
         }
     }
@@ -73,7 +63,7 @@ export default function Safety() {
     const prepareText = `
     <strong>Stay informed:</strong> It’s crucial to stay updated on emergency alerts and evacuation orders issued by local authorities. Regularly check with Flare and turn on notifications and stay updated with the news. These alerts provide critical information about wildfire locations, safe zones, and road closures.
     <br><br>
-    <strong>Assemble an emergency kit:</strong> Include:
+    <strong>Assemble an emergency kit:</strong>
     <ul>
         <li>- First aid supplies, such as bandages, antiseptics, and pain relievers.</li>
         <li>- Enough non-perishable food and water to sustain your household for at least 3 days.</li>
@@ -94,7 +84,7 @@ export default function Safety() {
     <strong>Create a defensible space around your home:</strong> Clear dry leaves, branches, and other flammable materials at least 30 feet from your home. Trim tree branches to a height of at least 6 feet to prevent fire from climbing. Regularly maintain gutters and roofs by removing debris. Store firewood and other combustible items far from structures.
     <br><br>
     `;
-    
+
 
     const emergencyText = `
     <strong>If you are in danger, contact emergency services immediately:</strong> Dial the emergency hotline 911 if your safety is compromised. Or  call 1 800 663-5555 toll-free or <strong>*5555</strong> on a cellphone to report a wildfire. Clearly state your location and the nature of the emergency to ensure responders can locate you quickly. Avoid using the line for non-critical updates to keep it free for those in immediate need.
@@ -117,7 +107,7 @@ export default function Safety() {
     <br><br>
     <strong>Monitor air quality:</strong> Use air purifiers indoors if available and check air quality levels through official channels to minimize smoke-related health risks.
     `;
-    
+
 
     const evacuationText = `
     <strong>Develop a family emergency plan:</strong> Create a detailed emergency plan that includes designated meeting spots, multiple communication strategies, and escape routes for different scenarios. Assign responsibilities to each family member and rehearse the plan frequently to ensure everyone is prepared.
@@ -148,20 +138,20 @@ export default function Safety() {
     <br><br>
     <strong>Advocate for local safety measures:</strong> Encourage local governments to implement wildfire prevention strategies, such as controlled burns, community fuel breaks, and infrastructure upgrades.
     `;
-    
+
 
 
 
     return (
         <body className="min-h-screen">
             <div className="safetyLayout h-full overflow-y-auto mb-44">
-                <div className={`mb-12 ${styles.safetyHeading}`}>
-                    <h1 className="text-4xl font-bold mb-4">
-                        Wildfire Safety Guide
+                <div className={styles.safetyHeading}>
+                    <h1>
+                        Safety Guide
                     </h1>
-                    <p className={`${styles.whiteText} text-lg `}>
+                    <h5 className={styles.whiteText}>
                         Learn how to prepare and stay safe during wildfire season
-                    </p>
+                    </h5>
                 </div>
                 {/* <Card className="p-5 mt-3 transition-all duration-300 hover:shadow-lg border-l-4 border-l-orange-500">
                     <CardHeader className="p-0 mb-3">
@@ -185,13 +175,13 @@ export default function Safety() {
                     </CardContent>
                 </Card> */}
                 <div className={`${styles.safetyHeading} mb-6 mt-6`}>
-                    <h3 className="text-2xl font-bold">
+                    {/* <h4>
                         Safety Tips
-                    </h3>
+                    </h4> */}
                 </div>
                 <div className="mt-2">
-                <Tabs defaultValue="Prepare" className="w-full flex flex-col" onValueChange={setActiveTab}>
-                        <TabsList className="space-x-8 p-6">
+                    <Tabs defaultValue="Prepare" className="w-full flex flex-col" onValueChange={setActiveTab}>
+                        <TabsList className="space-x-8 p-6 my-2 rounded-lg">
                             <TabsTrigger value="Prepare" className={`w-full ${activeTab === 'Prepare' ? styles.activeTab : ''}`}>Prepare</TabsTrigger>
                             <TabsTrigger value="Emergency" className={`w-full ${activeTab === 'Emergency' ? styles.activeTab : ''}`}>Emergency</TabsTrigger>
                             <TabsTrigger value="Evacuation" className={`w-full ${activeTab === 'Evacuation' ? styles.activeTab : ''}`}>Evacuation</TabsTrigger>
@@ -222,7 +212,7 @@ export default function Safety() {
                 {showChat ? (
                     <>
                         <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                            <div className="relative w-full h-full mx-auto max-w-3xl px-4 pt-6 pb-24">
+                            <div className="relative w-[440px] h-full mx-auto max-w-3xl px-4 pt-6 pb-24">
                                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
                                     {/* Header */}
                                     <div className="flex items-center justify-between p-4 border-b border-solid border-gray-200">
@@ -234,16 +224,15 @@ export default function Safety() {
                                             ×
                                         </button>
                                     </div>
-                                    
+
                                     {/* Chat Messages */}
                                     <div className="relative p-4 flex-auto overflow-y-auto">
                                         {prevMsg.map((msg, i) => (
                                             <div key={i} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4`}>
-                                                <div className={`rounded-lg px-4 py-2 max-w-[80%] ${
-                                                    msg.sender === 'user' 
-                                                    ? 'bg-[var(--orange)] text-white' 
+                                                <div className={`rounded-lg px-4 py-2 max-w-[80%] ${msg.sender === 'user'
+                                                    ? 'bg-[var(--orange)] text-white'
                                                     : 'bg-gray-100 text-gray-800'
-                                                }`}>
+                                                    }`}>
                                                     {msg.text}
                                                 </div>
                                             </div>
@@ -257,11 +246,11 @@ export default function Safety() {
                                                 type="text"
                                                 id="message"
                                                 placeholder="Type your message..."
-                                                className="flex-grow px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-[var(--orange)]"
+                                                className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[var(--orange)]"
                                             />
                                             <button
                                                 type="submit"
-                                                className="bg-[var(--orange)] text-white rounded-full px-6 py-2"
+                                                className="bg-[var(--orange)] text-white rounded-lg px-6 py-2"
                                             >
                                                 Send
                                             </button>
@@ -273,13 +262,13 @@ export default function Safety() {
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </>
                 ) : null}
-                <div className="flex flex-col fixed bottom-24 rounded-md px-6 py-3 m-2 items-center gap-4 transition-all duration-300">
+                <div className="flex flex-col fixed bottom-24 rounded-lg px-6 py-3 m-2 items-center gap-4 transition-all duration-300">
                     {/* <div>
                         <span className="flex justify-center text-white ">Flare Assistant</span>
                         <p className="text-white text-base">Ask us about how you can stay safe</p>
                     </div> */}
-                    <button 
-                        className="flex justify-center bg-[var(--orange)] text-white rounded-full shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
+                    <button
+                        className="flex justify-center bg-[var(--orange)] text-white rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
                         onClick={() => setShowChat(true)}
                     >
                         <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-5 h-5 filter invert brightness-0" />
