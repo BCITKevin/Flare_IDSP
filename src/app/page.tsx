@@ -1,6 +1,5 @@
 "use client";
 
-import Logo from "./public/images/flare_logo 2.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from 'react'
@@ -86,20 +85,20 @@ export default function Main() {
                 }`}
             style={{
                 objectFit: 'cover',
-                width:'440px',
-                overflow:'hidden',
-                display:'flex',
-                justifyContent:'center',
-                alignItems:'center'
+                width: '440px',
+                overflow: 'hidden',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
             }}
         >
-            
+
             <div>
                 <Lottie
                     animationData={logoAnimation}
                     loop={false}
-                    style={{ 
-                        width:'80rem',
+                    style={{
+                        width: '80rem',
                     }}
                 />
             </div>
