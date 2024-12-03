@@ -40,6 +40,7 @@
     "firebase-admin": "^13.0.1",
     "jsdom": "^25.0.1",
     "leaflet": "^1.9.4",
+    "lottie-react": "^2.4.0",
     "lucide": "^0.454.0",
     "lucide-react": "latest",
     "next": "^15.0.2",
