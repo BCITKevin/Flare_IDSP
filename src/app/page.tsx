@@ -1,41 +1,17 @@
 "use client";
 
-import Image from "next/image";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from 'react'
-import React from "react";
-import logoAnimation from './public/videos/LogoAnimation.json'
-import Lottie from "lottie-react";
-// import sendNotification, { fetchSubscription } from "@/lib/notification/sendNotification";
+import dynamic from "next/dynamic";
+import logoAnimation from "./public/videos/LogoAnimation.json";
 
-
-// function getOrCreateClientId() {
-//     let clientId = localStorage.getItem("clientId");
-//     if (!clientId) {
-//         clientId = crypto.randomUUID();
-//         localStorage.setItem("clientId", clientId);
-//     }
-//     return clientId;
-// }
-
-// function urlBase64ToUint8Array(base64String: string) {
-//     const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-//     const base64 = (base64String + padding)
-//         .replace(/-/g, "+")
-//         .replace(/_/g, "/");
-
-//     const rawData = window.atob(base64);
-//     const outputArray = new Uint8Array(rawData.length);
-
-//     for (let i = 0; i < rawData.length; ++i) {
-//         outputArray[i] = rawData.charCodeAt(i);
-//     }
-//     return outputArray;
-// }
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 export default function Main() {
     const [fadeOut, setFadeOut] = useState(false);
     const router = useRouter();
+
+    // 애니메이션 종료 후 페이지 이동
     useEffect(() => {
         const timer = setTimeout(() => {
             setFadeOut(true);
@@ -46,63 +22,29 @@ export default function Main() {
 
         return () => clearTimeout(timer);
     }, [router]);
-    // useEffect(() => {
-    //     async function requestPermissionAndSubscribe() {
-    //         if (Notification.permission === "default") {
-    //             const permission = await Notification.requestPermission();
-    //             if (permission === "granted") {
-    //                 const registration = await navigator.serviceWorker.register("/sw.js", {
-    //                     scope: "/",
-    //                     updateViaCache: "none",
-    //                 });
-    //                 const subscription = await registration.pushManager.subscribe({
-    //                     userVisibleOnly: true,
-    //                     applicationServerKey: urlBase64ToUint8Array(
-    //                         process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
-    //                     ),
-    //                 });
-
-    //                 const clientId = getOrCreateClientId();
-    //                 await fetchSubscription(clientId, subscription);
-
-    //                 const msg = "You have agreed to get a notification from our app";
-
-    //                 await sendNotification(msg, subscription, '/homepage');
-    //             }
-    //         }
-    //     }
-
-    //     if ("serviceWorker" in navigator && "PushManager" in window) {
-    //         requestPermissionAndSubscribe().catch((error) =>
-    //             console.error("Error during subscription:", error)
-    //         );
-    //     }
-    // }, []);
 
     return (
         <div
             className={`flex flex-col landingLayout items-center justify-center ${fadeOut ? "fade-out" : ""
                 }`}
             style={{
-                objectFit: 'cover',
-                width: '440px',
-                overflow: 'hidden',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
+                objectFit: "cover",
+                width: "440px",
+                overflow: "hidden",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
             }}
         >
-
             <div>
                 <Lottie
                     animationData={logoAnimation}
                     loop={false}
                     style={{
-                        width: '80rem',
+                        width: "80rem",
                     }}
                 />
             </div>
-
         </div>
     );
 }
