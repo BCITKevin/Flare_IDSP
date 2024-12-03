@@ -1,20 +1,25 @@
 
 .safetyHeading {
-    color: var(--p-highlight);
+    color: var(--orange);
 }
 
 .articleBody {
-    color: var(--text-black);
+    color: var(--black);
 }
 
 .articleBody *{
-    color: var(--text-black);
+    color: var(--black);
 }
 
 .whiteText {
     color: var(--white);
 }
 
+.activeTab {
+    box-shadow: 0 4px 6px rgba(0,0,0, 0.3);
+    font-weight: bold;
+    transition: ease-in-out 0.2s;
+}
 
 @media only screen and (max-width: 600px) {
     .appLayout {

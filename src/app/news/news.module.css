@@ -3,7 +3,7 @@
     height: 0px;
 
     stroke-width: 4px;
-    stroke: var(--Secondary-Complementary, #00838F);
+    stroke: var(--teal, #00838F);
 }
 
 .newsContent {
@@ -16,6 +16,12 @@
 
 .newsContent::-webkit-scrollbar {
     display: none;
+}
+
+.activeTab {
+    box-shadow: 0 4px 6px rgba(0,0,0, 0.3);
+    font-weight: bold;
+    transition: ease-in-out 0.2s;
 }
 
 .tabTriggerContainer {
@@ -53,14 +59,14 @@
     flex: 1 0 0;
 
     border-radius: 12px;
-    background: var(--s-compliment, #00838F);
+    background: var(--teal, #00838F);
     color: var(--White, #EBEBEB);
 
     margin: 6px;
 }
 
 .newsHeading {
-    color: var(--p-highlight);
+    color: var(--orange);
 }
 
 .newsSubHeading {
@@ -78,12 +84,13 @@
     align-self: stretch;
 
     border-radius: 0px 0px 8px 8px;
-    background: var(--Light-Ink, #000);
+    background: var(--black, #000);
 }
 
 .articleHighlightImage {
     display: flex;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     height: 251px;
     justify-content: center;
     align-items: center;
@@ -93,7 +100,7 @@
 }
 
 .articleHighlightTitle {   
-    color: var(--White, #EBEBEB);
+    color: var(--white, #EBEBEB);
 }
 
 .TabsList {
@@ -119,6 +126,8 @@
     top: 0;
     z-index: 10;
     background-color: var(--d-grey);
+    width: 100%;
+    max-width: 400px;
 }
 
 .articleHighlight {
@@ -157,8 +166,17 @@
 .newsDate {
     color: var(--white);
     text-align: left;
-    margin-top: 8px;
     margin-bottom: 16px;
+    margin-top: -0.5rem;
     font-size: 1rem;
-    color: var(--white);
+    color: var(--l-grey);
 } 
+
+.error {
+    color: var(--white);
+}
+
+
+.articles:hover{
+    cursor: pointer;
+}

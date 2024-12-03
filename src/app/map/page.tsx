@@ -1,6 +1,6 @@
 "use client";
 
-import BottomNavBar from "@/components/BottomNavBar";
+import BottomNavBar from "@/components/BottomNavBar/BottomNavBar";
 import dynamic from "next/dynamic";
 import { Loader2 } from "lucide-react";
 

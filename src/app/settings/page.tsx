@@ -2,27 +2,28 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import { Switch } from "@/components/ui/switch";
 import { Sun, Bell, Languages, Info } from 'lucide-react';
 import { Combobox } from "@/components/ui/combobox";
-import './Settings.css';
-import BottomNavBar from "@/components/BottomNavBar";
+import './settings.css';
+import BottomNavBar from "@/components/BottomNavBar/BottomNavBar";
 
 
 function Settings() {
-    return (
+  return (
+    <div>
       <div className="settings-container">
         <h3 style={{
-            marginBottom: "1.5rem",
-            }}
-            className="headerz"
+          marginBottom: "1.5rem",
+        }}
+          className="headerz"
         >Settings</h3>
-        
+
         <section>
           <h4 style={{
             color: "var(--white)",
             // marginBottom: "1.5rem",
-            }}
+          }}
             className="headerz"
-        >App Preferences</h4>
-          
+          >App Preferences</h4>
+
           <Accordion type="single" collapsible>
             <AccordionItem value="appearance">
               <AccordionTrigger>
@@ -38,7 +39,7 @@ function Settings() {
                 </div>
               </AccordionContent>
             </AccordionItem>
-            
+
             <AccordionItem value="notifications">
               <AccordionTrigger>
                 <div className="accordion-trigger">
@@ -67,7 +68,7 @@ function Settings() {
                 </div>
               </AccordionContent>
             </AccordionItem>
-            
+
             <AccordionItem value="language">
               <AccordionTrigger>
                 <div className="accordion-trigger">
@@ -77,21 +78,21 @@ function Settings() {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="accordion-content">
-                    <p>Change Language</p>
-                    <Combobox/>
+                  <p>Change Language</p>
+                  <Combobox />
                 </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         </section>
-        
+
         <section>
-            <h4 
-                style={{
-                    marginTop:"9rem"
-                }}
-                className="headerz"
-            >App Details</h4>
+          <h4
+            style={{
+              marginTop: "9rem"
+            }}
+            className="headerz"
+          >App Details</h4>
           <Accordion type="single" collapsible>
             <AccordionItem value="about">
               <AccordionTrigger>
@@ -101,21 +102,22 @@ function Settings() {
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-              <div className="accordion-contentAbout">
-                <span>Version: 1.01</span>
-                <span className="underlineSpan">Terms of Service</span>
-                <span className="underlineSpan">Privacy Policy</span>
-                <span className="underlineSpan">Contact Us</span>
-              </div>
+                <div className="accordion-contentAbout">
+                  <span>Version: 1.01</span>
+                  <span className="underlineSpan">Terms of Service</span>
+                  <span className="underlineSpan">Privacy Policy</span>
+                  <span className="underlineSpan">Contact Us</span>
+                </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         </section>
-        <BottomNavBar/>
       </div>
-    );
-  }
-  
-  export default Settings;
-  
+      <BottomNavBar />
+    </div>
+  );
+}
+
+export default Settings;
+
 
