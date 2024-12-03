@@ -73,7 +73,7 @@ export default function Safety() {
     const prepareText = `
     <strong>Stay informed:</strong> It’s crucial to stay updated on emergency alerts and evacuation orders issued by local authorities. Regularly check with Flare and turn on notifications and stay updated with the news. These alerts provide critical information about wildfire locations, safe zones, and road closures.
     <br><br>
-    <strong>Assemble an emergency kit:</strong>
+    <strong>Assemble an emergency kit:</strong> Include:
     <ul>
         <li>- First aid supplies, such as bandages, antiseptics, and pain relievers.</li>
         <li>- Enough non-perishable food and water to sustain your household for at least 3 days.</li>
@@ -185,9 +185,9 @@ export default function Safety() {
                     </CardContent>
                 </Card> */}
                 <div className={`${styles.safetyHeading} mb-6 mt-6`}>
-                    {/* <h4>
+                    <h4>
                         Safety Tips
-                    </h4> */}
+                    </h4>
                 </div>
                 <div className="mt-2">
                 <Tabs defaultValue="Prepare" className="w-full flex flex-col" onValueChange={setActiveTab}>
@@ -204,14 +204,14 @@ export default function Safety() {
                             </Card>
                         </TabsContent>
                         <TabsContent value="Emergency">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24 rounded-lg`}>
                                 <Image src={emergencyHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Backpack color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: emergencyText }} className={styles.articleBody} />
                             </Card>
                         </TabsContent>
                         <TabsContent value="Evacuation">
-                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24`}>
+                            <Card className={`${styles.card} p-6 flex flex-col items-center mb-24 rounded-lg`}>
                                 <Image src={evacHero} width={340} height={189} alt="a rescue worker looking towards a wildfire" />
                                 <Map color="black" className="m-6" />
                                 <p dangerouslySetInnerHTML={{ __html: evacuationText }} className={styles.articleBody} />
@@ -222,7 +222,7 @@ export default function Safety() {
                 {showChat ? (
                     <>
                         <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                            <div className="relative w-[440px] h-full mx-auto max-w-3xl px-4 pt-6 pb-24">
+                            <div className="relative w-full h-full mx-auto max-w-3xl px-4 pt-6 pb-24">
                                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none">
                                     {/* Header */}
                                     <div className="flex items-center justify-between p-4 border-b border-solid border-gray-200">
