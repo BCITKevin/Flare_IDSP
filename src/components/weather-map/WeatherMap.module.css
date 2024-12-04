@@ -47,7 +47,6 @@
 
 /* Map Controls */
 
-
 .mapWrapper [class*="gm-control-active"],
 .mapWrapper [class*="gm-fullscreen-control"] {
   background-color: var(--black) !important;
@@ -71,20 +70,21 @@
   z-index: 10;
   background-color: transparent !important;
   margin-right: 12px !important;
-  margin-bottom: 12px !important;
+  margin-bottom: 48px !important;
 }
 
 .mapWrapper [class*="gm-bundled-control"] [class*="gmnoprint"] {
   background-color: var(--black) !important;
-  border-radius: 0 !important;
-  margin: 0 !important;
-  z-index: 11;
+  border-radius: 8px !important;  /* Added border radius */
+  margin-bottom: 0 !important;
+  overflow: hidden !important;  /* Ensures inner elements don't overflow the rounded corners */
 }
 
 .mapWrapper [class*="gm-bundled-control"] [class*="gm-control-active"] {
   margin: 0 !important;
   width: 40px !important;
   height: 40px !important;
+  border-radius: 0 !important;  /* Remove individual button radius to keep clean edges within container */
 }
 
 .mapWrapper [class*="gm-bundled-control"] [class*="gmnoprint"] > div > div {
