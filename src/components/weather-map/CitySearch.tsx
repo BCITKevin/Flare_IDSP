@@ -133,10 +133,10 @@ const CitySearch: React.FC<CitySearchProps> = ({ onCitySelect }) => {
           {value
             ? bcCities.find((city) => city.value === value)?.label
             : "Search for a city in BC..."}
-          <ChevronsUpDown size={18} className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <Search size={18} className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[250px] p-0">
+      <PopoverContent className="w-[350px] p-0">
         <Command className="bg-black text-white border border-gray-700">
           <CommandInput
             ref={inputRef}
