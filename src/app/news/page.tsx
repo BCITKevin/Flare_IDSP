@@ -266,13 +266,13 @@ export default function News() {
                         {others.map((article, index) => {
                           const transformedArticle = {
                             id: index.toString(),
-                            image:
-                              article.image?.thumbnail?.contentUrl ||
-                              "/images/logo_Flare.png",
+                            image: article.image?.thumbnail?.contentUrl && 
+                                   article.image.thumbnail.contentUrl.startsWith('http')
+                              ? article.image.thumbnail.contentUrl
+                              : "/images/logo_Flare.png",
                             title: article.name,
                             date: article.datePublished,
-                            author:
-                              article.provider[0]?.name || "Unknown Author",
+                            author: article.provider[0]?.name || "Unknown Author",
                           };
                           return (
                             <div
