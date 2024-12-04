@@ -149,7 +149,7 @@ export default function Safety() {
                     <h1>
                         Safety Guide
                     </h1>
-                    <h5 className={styles.whiteText}>
+                    <h5 className={`${styles.whiteText} flex pb-3 text-[color:--l-grey]`}>
                         Learn how to prepare and stay safe during wildfire season
                     </h5>
                 </div>
