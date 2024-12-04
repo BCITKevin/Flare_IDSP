@@ -270,8 +270,8 @@ const WeatherMap: React.FC = () => {
             border-radius: 4px !important;
           }
         </style>
-      <div style="padding: 30px; width: 280px; max-width: 90vw; background-color: #000000; color: #ffffff;"
-      class="min-h-full">
+      <div style="padding: 30px; width: 280px; max-width: 90vw; background-color: #000000; color: #ffffff;
+      z-index: 1000;" class="min-h-full">
         <h3 style="font-size: 24px; font-weight: bold; margin-bottom: 16px; color: #ffffff;">${city.label}</h3>
         
         <!-- Current Conditions -->

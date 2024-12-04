@@ -3,8 +3,8 @@
   height: calc(100vh - 80px - 60px);
   background: var(--black);
   position: relative;
-  border-radius: 0;
-  overflow: visible;
+  border-radius: 8px;
+  overflow: hidden;
   border: none;
 }
 
@@ -13,6 +13,7 @@
   height: 100%;
   position: relative;
   background-color: #1f2937;
+  border-radius: 8px;
 }
 
 .container {
@@ -45,6 +46,8 @@
 /* Rest of your CSS remains the same */
 
 /* Map Controls */
+
+
 .mapWrapper [class*="gm-control-active"],
 .mapWrapper [class*="gm-fullscreen-control"] {
   background-color: var(--black) !important;
