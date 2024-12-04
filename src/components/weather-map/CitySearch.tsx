@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -6,9 +6,10 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
+  CommandInput
 } from "@/components/ui/command";
+import { InputHTMLAttributes } from "react";
 import {
   Popover,
   PopoverContent,
@@ -78,8 +79,47 @@ interface CitySearchProps {
 }
 
 const CitySearch: React.FC<CitySearchProps> = ({ onCitySelect }) => {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSelectCity = (currentValue: string) => {
+    setValue(currentValue === value ? "" : currentValue);
+    setOpen(false);
+    const selectedCity = bcCities.find((c) => c.value === currentValue);
+    if (selectedCity) {
+      onCitySelect({
+        lat: selectedCity.lat,
+        lon: selectedCity.lon,
+        label: selectedCity.label
+      });
+    }
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "Enter") {
+      const firstCity = bcCities.find((city) => city.value.toLowerCase().includes(value.toLowerCase()));
+      if (firstCity) {
+        handleSelectCity(firstCity.value);
+      }
+    } else if (event.key === "ArrowDown") {
+      setHighlightedIndex((prevIndex) => Math.min(prevIndex + 1, bcCities.length - 1));
+    } else if (event.key === "ArrowUp") {
+      setHighlightedIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    }
+  };
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      if (inputRef.current) {
+        inputRef.current.removeEventListener("keydown", handleKeyDown);
+      }
+    };
+  }, [value]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -98,26 +138,24 @@ const CitySearch: React.FC<CitySearchProps> = ({ onCitySelect }) => {
       </PopoverTrigger>
       <PopoverContent className="w-[250px] p-0">
         <Command className="bg-black text-white border border-gray-700">
-          <CommandInput placeholder="Search BC cities..." className="text-white" />
+          <CommandInput
+            ref={inputRef}
+            placeholder="Search BC cities..."
+            className="text-white"
+            value={value}
+            onValueChange={(value: string) => setValue(value)}
+          />
           <CommandEmpty>No city found.</CommandEmpty>
           <CommandGroup className="max-h-[300px] overflow-y-auto">
-            {bcCities.map((city) => (
+            {bcCities.map((city, index) => (
               <CommandItem
                 key={city.value}
                 value={city.value}
-                onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
-                  setOpen(false);
-                  const selectedCity = bcCities.find((c) => c.value === currentValue);
-                  if (selectedCity) {
-                    onCitySelect({
-                      lat: selectedCity.lat,
-                      lon: selectedCity.lon,
-                      label: selectedCity.label
-                    });
-                  }
-                }}
-                className="cursor-pointer hover:bg-gray-800 text-white"
+                onSelect={() => handleSelectCity(city.value)}
+                className={cn(
+                  "cursor-pointer hover:bg-gray-800 text-white",
+                  highlightedIndex === index && "bg-gray-700"
+                )}
               >
                 <Check
                   size={18}
