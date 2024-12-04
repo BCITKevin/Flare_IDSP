@@ -1,27 +1,30 @@
-'use client';
+"use client";
 
-import Logo from "../public/images/flare_logo.svg"
+import Logo from "../public/images/flare_logo.svg";
 import Image from "next/image";
 import styles from "./homepage.module.css";
 import { CircleHelp, Wind, Bell } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import sendNotification, { fetchSubscription, deleteTokenFromServer } from "@/lib/notification/sendNotification";
+import sendNotification, {
+  fetchSubscription,
+  deleteTokenFromServer,
+} from "@/lib/notification/sendNotification";
 import { fetchWeatherData } from "@/utils/fetchWeatherData";
-import { messaging, getToken } from '../../lib/firebase';
+import { messaging, getToken } from "../../lib/firebase";
 import { isSupported, deleteToken } from "firebase/messaging";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay"
+import Autoplay from "embla-carousel-autoplay";
 import WildfireRisk from "@/components/wildfireRisk/WildfireRisk";
 import BottomNavBar from "@/components/BottomNavBar/BottomNavBar";
 import TextLogo from "../public/images/FLARE.svg";
 import NotificationBell from "@/components/ui/NotificationBell/NotificationBell";
 import NotificationMessage from "@/components/NotificationMessage/NotificationMessage";
-
+import { demoArticles } from "@/data/demoArticles";
 
 interface NavigatorStandalone extends Navigator {
   standalone?: boolean;
@@ -47,24 +50,30 @@ function getOrCreateClientId() {
 export default function HomePage() {
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallable, setIsInstallable] = useState(false);
   const [cityName, setCityName] = useState<string>("Vancouver");
   const [weatherData, setWeatherData] = useState<any>(null);
   const [fireRisk, setFireRisk] = useState<string | undefined>();
   const [riskColour, setRiskColour] = useState<string | undefined>();
   const [isWildfireRiskVisible, setIsWildfireRiskVisible] = useState(false);
-  const [notify, setNotify] = useState(false)
-  const [notifyMessage, setNotifyMessage] = useState(false)
+  const [notify, setNotify] = useState(false);
+  const [notifyMessage, setNotifyMessage] = useState(false);
 
   const toggleWildfireRisk = () => {
-    setIsWildfireRiskVisible(!isWildfireRiskVisible)
-  }
+    setIsWildfireRiskVisible(!isWildfireRiskVisible);
+  };
 
   useEffect(() => {
     const requestPermission = async () => {
-      if (typeof Notification === "undefined" || typeof navigator.serviceWorker === "undefined") {
-        console.error("Notifications or Service Workers are not supported in this browser.");
+      if (
+        typeof Notification === "undefined" ||
+        typeof navigator.serviceWorker === "undefined"
+      ) {
+        console.error(
+          "Notifications or Service Workers are not supported in this browser."
+        );
         return;
       }
 
@@ -79,26 +88,29 @@ export default function HomePage() {
         if (permission === "granted") {
           console.log("Notification permission granted.");
           await getToken(messaging, {
-            vapidKey: 'BPXsQYDzZY2XA5zHU_rEawyf2hVSUK0Bb8uhndW9oPlCgtQF5npThPLcCTF5m81rPiDiFu6dJZEYhN3fMbqK23o',
-          }).then(async (currentToken) => {
-            if (currentToken) {
-              console.log("FCM Token:", currentToken);
-              const clientId = getOrCreateClientId();
-              if (clientId) {
-                await fetchSubscription(clientId, currentToken);
-                await sendNotification(
-                  currentToken,
-                  "Agreed notification",
-                  "You have agreed notification from Flare",
-                  "/homepage",
-                );
+            vapidKey:
+              "BPXsQYDzZY2XA5zHU_rEawyf2hVSUK0Bb8uhndW9oPlCgtQF5npThPLcCTF5m81rPiDiFu6dJZEYhN3fMbqK23o",
+          })
+            .then(async (currentToken) => {
+              if (currentToken) {
+                console.log("FCM Token:", currentToken);
+                const clientId = getOrCreateClientId();
+                if (clientId) {
+                  await fetchSubscription(clientId, currentToken);
+                  await sendNotification(
+                    currentToken,
+                    "Agreed notification",
+                    "You have agreed notification from Flare",
+                    "/homepage"
+                  );
+                }
+              } else {
+                console.log("No registration token available.");
               }
-            } else {
-              console.log("No registration token available.");
-            }
-          }).catch((err) => {
-            console.error("An error occurred while retrieving token. ", err);
-          });
+            })
+            .catch((err) => {
+              console.error("An error occurred while retrieving token. ", err);
+            });
         } else if (permission === "denied") {
           console.log("Permission denied. Deleting token.");
           const clientId = getOrCreateClientId();
@@ -118,7 +130,7 @@ export default function HomePage() {
 
   function clearNotifications() {
     setNotify(false);
-    setNotifyMessage(!notifyMessage)
+    setNotifyMessage(!notifyMessage);
   }
 
   async function handleNotification() {
@@ -144,7 +156,8 @@ export default function HomePage() {
     setIsIOS(isIOSDevice);
 
     const isStandaloneMode =
-      (window.navigator as NavigatorStandalone).standalone || window.matchMedia("(display-mode: standalone)").matches;
+      (window.navigator as NavigatorStandalone).standalone ||
+      window.matchMedia("(display-mode: standalone)").matches;
     setIsStandalone(isStandaloneMode);
 
     const handleBeforeInstallPrompt = (event: BeforeInstallPromptEvent) => {
@@ -153,10 +166,16 @@ export default function HomePage() {
       setIsInstallable(true);
     };
 
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt as EventListener);
+    window.addEventListener(
+      "beforeinstallprompt",
+      handleBeforeInstallPrompt as EventListener
+    );
 
     return () => {
-      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt as EventListener);
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt as EventListener
+      );
     };
   }, []);
 
@@ -192,18 +211,22 @@ export default function HomePage() {
   return (
     <>
       <div>
-        {isWildfireRiskVisible &&
+        {isWildfireRiskVisible && (
           <div className={`${styles.wildFireRisk}`}>
             <WildfireRisk onClose={toggleWildfireRisk} />
           </div>
-        }
+        )}
         <div className="homeLayout">
           <div className={styles.header}>
             <header className={`flex items-center ${styles.homeIcons}`}>
               <Image src={Logo} alt="Flare logo" className="w-12" />
               <Image src={TextLogo} alt="Flare logo" className="w-26" />
               <div className={`${styles.notification}`}>
-                <NotificationBell clearNotifications={clearNotifications} handleNotification={handleNotification} notify={notify} />
+                <NotificationBell
+                  clearNotifications={clearNotifications}
+                  handleNotification={handleNotification}
+                  notify={notify}
+                />
                 {notifyMessage && <NotificationMessage />}
               </div>
             </header>
@@ -211,20 +234,28 @@ export default function HomePage() {
 
           <div className={`${styles.contentPosition}`}>
             <div className={`grid ${styles.contentContainer}`}>
-              <div className={`grid grid-cols-2 gap-4 ${styles.fireRisk} ${riskColour}`}>
-                <h3 className={styles.homeHeading}>Wildfire Risk: <span className="font-bold">{fireRisk}</span></h3>
-                <div onClick={toggleWildfireRisk} className="cursor-pointer" >
+              <div
+                className={`grid grid-cols-2 gap-4 ${styles.fireRisk} ${riskColour}`}
+              >
+                <h3 className={styles.homeHeading}>
+                  Wildfire Risk: <span className="font-bold">{fireRisk}</span>
+                </h3>
+                <div onClick={toggleWildfireRisk} className="cursor-pointer">
                   <CircleHelp size={24} />
                 </div>
               </div>
 
               <Link href="/map" className={styles.location}>
-                <h5>{weatherData ? `${weatherData.cityName}` : <p>My Location</p>}</h5>
+                <h5>
+                  {weatherData ? `${weatherData.cityName}` : <p>My Location</p>}
+                </h5>
                 {weatherData ? (
                   <>
                     <h1>{weatherData.current.temp.toFixed(0)}°C</h1>
                     <div className="flex space-x-6 items-center">
-                      <p className="leading-5">{weatherData.current.weather[0].description}</p>
+                      <p className="leading-5">
+                        {weatherData.current.weather[0].description}
+                      </p>
                       <Wind size={48} />
                     </div>
                   </>
@@ -235,40 +266,56 @@ export default function HomePage() {
 
               <Link href="/safety" className={styles.safety}>
                 <h3>Safety</h3>
-                <p className="h-full flex items-center leading-5">Learn how to prepare for a wildfire. Learn the early signs</p>
+                <p className="h-full flex items-center leading-5">
+                  Learn how to prepare for a wildfire. Learn the early signs
+                </p>
               </Link>
 
-              <Link href="/news" className={`${styles.news} ${styles.newsItemOne}`}>
+              <Link href="/news" className={`${styles.news}`}>
                 <Carousel
                   className="w-full h-full"
+                  opts={{
+                    align: "start",
+                    loop: true,
+                  }}
                   plugins={[
                     Autoplay({
-                      delay: 6000,
+                      //delay: 3000,
+                      delay: 9999999,
+                      stopOnInteraction: false,
                     }),
                   ]}
                 >
-                  <CarouselContent className={`w-full h-full`}>
-                    <CarouselItem className={`w-full h-full`}>
-                      <h3>News</h3>
-                      <p className="leading-5">
-                        Vancouver’s Unique Coastal Climate: A Balance of Rain and Mild Temperatures: mild,
-                        wet winters and pleasantly warm summers
-                      </p>
-                    </CarouselItem>
-                    <CarouselItem className={`w-full h-full`}>
-                      <h3>News</h3>
-                      <p>
-                        How Vancouver’s Rain Shapes Urban Life: The city receives around 160 days of rain each
-                        year...
-                      </p>
-                    </CarouselItem>
-                    <CarouselItem className={`w-full h-full`}>
-                      <h3>News</h3>
-                      <p>
-                        The Best and Worst Seasons to Visit Vancouver: Weather Insights for Travelers: For those
-                        planning a trip...
-                      </p>
-                    </CarouselItem>
+                  <CarouselContent className="h-[358px]">
+                    {demoArticles.LocalArticles.slice(0, 3).map(
+                      (article, index) => (
+                        <CarouselItem
+                          key={index}
+                          className="h-full w-full flex-[0_0_100%]"
+                        >
+                          <div className="relative h-[358px]">
+                            <Image
+                              src={article.image}
+                              alt={article.imageDescription || article.title}
+                              fill
+                              priority={index === 0}
+                              className="object-cover rounded-lg"
+                              style={{ objectFit: "cover" }}
+                            />
+                            <div className="absolute inset-0 bg-black/40 rounded-lg">
+                              <div className="absolute bottom-0 p-4">
+                                <h3 className="text-white font-bold text-lg mb-2">
+                                  News
+                                </h3>
+                                <p className="text-white text-sm leading-5 line-clamp-2">
+                                  {article.title}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </CarouselItem>
+                      )
+                    )}
                   </CarouselContent>
                 </Carousel>
               </Link>
@@ -277,16 +324,16 @@ export default function HomePage() {
           <button
             onClick={() => handleNotification()}
             style={{
-              width: '100px',
-              height: '50px',
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-            }}>
-          </button>
-        </div >
+              width: "100px",
+              height: "50px",
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+            }}
+          ></button>
+        </div>
         <BottomNavBar />
-      </div >
+      </div>
     </>
-  )
+  );
 }
