@@ -9,6 +9,7 @@ import styles from "./news.module.css";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { demoArticles } from "@/data/demoArticles";
 
 interface BingNewsArticle {
   name: string;
@@ -25,6 +26,20 @@ interface BingNewsArticle {
   datePublished: string;
   content?: string;
   isProtected?: boolean;
+}
+
+interface DemoArticle {
+  title: string;
+  image: string;
+  imageDescription?: string;
+  author: string;
+  publisher?: string;
+  puplisher?: string;
+  date: string;
+  link: string;
+  content: {
+    paragraphs: string[];
+  };
 }
 
 type Category = "Local" | "Regional" | "National" | "Global";
@@ -64,24 +79,23 @@ export default function News() {
     const fetchNews = async () => {
       setLoading(true);
       setError(null);
-      console.log("Fetching news with query:", query);
 
       try {
         const res = await fetch(
           `/api/news/?query=${encodeURIComponent(query)}&mkt=en-CA`
         );
         if (!res.ok) {
-          throw new Error(`API 요청 실패: ${res.statusText}`);
+          // API 에러 발생시 데모 기사만 표시
+          console.warn("API error - showing demo articles only");
+          setArticles([]);
+          return;
         }
         const data: { value: BingNewsArticle[] } = await res.json();
-        console.log("Fetched news articles:", data.value); // 뉴스 데이터 로깅
         setArticles(data.value || []);
       } catch (err) {
-        console.error(
-          "Client error:",
-          err instanceof Error ? err.message : err
-        );
-        setError("Failed to fetch news. Please try again later.");
+        console.error("Client error:", err);
+        // 에러 발생시 데모 기사만 표시
+        setArticles([]);
       } finally {
         setLoading(false);
       }
@@ -149,6 +163,56 @@ export default function News() {
     } catch (error) {
       console.error("Error:", error);
     }
+  };
+
+  // Demo articles를 카테고리별로 분류
+  const getDemoArticles = (category: Category): DemoArticle[] => {
+    switch (category) {
+      case "Local":
+        return demoArticles.LocalArticles as DemoArticle[];
+      case "Regional":
+        return demoArticles.RegionalArticles as DemoArticle[];
+      case "National":
+        return demoArticles.NationalArticles as DemoArticle[];
+      case "Global":
+        return demoArticles.InternationalArticles as DemoArticle[];
+      default:
+        return [];
+    }
+  };
+
+  // Demo article 클릭 핸들러
+  const handleDemoArticleClick = (article: DemoArticle) => {
+    // 단락을 더 읽기 쉽게 처리
+    const formattedContent = article.content.paragraphs
+      .map((paragraph) => paragraph.trim()) // 공백 제거
+      .filter((paragraph) => paragraph.length > 0) // 빈 단락 제거
+      .map((paragraph) => {
+        // 인용문 처리 (따옴표로 시작하는 텍스트)
+        if (paragraph.startsWith('"') || paragraph.startsWith('"')) {
+          return `\n${paragraph}\n`;
+        }
+        // 목록 항목 처리 (불릿 또는 숫자로 시작하는 텍스트)
+        if (paragraph.match(/^[•\-\d.]/)) {
+          return `  ${paragraph}`; // 들여쓰기 추가
+        }
+        // 일반 단락
+        return paragraph;
+      })
+      .join("\n\n"); // 단락 사이에 빈 줄 추가
+
+    const articleData = {
+      title: article.title,
+      content: formattedContent,
+      date: article.date,
+      author: article.author,
+      image: article.image,
+      source: article.publisher,
+      imageDescription: article.imageDescription || "",
+    };
+
+    localStorage.setItem("articleData", JSON.stringify(articleData));
+    router.push("/demoArticle");
   };
 
   return (
@@ -228,6 +292,60 @@ export default function News() {
 
             {!loading && !error && (
               <>
+                {/* Demo Articles */}
+                {(() => {
+                  const demoArticles = getDemoArticles(tabState);
+                  const [highlighted, ...others] = demoArticles;
+
+                  return (
+                    <>
+                      {/* Highlighted Demo Article */}
+                      {highlighted && (
+                        <div
+                          className={`${styles.articleHighlight}`}
+                          onClick={() => handleDemoArticleClick(highlighted)}
+                        >
+                          <Image
+                            src={highlighted.image}
+                            alt={highlighted.imageDescription || highlighted.title}
+                            width={400}
+                            height={251}
+                            className={`rounded-lg ${styles.articleHighlightImage}`}
+                          />
+                          <div className="indent-6">
+                            <h5 className={`${styles.articleHighlightTitle} text-xl font-bold m-auto p-3`}>
+                              {highlighted.title}
+                            </h5>
+                            <div className="flex pb-3 text-[color:--l-grey]">
+                              <p>{highlighted.author}</p>
+                              <p>{highlighted.date}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Other Demo Articles */}
+                      {others.map((article, index) => (
+                        <div
+                          key={`demo-${index}`}
+                          onClick={() => handleDemoArticleClick(article)}
+                        >
+                          <ArticleCard
+                            article={{
+                              id: `demo-${index}`,
+                              image: article.image,
+                              title: article.title,
+                              date: article.date,
+                              author: article.author,
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </>
+                  );
+                })()}
+
+                {/* Bing News Articles */}
                 {(() => {
                   const { highlighted, others } =
                     getHighlightedAndOthers(tabState);
@@ -261,9 +379,7 @@ export default function News() {
                               </p>
                               <p>
                                 {isNaN(
-                                  new Date(
-                                    highlighted.datePublished
-                                  ).getTime()
+                                  new Date(highlighted.datePublished).getTime()
                                 )
                                   ? "Invalid Date"
                                   : new Date(
