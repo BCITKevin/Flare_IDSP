@@ -13,7 +13,11 @@ export async function POST(req: Request) {
         const completion = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
             messages: [
-                { role: "system", content: 'You are an expert on BC wildfires. Respond as if you have access to real-time information about the BC wildfire situation. If a user asks questions related to wildfire conditions, provide practical advice and recommendations based on the current status.' },
+                {
+                    role: "system",
+                    content: `You are an expert on BC wildfires. Respond as if you have access to real-time information about the BC wildfire situation.
+                    Always format your response as valid HTML. Use <h4> for headers, and <ul> with <li> for bullet points, if needed. Add list-disc to the class of all <ul> tags. Wrap important keywords or key phrases in <strong> tags for emphasis.`
+                },
                 { role: "user", content: message }
             ],
         });

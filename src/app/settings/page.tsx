@@ -1,12 +1,60 @@
+'use client';
+
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch";
-import { Sun, Bell, Languages, Info } from 'lucide-react';
+import { Sun, Bell, Languages, Info, CircleArrowDown } from 'lucide-react';
 import { Combobox } from "@/components/ui/combobox";
 import './settings.css';
 import BottomNavBar from "@/components/BottomNavBar/BottomNavBar";
+import { useEffect, useState } from "react";
 
+interface NavigatorStandalone extends Navigator {
+  standalone?: boolean;
+}
 
 function Settings() {
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [isIOS, setIsIOS] = useState(false);
+  const [isInstallable, setIsInstallable] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
+
+  useEffect(() => {
+    const userAgent = window.navigator.userAgent;
+    const isIOSDevice = /iPhone|iPad|iPod/i.test(userAgent);
+    setIsIOS(isIOSDevice);
+
+    const isStandaloneMode =
+      (window.navigator as NavigatorStandalone).standalone || window.matchMedia("(display-mode: standalone)").matches;
+    setIsStandalone(isStandaloneMode);
+
+    const handleBeforeInstallPrompt = (event: BeforeInstallPromptEvent) => {
+      event.preventDefault();
+      setDeferredPrompt(event);
+      setIsInstallable(true);
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt as EventListener);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt as EventListener);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt && !isIOS) {
+      deferredPrompt.prompt();
+      const choiceResult = await deferredPrompt.userChoice;
+      if (choiceResult.outcome === "accepted") {
+        console.log("User accepted the install prompt");
+      } else {
+        console.log("User dismissed the install prompt");
+      }
+      setDeferredPrompt(null);
+    }
+  };
+
+
   return (
     <div>
       <div className="settings-container">
@@ -19,7 +67,6 @@ function Settings() {
         <section>
           <h4 style={{
             color: "var(--white)",
-            // marginBottom: "1.5rem",
           }}
             className="headerz"
           >App Preferences</h4>
@@ -83,6 +130,32 @@ function Settings() {
                 </div>
               </AccordionContent>
             </AccordionItem>
+
+            <AccordionItem value="install">
+              <AccordionTrigger>
+                <div className="accordion-trigger">
+                  <CircleArrowDown className="icon-gray" />
+                  <span className="theSpan">Install</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                {isIOS !== false ?
+                  (
+                    <div className="accordion-content">
+                      <p>
+                        To install this app on IOS, tap ⬆️ and select &quot;Add to Home Screen&quot;.
+                      </p>
+                    </div>
+                  )
+                  : (
+                    <div className="accordion-content">
+                      <span>Install the app on your machine</span>
+                      <Button onClick={handleInstallClick}>Install</Button>
+                    </div>
+                  )}
+              </AccordionContent>
+            </AccordionItem>
+
           </Accordion>
         </section>
 

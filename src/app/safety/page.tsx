@@ -153,32 +153,6 @@ export default function Safety() {
                         Learn how to prepare and stay safe during wildfire season
                     </h5>
                 </div>
-                {/* <Card className="p-5 mt-3 transition-all duration-300 hover:shadow-lg border-l-4 border-l-orange-500">
-                    <CardHeader className="p-0 mb-3">
-                        <div className="flex items-center gap-2">
-                            <strong className={`${styles.articleBody} text-lg`}>
-                                Based on your Location and Recent Weather
-                            </strong>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="p-0">
-                        <div className="flex flex-col gap-2">
-                            <p className={`${styles.articleBody} leading-relaxed`}>
-                                Consider bringing:
-                            </p>
-                            <ul className="list-disc ml-5 space-y-1">
-                                <li className={styles.articleBody}>Extra water (1 gallon per person)</li>
-                                <li className={styles.articleBody}>Cooling towels</li>
-                                <li className={styles.articleBody}>Sun protection (hat, sunscreen)</li>
-                            </ul>
-                        </div>
-                    </CardContent>
-                </Card> */}
-                <div className={`${styles.safetyHeading} mb-6 mt-6`}>
-                    {/* <h4>
-                        Safety Tips
-                    </h4> */}
-                </div>
                 <div className="mt-2">
                     <Tabs defaultValue="Prepare" className="w-full flex flex-col" onValueChange={setActiveTab}>
                         <TabsList className="space-x-8 p-6 my-2 rounded-lg">
@@ -229,11 +203,14 @@ export default function Safety() {
                                     <div className="relative p-4 flex-auto overflow-y-auto">
                                         {prevMsg.map((msg, i) => (
                                             <div key={i} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} mb-4`}>
-                                                <div className={`rounded-lg px-4 py-2 max-w-[80%] ${msg.sender === 'user'
-                                                    ? 'bg-[var(--orange)] text-white'
-                                                    : 'bg-gray-100 text-gray-800'
-                                                    }`}>
-                                                    {msg.text}
+                                                <div
+                                                    className={`rounded-lg px-4 py-2 max-w-[80%] ${msg.sender === 'user'
+                                                        ? 'bg-[var(--orange)] text-white'
+                                                        : 'bg-gray-100 text-gray-800'
+                                                        }`}
+                                                    dangerouslySetInnerHTML={msg.sender === 'bot' ? { __html: msg.text } : undefined}
+                                                >
+                                                    {msg.sender === 'bot' ? null : msg.text}
                                                 </div>
                                             </div>
                                         ))}
@@ -263,10 +240,6 @@ export default function Safety() {
                     </>
                 ) : null}
                 <div className="flex flex-col fixed bottom-24 rounded-lg px-6 py-3 m-2 items-center gap-4 transition-all duration-300">
-                    {/* <div>
-                        <span className="flex justify-center text-white ">Flare Assistant</span>
-                        <p className="text-white text-base">Ask us about how you can stay safe</p>
-                    </div> */}
                     <button
                         className="flex justify-center bg-[var(--orange)] text-white rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
                         onClick={() => setShowChat(true)}
