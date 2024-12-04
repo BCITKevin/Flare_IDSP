@@ -285,11 +285,11 @@ const WeatherMap: React.FC = () => {
                           
                           <!-- Current Weather Details -->
 <!-- Current Weather Details -->
-        <div style="background-color: #000000; color: #ffffff; padding-top: 1rem; border-radius: 0.375rem; margin-bottom: 1rem; display: flex; flex-direction: column; width: 100%; justify-content: center;">
+        <div style="background-color: #000000; color: #ffffff; padding-top: 1rem; border-radius: 0.375rem; margin-bottom: 1rem; display: flex; flex-direction: column; width: 100%; justify-content: center; gap:0.2rem">
           <div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px solid #374151;">
             <div style="display: flex; align-items: center;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem">
-                <path d="M12 2a5 5 0 1 1-5 5v10a5 5 0 1 1 0-10V7a5 5 0 0 1 5-5Z"/>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-thermometer">
+                <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/>
               </svg>
               Temperature:
             </div>
@@ -298,33 +298,26 @@ const WeatherMap: React.FC = () => {
             <span>${weatherData.current.temp.toFixed(1)}°C</span>
           </div>
                             <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #374151;">
-                              <div style="display: flex; align-items: center;">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                class="mr-2"
-                                >
-                                  <path d="M12 8a4 4 0 1 1-8 0a4 4 0 0 1 8 0Z"/>
-                                  <path d="M8 2v2"/>
-                                  <path d="M8 12v2"/>
-                                  <path d="M2 8h2"/>
-                                  <path d="M12 8h2"/>
-                                  <path d="m3.5 3.5 1.5 1.5"/>
-                                  <path d="m11 11 1.5 1.5"/>
-                                  <path d="m3.5 12.5 1.5-1.5"/>
-                                  <path d="m11 5 1.5-1.5"/>
-                                  <path d="M16 12v10"/>
-                                  <path d="M20 12v10"/>
-                                  <path d="M16 18h4"/>
+                              <div style="display: flex; align-items: center; gap:0.2rem">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-thermometer-snowflake">
+                                  <path d="M2 12h10"/><path d="M9 4v16"/>
+                                  <path d="m3 9 3 3-3 3"/><path d="M12 6 9 9 6 6"/>
+                                  <path d="m6 18 3-3 1.5 1.5"/>
+                                  <path d="M20 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/>
                                 </svg>
                                 Feels Like:
                               </div>
                               <span>${weatherData.current.feels_like.toFixed(1)}°C</span>
                             </div>
           <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #374151;">
-            <div style="display: flex; align-items: center;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem">
-                <path d="M2 12h20"/>
-                <path d="M2 17h20"/>
-                <path d="M2 7h20"/>
+            <div style="display: flex; align-items: center; gap:0.2rem">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-droplets">
+                <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/>
+                <path d="M12 15v2"/>
+                <path d="M8 13h2"/>
+                <path d="M16 13h2"/>
+                <path d="m7 17 5-5"/>
+                <path d="m14 17-5-5"/>
               </svg>
               Humidity:
 
@@ -332,28 +325,28 @@ const WeatherMap: React.FC = () => {
             <span>${weatherData.current.humidity}%</span>
           </div>
             <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #374151;">
-            <div style="display: flex; align-items: center;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem">
-                <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/>
-                <path d="M9.6 4.6A2 2 0 1 1 11 8H2"/>
-                <path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>
+            <div style="display: flex; align-items: center; gap:0.2rem">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wind">
+                <path d="M12.8 19.6A2 2 0 1 0 14 16H2"/>
+                <path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"/>
+                <path d="M9.8 4.4A2 2 0 1 1 11 8H2"/>
               </svg>
               Wind:
             </div>
             <span>${(weatherData.current.wind_speed * 3.6).toFixed(1)} km/h</span>
           </div>
           <div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px solid #374151;">
-            <div style="display: flex; align-items: center;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem">
+            <div style="display: flex; align-items: center; gap:0.2rem">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun-medium">
                 <circle cx="12" cy="12" r="4"/>
-                <path d="M12 2v2"/>
-                <path d="M12 20v2"/>
-                <path d="m4.93 4.93 1.41 1.41"/>
-                <path d="m17.66 17.66 1.41 1.41"/>
-                <path d="M2 12h2"/>
-                <path d="M20 12h2"/>
-                <path d="m6.34 17.66-1.41 1.41"/>
-                <path d="m19.07 4.93-1.41 1.41"/>
+                <path d="M12 3v1"/>
+                <path d="M12 20v1"/>
+                <path d="M3 12h1"/>
+                <path d="M20 12h1"/>
+                <path d="m18.364 5.636-.707.707"/>
+                <path d="m6.343 17.657-.707.707"/>
+                <path d="m5.636 5.636.707.707"/>
+                <path d="m17.657 17.657.707.707"/>
               </svg>
               UV Index:
             </div>
