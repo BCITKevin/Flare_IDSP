@@ -25,6 +25,7 @@ import TextLogo from "../public/images/FLARE.svg";
 import NotificationBell from "@/components/ui/NotificationBell/NotificationBell";
 import NotificationMessage from "@/components/NotificationMessage/NotificationMessage";
 import { demoArticles } from "@/data/demoArticles";
+import { useRouter } from "next/navigation";
 
 interface NavigatorStandalone extends Navigator {
   standalone?: boolean;
@@ -61,6 +62,9 @@ export default function HomePage() {
   const [notify, setNotify] = useState(false);
   const [notifyMessage, setNotifyMessage] = useState(false);
   const [loading, setLoading] = useState(true); // Add loading state
+
+  const router = useRouter();
+
 
   const toggleWildfireRisk = () => {
     setIsWildfireRiskVisible(!isWildfireRiskVisible);
@@ -210,6 +214,33 @@ export default function HomePage() {
     }
   }, [weatherData]);
 
+  const handleArticleClick = (article: any) => {
+    const formattedContent = article.content.paragraphs
+      .map((paragraph: string) => {
+        const trimmedParagraph = paragraph.trim();
+        
+        if (trimmedParagraph.startsWith('"') || trimmedParagraph.startsWith('"')) {
+          return `"${trimmedParagraph.replace(/^[""]|[""]$/g, '')}"\n`;
+        }
+        
+        return `${trimmedParagraph}\n`;
+      })
+      .join("\n");
+
+    const articleData = {
+      title: article.title,
+      content: formattedContent,
+      date: article.date,
+      author: article.author,
+      image: article.image,
+      source: article.publisher || article.puplisher,
+      imageDescription: article.imageDescription || "",
+    };
+
+    localStorage.setItem("articleData", JSON.stringify(articleData));
+    router.push("/demoArticle");
+  };
+
   return (
     <>
       <div>
@@ -275,7 +306,7 @@ export default function HomePage() {
                 </p>
               </Link>
 
-              <Link href="/news" className={`${styles.news}`}>
+              <div className={`${styles.news}`}>
                 <Carousel
                   className="w-full h-full"
                   opts={{
@@ -285,44 +316,42 @@ export default function HomePage() {
                   plugins={[
                     Autoplay({
                       delay: 3000,
-                      //delay: 9999999,
                       stopOnInteraction: false,
                     }),
                   ]}
                 >
                   <CarouselContent className="h-[358px]">
-                    {demoArticles.LocalArticles.slice(0, 3).map(
-                      (article, index) => (
-                        <CarouselItem
-                          key={index}
-                          className="h-full w-full flex-[0_0_100%]"
-                        >
-                          <div className="relative h-[358px]">
-                            <Image
-                              src={article.image}
-                              alt={article.imageDescription || article.title}
-                              fill
-                              priority={index === 0}
-                              className="object-cover rounded-lg"
-                              style={{ objectFit: "cover" }}
-                            />
-                            <div className="absolute inset-0 bg-black/40 rounded-lg">
-                              <div className="absolute bottom-0 p-4">
-                                <h3 className="text-white font-bold text-lg mb-2">
-                                  News
-                                </h3>
-                                <p className="text-white text-sm leading-5 line-clamp-2">
-                                  {article.title}
-                                </p>
-                              </div>
+                    {demoArticles.LocalArticles.slice(0, 3).map((article, index) => (
+                      <CarouselItem
+                        key={index}
+                        className="h-full w-full flex-[0_0_100%]"
+                        onClick={() => handleArticleClick(article)}
+                      >
+                        <div className="relative h-[358px] cursor-pointer">
+                          <Image
+                            src={article.image}
+                            alt={article.imageDescription || article.title}
+                            fill
+                            priority={index === 0}
+                            className="object-cover rounded-lg"
+                            style={{ objectFit: "cover" }}
+                          />
+                          <div className="absolute inset-0 bg-black/40 rounded-lg">
+                            <div className="absolute bottom-0 p-4">
+                              <h3 className="text-white font-bold text-lg mb-2">
+                                News
+                              </h3>
+                              <p className="text-white text-sm leading-5 line-clamp-2">
+                                {article.title}
+                              </p>
                             </div>
                           </div>
-                        </CarouselItem>
-                      )
-                    )}
+                        </div>
+                      </CarouselItem>
+                    ))}
                   </CarouselContent>
                 </Carousel>
-              </Link>
+              </div>
             </div>
           </div>
           <button

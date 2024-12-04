@@ -5,7 +5,13 @@ interface ArticleContentProps {
 export default function ArticleContent({ content }: ArticleContentProps) {
   return (
     <div className="content my-4">
-      <p className="mb-6">{content}</p>
+      {content.split('\n').map((paragraph, index) => (
+        paragraph.trim() && (
+          <p key={index} className="mb-6">
+            {paragraph}
+          </p>
+        )
+      ))}
     </div>
   );
 }

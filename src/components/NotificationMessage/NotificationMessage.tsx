@@ -2,10 +2,42 @@ import { Card } from "../ui/card"
 import Image from "next/image"
 import Link from "next/link"
 import styles from "./NotificationMessage.module.css"
+import { useRouter } from "next/navigation"
+import { demoArticles } from "@/data/demoArticles"
 
 export default function NotificationMessage() {
+    const router = useRouter();
+
+    const handleClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        const firstArticle = demoArticles.LocalArticles[0];
+        
+        const formattedContent = firstArticle.content.paragraphs
+            .map((paragraph: string) => {
+                const trimmedParagraph = paragraph.trim();
+                if (trimmedParagraph.startsWith('"') || trimmedParagraph.startsWith('"')) {
+                    return `"${trimmedParagraph.replace(/^[""]|[""]$/g, '')}"\n`;
+                }
+                return `${trimmedParagraph}\n`;
+            })
+            .join("\n");
+
+        const articleData = {
+            title: firstArticle.title,
+            content: formattedContent,
+            date: firstArticle.date,
+            author: firstArticle.author,
+            image: firstArticle.image,
+            source: firstArticle.publisher,
+            imageDescription: firstArticle.imageDescription || "",
+        };
+
+        localStorage.setItem("articleData", JSON.stringify(articleData));
+        router.push("/demoArticle");
+    };
+
     return (
-        <Link href={"/news"} className={`${styles.notiLink}`}>
+        <Link href={"/news"} className={`${styles.notiLink}`} onClick={handleClick}>
             <div className={`${styles.notifyMessage}`}>
                 <h5 className="mb-2">
                     New Article
@@ -22,7 +54,6 @@ export default function NotificationMessage() {
                     </p>
                 </div>
             </div>
-
         </Link>
     )
 }
