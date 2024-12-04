@@ -280,8 +280,8 @@ export default function HomePage() {
                   }}
                   plugins={[
                     Autoplay({
-                      //delay: 3000,
-                      delay: 9999999,
+                      delay: 3000,
+                      //delay: 9999999,
                       stopOnInteraction: false,
                     }),
                   ]}
