@@ -27,3 +27,14 @@
       padding-bottom: 8rem;
   }
 }
+
+
+.bullet-point {
+    list-style-type: disc !important;
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.list {
+    margin-bottom: 5px;
+}

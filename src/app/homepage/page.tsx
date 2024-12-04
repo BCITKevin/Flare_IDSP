@@ -6,9 +6,7 @@ import styles from "./homepage.module.css";
 import { CircleHelp, Wind, Bell } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import sendNotification, { fetchSubscription, deleteTokenFromServer } from "@/lib/notification/sendNotification";
-import getAllSubscription from "./actions";
 import { fetchWeatherData } from "@/utils/fetchWeatherData";
 import { messaging, getToken } from '../../lib/firebase';
 import { isSupported, deleteToken } from "firebase/messaging";
@@ -61,12 +59,10 @@ export default function HomePage() {
 
   const toggleWildfireRisk = () => {
     setIsWildfireRiskVisible(!isWildfireRiskVisible)
-    console.log("Toggle Infograph")
   }
 
   useEffect(() => {
     const requestPermission = async () => {
-      // Notification API와 Service Worker 지원 여부 확인
       if (typeof Notification === "undefined" || typeof navigator.serviceWorker === "undefined") {
         console.error("Notifications or Service Workers are not supported in this browser.");
         return;
@@ -127,18 +123,6 @@ export default function HomePage() {
 
   async function handleNotification() {
     setNotify(true);
-    // const tokens = await getAllSubscription();
-
-    // if (tokens) {
-    //   for (const token of tokens) {
-    //     await sendNotification(
-    //       token.data,
-    //       'New article released',
-    //       'New Article have been released! Go check it!',
-    //       "/news",
-    //     )
-    //   }
-    // }
   }
 
   const handleInstallClick = async () => {
@@ -290,18 +274,17 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
+          <button
+            onClick={() => handleNotification()}
+            style={{
+              width: '100px',
+              height: '50px',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+            }}>
+          </button>
         </div >
-        <button
-          onClick={() => handleNotification()}
-          style={{
-            width: '100px',
-            height: '50px',
-            border: 'none',
-            cursor: 'pointer',
-            position: 'absolute',
-            bottom: '250px'
-          }}>
-        </button>
         <BottomNavBar />
       </div >
     </>
