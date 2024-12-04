@@ -55,6 +55,7 @@ import { HomeIcon, NewspaperIcon, Settings, ShieldCheck, CloudSunIcon } from "lu
 // export default BottomNavBar;
 
 export default function BottomNavBar() {
+  const pathname = usePathname();
   const IconProps = {
     IconSize: 42,
   }
@@ -65,7 +66,7 @@ export default function BottomNavBar() {
         <HomeIcon
           size={IconProps.IconSize}
           alt="Home Icon"
-          className={styles.icon}
+          className={`${styles.icon} ${pathname === '/homepage' ? styles.active : ''}`}
         />
         <p>Home</p>
       </Link>
@@ -73,7 +74,7 @@ export default function BottomNavBar() {
         <NewspaperIcon
           size={IconProps.IconSize}
           alt="News Icon"
-          className={styles.icon}
+          className={`${styles.icon} ${pathname ==='/news' ? styles.active:''}`}
         />
         <p>News</p>
       </Link>
@@ -81,7 +82,7 @@ export default function BottomNavBar() {
         <CloudSunIcon
           size={IconProps.IconSize}
           alt="Map Icon"
-          className={styles.icon}
+          className={`${styles.icon} ${pathname ==='/map' ? styles.active:''}`}
         />
         <p>Map</p>
       </Link>
@@ -89,7 +90,7 @@ export default function BottomNavBar() {
         <ShieldCheck
           size={IconProps.IconSize}
           alt="Safety Icon"
-          className={styles.icon}
+          className={`${styles.icon} ${pathname ==='/safety' ? styles.active:''}`}
         />
         <p>Safety</p>
       </Link>
@@ -97,7 +98,7 @@ export default function BottomNavBar() {
         <Settings
           size={IconProps.IconSize}
           alt="Settings Icon"
-          className={styles.icon}
+          className={`${styles.icon} ${pathname ==='/settings' ? styles.active:''}`}
         />
         <p>Setting</p>
       </Link>

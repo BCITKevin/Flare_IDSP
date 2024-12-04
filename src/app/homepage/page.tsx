@@ -3,7 +3,7 @@
 import Logo from "../public/images/flare_logo.svg";
 import Image from "next/image";
 import styles from "./homepage.module.css";
-import { CircleHelp, Wind, Bell } from "lucide-react";
+import { CircleHelp, Wind, Bell, Loader2 } from "lucide-react"; // Import the loading spinner
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import sendNotification, {
@@ -61,7 +61,10 @@ export default function HomePage() {
   const [isWildfireRiskVisible, setIsWildfireRiskVisible] = useState(false);
   const [notify, setNotify] = useState(false);
   const [notifyMessage, setNotifyMessage] = useState(false);
+  const [loading, setLoading] = useState(true); // Add loading state
+
   const router = useRouter();
+
 
   const toggleWildfireRisk = () => {
     setIsWildfireRiskVisible(!isWildfireRiskVisible);
@@ -186,6 +189,7 @@ export default function HomePage() {
       try {
         const data = await fetchWeatherData(cityName);
         setWeatherData(data);
+        setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Failed to load weather data", error);
       }
@@ -278,7 +282,11 @@ export default function HomePage() {
                 <h5>
                   {weatherData ? `${weatherData.cityName}` : <p>My Location</p>}
                 </h5>
-                {weatherData ? (
+                {loading ? (
+                  <div className="flex justify-center items-center h-24"> {/* Center the spinner */}
+                    <Loader2 className="animate-spin text-white" size={48} /> {/* White loading spinner */}
+                  </div>
+                ) : (
                   <>
                     <h1>{weatherData.current.temp.toFixed(0)}°C</h1>
                     <div className="flex space-x-6 items-center">
@@ -288,8 +296,6 @@ export default function HomePage() {
                       <Wind size={48} />
                     </div>
                   </>
-                ) : (
-                  <h1>Loading...</h1>
                 )}
               </Link>
 
