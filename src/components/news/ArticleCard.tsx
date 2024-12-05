@@ -7,7 +7,7 @@ interface Article {
   title: string;
   date: string;
   author: string;
-  publisher: string;
+  // publisher: string;
 }
 
 export default function articleCard({ article }: { article: Article }) {
