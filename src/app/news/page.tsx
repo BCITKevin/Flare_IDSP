@@ -249,39 +249,34 @@ export default function News() {
         <div className="mt-2">
           <Tabs
             defaultValue="Local"
-            className="w-full flex flex-col"
             onValueChange={(value) => setTabState(value as Category)}
           >
-            <TabsList className="space-x-8 p-6 my-6">
+            <TabsList className={`${styles.tabMenu}`}>
               <TabsTrigger
                 value="Local"
-                className={`w-full ${
-                  tabState === "Local" ? styles.activeTab : ""
-                }`}
+                className={`w-full ${styles.tabDefault} ${tabState === "Local" ? styles.activeTab : ""
+                  }`}
               >
                 Local
               </TabsTrigger>
               <TabsTrigger
                 value="Regional"
-                className={`w-full ${
-                  tabState === "Regional" ? styles.activeTab : ""
-                }`}
+                className={`w-full ${styles.tabDefault} ${tabState === "Regional" ? styles.activeTab : ""
+                  }`}
               >
                 Regional
               </TabsTrigger>
               <TabsTrigger
                 value="National"
-                className={`w-full ${
-                  tabState === "National" ? styles.activeTab : ""
-                }`}
+                className={`w-full ${styles.tabDefault} ${tabState === "National" ? styles.activeTab : ""
+                  }`}
               >
                 National
               </TabsTrigger>
               <TabsTrigger
                 value="Global"
-                className={`w-full ${
-                  tabState === "Global" ? styles.activeTab : ""
-                }`}
+                className={`w-full ${styles.tabDefault} ${tabState === "Global" ? styles.activeTab : ""
+                  }`}
               >
                 Global
               </TabsTrigger>
@@ -384,8 +379,8 @@ export default function News() {
                                   )
                                     ? "Invalid Date"
                                     : new Date(
-                                        highlighted.datePublished
-                                      ).toLocaleDateString()}
+                                      highlighted.datePublished
+                                    ).toLocaleDateString()}
                                 </p>
                               </div>
                             </div>
