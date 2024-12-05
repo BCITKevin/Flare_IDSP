@@ -1,5 +1,45 @@
 {
     "LocalArticles": [
+      {
+          "title": "Wildfire East of Silver Star Mountain Threatens Vernon, Spans 10 Hectares",
+          "image": "Wildfire burning near Silver Star Mountain with smoke visible against the landscape",
+          "imageDescription": "Active wildfire east of Vernon, BC",
+          "author": "Emily Richardson",
+          "publisher": "Vernon Matters",
+          "link": "https://vernonmatters.local/wildfire-silver-star-mountain",
+          "date": "2024-07-27",
+          "content": {
+          "paragraphs": [
+          "A rapidly developing wildfire located east of Silver Star Mountain has raised significant concerns for local residents and emergency services, potentially threatening the town of Vernon.",
+          "The BC Wildfire Service confirmed the blaze currently covers approximately 10 hectares and is displaying active fire behavior. Crews are working urgently to establish control lines and prevent the fire from spreading towards populated areas.",
+          "Local fire chief Mark Thompson warned residents in the eastern approaches to Vernon to remain vigilant. We're implementing preliminary precautionary measures and monitoring the fire's progression closely, Thompson stated in an emergency briefing this afternoon.",
+          "Evacuation alerts are being considered, with emergency response teams positioned strategically around the fire's perimeter. Residents in affected areas are advised to prepare an emergency kit and be ready to evacuate at short notice.",
+          "Preliminary investigations suggest the fire may have originated from a combination of dry lightning and extremely dry conditions prevalent in the Okanagan region. Winds remain a critical factor in determining the fire's potential spread.",
+          "The BC Wildfire Service has deployed multiple ground crews and aerial support, including water bombers and helicopters, to combat the advancing flames. Specific details about firefighting resources are being kept fluid to maintain operational flexibility.",
+          "Local residents are urged to monitor official communication channels, follow instructions from emergency services, avoid the area near Silver Star Mountain, and prepare for potential evacuation."
+          ]
+          }
+        },
+        {
+          "title": "Wildfire East of Vernon Grows to 10 Hectares, Threatens Community",
+          "image": "Aerial view of wildfire burning in forested terrain near Vernon, BC",
+          "imageDescription": "10-hectare wildfire threatening Vernon area",
+          "author": "Michael Chen",
+          "publisher": "CBC News",
+          "link": "https://www.cbc.ca/news/canada/british-columbia/vernon-wildfire-silver-star-mountain",
+          "date": "2024-07-27",
+          "content": {
+          "paragraphs": [
+          "A wildfire east of Silver Star Mountain has escalated to 10 hectares, prompting serious concerns for the nearby town of Vernon and surrounding communities in British Columbia's Okanagan region.",
+          "BC Wildfire Service spokesperson Jennifer Roberts described the situation as actively developing during an emergency press conference. We have multiple resources deployed to contain and control this fire before it can threaten populated areas, Roberts explained.",
+          "The fire, currently burning in rugged terrain east of Vernon, has already consumed approximately 10 hectares of predominantly forested land. Meteorological conditions, including high temperatures and low humidity, are complicating firefighting efforts.",
+          "Emergency Management BC has initiated preliminary discussions about potential evacuation protocols. Local fire departments are on high alert, with additional resources being mobilized from surrounding communities.",
+          "Regional climate conditions have created particularly challenging wildfire conditions this season. The Okanagan has experienced prolonged periods of heat and minimal precipitation, creating extremely dry fuel conditions that accelerate fire spread.",
+          "Local residents are being advised to stay informed through official channels, prepare emergency evacuation kits, and follow instructions from emergency services immediately.",
+          "The BC Wildfire Service continues to monitor the situation closely, with updates expected throughout the day."
+          ]
+        }
+        },
         {
             "title": "Okanagan wildfires: Cool conditions helping ease concerns",
             "image": "Cool weather for the past three days have helped ease wildfire concerns in B.C.’s Southern Interior.",
