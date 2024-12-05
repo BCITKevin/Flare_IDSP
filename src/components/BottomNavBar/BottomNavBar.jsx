@@ -57,7 +57,7 @@ import { HomeIcon, NewspaperIcon, Settings, ShieldCheck, CloudSunIcon } from "lu
 export default function BottomNavBar() {
   const pathname = usePathname();
   const IconProps = {
-    IconSize: 42,
+    IconSize: 32,
   }
 
   return (
