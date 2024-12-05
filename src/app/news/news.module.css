@@ -132,6 +132,7 @@
 
 .articleHighlight {
     overflow: hidden;
+    background-color: var(--d-grey);
 }
 
 .form {

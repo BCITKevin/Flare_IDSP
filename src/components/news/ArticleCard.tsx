@@ -19,10 +19,10 @@ export default function articleCard({ article }: { article: Article }) {
         className={`rounded-lg ${styles.articleImage}`}
       />
       <div>
-        <h2 className={`text-xl font-bold ${styles.articleTitle} pb-2 pr-3`}>
+        <h2 className={`text-xl font-semibold ${styles.articleTitle}`}>
           {article.title}
         </h2>
-        <div className="flex justify-between space-x-0.5 text-gray-500">
+        <div className={`flex justify-between space-x-0.5 ${styles.articleDescription}`}>
           <p>{article.author}   |</p>
           <p>{new Date(article.date).toLocaleDateString()}</p>
         </div>

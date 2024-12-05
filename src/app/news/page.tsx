@@ -313,12 +313,12 @@ export default function News() {
                               height={251}
                               className={`rounded-lg ${styles.articleHighlightImage}`}
                             />
-                            <div className="indent-6">
-                              <h5 className={`${styles.articleHighlightTitle} text-xl font-bold m-auto p-3`}>
+                            <div className="">
+                              <h5 className={`${styles.articleHighlightTitle} leading-6 text-xl font-bold m-auto p-3`}>
                                 {highlighted.title}
                               </h5>
-                              <div className="flex pb-3 text-[color:--l-grey]">
-                                <p>{highlighted.author}</p>
+                              <div className="flex p-3 text-[color:--l-grey]">
+                                <p className="pr-3">{highlighted.author}</p>
                                 <p>{highlighted.date}</p>
                               </div>
                             </div>
@@ -367,14 +367,14 @@ export default function News() {
                               height={251}
                               className={`rounded-lg ${styles.articleHighlightImage}`}
                             />
-                            <div className="indent-6">
+                            <div>
                               <h5
                                 className={`${styles.articleHighlightTitle} text-xl font-bold m-auto p-3`}
                               >
                                 {highlighted.name}
                               </h5>
-                              <div className="flex pb-3 text-[color:--l-grey]">
-                                <p>
+                              <div className="flex p-3 text-[color:--l-grey]">
+                                <p className="pr-6">
                                   {highlighted.provider[0]?.name ||
                                     "Unknown Source"}
                                 </p>

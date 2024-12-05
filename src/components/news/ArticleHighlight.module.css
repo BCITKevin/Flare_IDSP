@@ -10,7 +10,7 @@
     align-self: stretch;
 
     border-radius: 0px 0px 8px 8px;
-    background: var(--Light-Ink, #000);
+    background: var(--l-grey);
 }
 
 .articleHighlightImage {
