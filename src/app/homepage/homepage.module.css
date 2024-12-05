@@ -59,7 +59,7 @@
     height: 195px;
 
     border-radius: 6px;
-    background: linear-gradient(45deg, #1C1C1C 0.25%, #2E2E2E 99.75%);
+    background: linear-gradient(249deg, #FBE089 3.9%, #E5722C 62.6%);
     grid-area: 3 / 1 / 4 / 2;
 
     padding: 21px;
@@ -73,15 +73,32 @@
     flex-shrink: 0;
 
     border-radius: 6px;
-    background-color: var(--black);
     grid-area: 2 / 2 / 4 / 3;
-
-    padding: 21px;
 }
 
-.newsItemOne {
+.carouselContainer {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.newsContainer {
+    width: 195px;
+    height: 400px;
+}
+
+.gradient {
+    width: 195px;
+    height: 258.947px;
+
+    background: linear-gradient(0deg, rgba(28, 28, 28, 0.00) 2.85%, #212121 58.49%);
+    position: absolute;
+    z-index: 1;
+    mix-blend-mode: multiply;
+}
+
+.newsImage {
+    min-height: 400px;
     object-fit: cover;
-    background-image: url("https://images.pexels.com/photos/28317514/pexels-photo-28317514/free-photo-of-dramatic-nighttime-forest-fire-in-california.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
 }
 
 .popUp {

@@ -18,6 +18,7 @@
     display: none;
 }
 
+
 .activeTab {
     box-shadow: 0 4px 6px rgba(0,0,0, 0.3);
     font-weight: bold;
@@ -35,7 +36,6 @@
     margin: 1rem auto;
 
     border-radius: 8px;
-    background: var(--d-grey);
 }
 
 .tabTrigger {
@@ -121,6 +121,10 @@
     padding-bottom: 100px;
 }
 
+.tabMenu {
+    min-width: 100%;
+}
+
 .tabTriggerContainer {
     position: sticky;
     top: 0;
@@ -132,36 +136,12 @@
 
 .articleHighlight {
     overflow: hidden;
+    background-color: var(--d-grey);
 }
 
 .form {
     display: none;  /* 폼 전체를 숨김 */
 }
-
-/* 아래 스타일들은 나중에 필요할 때를 대비해 주석처리로 남겨둡니다 */
-/*.searchInput {
-    flex: 1;
-    padding: 8px 12px;
-    border: 2px solid var(--s-compliment, #00838F);
-    border-radius: 8px;
-    background: var(--d-grey, #202020);
-    color: var(--white, #EBEBEB);
-}
-
-.searchButton {
-    padding: 8px 16px;
-    background: var(--s-compliment, #00838F);
-    color: var(--white, #EBEBEB);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s;
-    white-space: nowrap;
-}
-
-.searchButton:hover {
-    background: var(--p-compliment, #00BCD4);
-}*/
 
 .newsDate {
     color: var(--white);

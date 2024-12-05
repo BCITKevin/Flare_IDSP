@@ -143,8 +143,8 @@ export default function Safety() {
 
 
     return (
-        <body className="min-h-screen">
-            <div className="safetyLayout h-full overflow-y-auto mb-44">
+        <body className="">
+            <div className="safetyLayout overflow-y-auto">
                 <div className={styles.safetyHeading}>
                     <h1>
                         Safety Guide
@@ -239,14 +239,16 @@ export default function Safety() {
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </>
                 ) : null}
-                <div className="flex flex-col fixed bottom-24 rounded-lg px-6 py-3 m-2 items-center gap-4 transition-all duration-300">
-                    <button
-                        className="flex justify-center bg-[var(--orange)] text-white rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2 px-4 py-2 w-3/4 hover:border-2 hover:border-white box-border w-52 h-12"
-                        onClick={() => setShowChat(true)}
-                    >
-                        <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-5 h-5 filter invert brightness-0" />
-                        <span>Chat now</span>
-                    </button>
+                <div>
+                    <div className={styles.buttonPosition}>
+                        <button
+                            className={`${styles.aiButton}`}
+                            onClick={() => setShowChat(true)}
+                        >
+                            <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-5 h-5 filter invert brightness-0" />
+                            <p>Flare Assistant</p>
+                        </button>
+                    </div>
                 </div>
             </div>
             <BottomNavBar />

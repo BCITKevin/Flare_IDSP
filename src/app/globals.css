@@ -7,7 +7,7 @@
   font-size: 14px;
 
   --white: #FAF8F8;
-  --black: #121313;
+  --black: #171818;
   --l-grey: #A39E9D;
   --d-grey: #232222;
 
@@ -262,7 +262,6 @@ h5 {
   height:100vh;
   padding: 20px;
   background-color: var(--black);
-  /* overflow-y: auto; */
 }
 
 .newsLayout{

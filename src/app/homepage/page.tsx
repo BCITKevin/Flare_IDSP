@@ -308,7 +308,7 @@ export default function HomePage() {
 
               <div className={`${styles.news}`}>
                 <Carousel
-                  className="w-full h-full"
+                  className={`w-full h-full ${styles.carouselContainer}`}
                   opts={{
                     align: "start",
                     loop: true,
@@ -320,28 +320,27 @@ export default function HomePage() {
                     }),
                   ]}
                 >
-                  <CarouselContent className="h-[358px]">
+                  <CarouselContent>
                     {demoArticles.LocalArticles.slice(0, 3).map((article, index) => (
                       <CarouselItem
                         key={index}
-                        className="h-full w-full flex-[0_0_100%]"
                         onClick={() => handleArticleClick(article)}
                       >
-                        <div className="relative h-[358px] cursor-pointer">
+                        <div className={`${styles.newsContainer} relative cursor-pointer`}>
+                          <span className={styles.gradient}></span>
                           <Image
                             src={article.image}
                             alt={article.imageDescription || article.title}
                             fill
                             priority={index === 0}
-                            className="object-cover rounded-lg"
-                            style={{ objectFit: "cover" }}
+                            className={`${styles.newsImage}`}
                           />
-                          <div className="absolute inset-0 bg-black/40 rounded-lg">
-                            <div className="absolute bottom-0 p-4">
-                              <h3 className="text-white font-bold text-lg mb-2">
+                          <div>
+                            <div className="absolute p-4 z-10">
+                              <h3 className="font-bold">
                                 News
                               </h3>
-                              <p className="text-white text-sm leading-5 line-clamp-2">
+                              <p>
                                 {article.title}
                               </p>
                             </div>

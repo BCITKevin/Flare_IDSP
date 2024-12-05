@@ -8,7 +8,7 @@
     margin-top: 6px;
 
     border-radius: 8px;
-    background: var(--black, #000);
+    background: var(--d-grey);
 
     color: var(--white);
 }
@@ -23,7 +23,17 @@
     object-fit: cover;
 }
 
-.articleDescription,
 .articleTitle {
     color: var(--white);
+    line-height: 1.4rem;
+    max-height: 20px;
+    max-width: 280px;
+    min-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.articleDescription {
+    color: var(--l-grey);
 }

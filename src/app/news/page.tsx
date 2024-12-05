@@ -249,39 +249,34 @@ export default function News() {
         <div className="mt-2">
           <Tabs
             defaultValue="Local"
-            className="w-full flex flex-col"
             onValueChange={(value) => setTabState(value as Category)}
           >
-            <TabsList className="space-x-8 p-6 my-6">
+            <TabsList className={`${styles.tabMenu}`}>
               <TabsTrigger
                 value="Local"
-                className={`w-full ${
-                  tabState === "Local" ? styles.activeTab : ""
-                }`}
+                className={`w-full ${styles.tabDefault} ${tabState === "Local" ? styles.activeTab : ""
+                  }`}
               >
                 Local
               </TabsTrigger>
               <TabsTrigger
                 value="Regional"
-                className={`w-full ${
-                  tabState === "Regional" ? styles.activeTab : ""
-                }`}
+                className={`w-full ${styles.tabDefault} ${tabState === "Regional" ? styles.activeTab : ""
+                  }`}
               >
                 Regional
               </TabsTrigger>
               <TabsTrigger
                 value="National"
-                className={`w-full ${
-                  tabState === "National" ? styles.activeTab : ""
-                }`}
+                className={`w-full ${styles.tabDefault} ${tabState === "National" ? styles.activeTab : ""
+                  }`}
               >
                 National
               </TabsTrigger>
               <TabsTrigger
                 value="Global"
-                className={`w-full ${
-                  tabState === "Global" ? styles.activeTab : ""
-                }`}
+                className={`w-full ${styles.tabDefault} ${tabState === "Global" ? styles.activeTab : ""
+                  }`}
               >
                 Global
               </TabsTrigger>
@@ -313,12 +308,12 @@ export default function News() {
                               height={251}
                               className={`rounded-lg ${styles.articleHighlightImage}`}
                             />
-                            <div className="indent-6">
-                              <h5 className={`${styles.articleHighlightTitle} text-xl font-bold m-auto p-3`}>
+                            <div className="">
+                              <h5 className={`${styles.articleHighlightTitle} leading-6 text-xl font-bold m-auto p-3`}>
                                 {highlighted.title}
                               </h5>
-                              <div className="flex pb-3 text-[color:--l-grey]">
-                                <p>{highlighted.author}</p>
+                              <div className="flex p-3 text-[color:--l-grey]">
+                                <p className="pr-3">{highlighted.author}</p>
                                 <p>{highlighted.date}</p>
                               </div>
                             </div>
@@ -367,14 +362,14 @@ export default function News() {
                               height={251}
                               className={`rounded-lg ${styles.articleHighlightImage}`}
                             />
-                            <div className="indent-6">
+                            <div>
                               <h5
                                 className={`${styles.articleHighlightTitle} text-xl font-bold m-auto p-3`}
                               >
                                 {highlighted.name}
                               </h5>
-                              <div className="flex pb-3 text-[color:--l-grey]">
-                                <p>
+                              <div className="flex p-3 text-[color:--l-grey]">
+                                <p className="pr-6">
                                   {highlighted.provider[0]?.name ||
                                     "Unknown Source"}
                                 </p>
@@ -384,8 +379,8 @@ export default function News() {
                                   )
                                     ? "Invalid Date"
                                     : new Date(
-                                        highlighted.datePublished
-                                      ).toLocaleDateString()}
+                                      highlighted.datePublished
+                                    ).toLocaleDateString()}
                                 </p>
                               </div>
                             </div>
@@ -426,8 +421,8 @@ export default function News() {
             </TabsContent>
           </Tabs>
         </div>
-        <BottomNavBar />
       </div>
+      <BottomNavBar />
     </>
   );
 }
