@@ -426,8 +426,8 @@ export default function News() {
             </TabsContent>
           </Tabs>
         </div>
-        <BottomNavBar />
       </div>
+      <BottomNavBar />
     </>
   );
 }

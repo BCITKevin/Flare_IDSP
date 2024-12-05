@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import logoAnimation from "./public/videos/LogoAnimation.json";
+import Lottie from "lottie-react";
 
-const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+// const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 export default function Main() {
     const [fadeOut, setFadeOut] = useState(false);
