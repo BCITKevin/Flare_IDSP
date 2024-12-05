@@ -7,6 +7,7 @@ interface Article {
   title: string;
   date: string;
   author: string;
+  publisher: string;
 }
 
 export default function articleCard({ article }: { article: Article }) {
@@ -21,10 +22,9 @@ export default function articleCard({ article }: { article: Article }) {
         <h2 className={`text-xl font-bold ${styles.articleTitle} pb-2 pr-3`}>
           {article.title}
         </h2>
-        <div className="flex space-x-0.5 text-gray-500">
+        <div className="flex justify-between space-x-0.5 text-gray-500">
+          <p>{article.author}   |</p>
           <p>{new Date(article.date).toLocaleDateString()}</p>
-          <p>|</p>
-          <p>{article.author}</p>
         </div>
       </div>
     </div>

@@ -35,8 +35,8 @@ export default function ArticleHighlight({
           >
             {title}
           </h5>
-          <div className="flex pb-3 text-gray-500">
-            <p>{author}</p>
+          <div className="flex justify-between pb-3 text-gray-500">
+            <p>{author}   |</p>
             <p>{new Date(date).toLocaleDateString()}</p>
           </div>
         </div>
