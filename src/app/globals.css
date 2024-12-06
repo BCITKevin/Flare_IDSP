@@ -25,7 +25,14 @@
 html {
   overflow-x: hidden;
   overflow-y: hidden;
-} /* Prevents scrolling for X*/
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+/* Webkit 브라우저용 스크롤바 숨기기 추가 */
+html::-webkit-scrollbar {
+  display: none;
+}
 
 /* Font-face definitions */
 @font-face {
@@ -85,6 +92,12 @@ body {
   margin: 0 auto;
   background-color: var(--d-grey);
   padding-bottom: 60px;
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 /* Typography Styles */
@@ -306,4 +319,43 @@ h5 {
 [role="dialog"] {
   background-color: #1a1a1a !important;
   border-color: #404040 !important;
+}
+
+/* 전역 스크롤바 스타일 추가 */
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* newsLayout 클래스 수정 */
+.newsLayout {
+  height: 100vh;
+  padding: 20px;
+  background-color: var(--black);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.newsLayout::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* html과 body 스타일 수정 */
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
 }

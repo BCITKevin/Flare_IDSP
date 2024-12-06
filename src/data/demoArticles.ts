@@ -1,22 +1,24 @@
 export const demoArticles = {
   LocalArticles: [
     {
-      title: "Okanagan wildfires: Cool conditions helping ease concerns",
+      title:
+        "Wildfire East of Silver Star Mountain Threatens Vernon, Spans 10 Hectares",
       image:
-        "https://i1.wp.com/media.globalnews.ca/videostatic/news/i2nycwwrd6-fsttwp0m0f/6P-AB-WILDFIRE-UPDATE-T_OM00XEA0_thumbnail_1280x720.jpg?w=1040&quality=70&strip=all",
-      imageDescription:
-        "Cool weather aiding wildfire suppression efforts in B.C.",
-      author: "dpotenteau",
-      publisher: "Global News",
-      link: "https://globalnews.ca/news/10648089/okanagan-wildfires-updates-july-27-2024/",
+        "https://cdn.discordapp.com/attachments/1281055711748427919/1314382062727462963/IMG_1982.png?ex=6753912f&is=67523faf&hm=145a811c46e13258a662bd148b6edf3be7e9281c44709226b46bfcdd3d6555a3&",
+      imageDescription: "Active wildfire east of Vernon, BC",
+      author: "Emily Richardson",
+      publisher: "Vernon Matters",
+      link: "https://vernonmatters.local/wildfire-silver-star-mountain",
       date: "2024-07-27",
       content: {
         paragraphs: [
-          "Cool weather for the past three days have helped ease wildfire concerns in B.C.’s Southern Interior.",
-          "“Fire weather indices have decreased due to rainfall and cooler temperatures in many parts of the province, reducing fire behaviour on some of our major incidents,” BC Wildfire said on Saturday.",
-          "“Cool and showery conditions are expected for the western half of the province late tomorrow, reaching parts of the Interior as well.",
-          "Winds are light, allowing for wildfire smoke to settle in particularly the Southern Interior and Kootenays.”",
-          "In the Kamloops Fire Centre, there are currently 78 active wildfires, with 48 listed as being out of control.",
+          "A rapidly developing wildfire located east of Silver Star Mountain has raised significant concerns for local residents and emergency services, potentially threatening the town of Vernon.",
+          "The BC Wildfire Service confirmed the blaze currently covers approximately 10 hectares and is displaying active fire behavior. Crews are working urgently to establish control lines and prevent the fire from spreading towards populated areas.",
+          "Local fire chief Mark Thompson warned residents in the eastern approaches to Vernon to remain vigilant. We're implementing preliminary precautionary measures and monitoring the fire's progression closely, Thompson stated in an emergency briefing this afternoon.",
+          "Evacuation alerts are being considered, with emergency response teams positioned strategically around the fire's perimeter. Residents in affected areas are advised to prepare an emergency kit and be ready to evacuate at short notice.",
+          "Preliminary investigations suggest the fire may have originated from a combination of dry lightning and extremely dry conditions prevalent in the Okanagan region. Winds remain a critical factor in determining the fire's potential spread.",
+          "The BC Wildfire Service has deployed multiple ground crews and aerial support, including water bombers and helicopters, to combat the advancing flames. Specific details about firefighting resources are being kept fluid to maintain operational flexibility.",
+          "Local residents are urged to monitor official communication channels, follow instructions from emergency services, avoid the area near Silver Star Mountain, and prepare for potential evacuation.",
         ],
       },
     },

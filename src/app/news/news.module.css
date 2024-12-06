@@ -119,6 +119,15 @@
     background-color: var(--black);
     padding: 20px;
     padding-bottom: 100px;
+    
+    /* 스크롤바 숨기기 */
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+
+/* Webkit 브라우저(Chrome, Safari 등)의 스크롤바 숨기기 */
+.newsLayout::-webkit-scrollbar {
+    display: none;
 }
 
 .tabMenu {

@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { demoArticles } from "@/data/demoArticles";
+import { Loader2 } from "lucide-react";
 
 interface BingNewsArticle {
   name: string;
@@ -44,6 +45,11 @@ interface DemoArticle {
 
 type Category = "Local" | "Regional" | "National" | "Global";
 
+// 타입 가드 함수 추가
+// function isDemoArticle(article: any): article is DemoArticle {
+//   return "title" in article && "author" in article && "date" in article;
+// }
+
 export default function News() {
   const [query, setQuery] = useState<string>("");
   const [articles, setArticles] = useState<BingNewsArticle[]>([]);
@@ -56,15 +62,15 @@ export default function News() {
   const getQueryForTab = (tab: Category): string => {
     switch (tab) {
       case "Local":
-        return "Wildfires vancouver";
+        return '"wildfire" vancouver';
       case "Regional":
-        return "Wildfire B.C.";
+        return '"wildfire" in BC';
       case "National":
-        return "Wildfire Canada";
+        return '"wildfire" in Canada';
       case "Global":
-        return "Wildfire";
+        return '"wildfire"';
       default:
-        return "BC wildfires";
+        return "active wildfire vancouver british columbia current";
     }
   };
 
@@ -82,7 +88,9 @@ export default function News() {
 
       try {
         const res = await fetch(
-          `/api/news/?query=${encodeURIComponent(query)}&mkt=en-CA`
+          `/api/news/?query=${encodeURIComponent(
+            query
+          )}&mkt=en-CA&freshness=Day`
         );
         if (!res.ok) {
           // API 에러 발생시 데모 기사만 표시
@@ -125,13 +133,6 @@ export default function News() {
 
   const filterArticlesByCategory = (category: Category) =>
     categorizedArticles[category] || [];
-
-  // Helper to get the highlighted article and the rest
-  const getHighlightedAndOthers = (category: Category) => {
-    const articles = filterArticlesByCategory(category);
-    const [highlighted, ...others] = articles;
-    return { highlighted, others };
-  };
 
   const handleArticleClick = async (url: string) => {
     try {
@@ -254,110 +255,99 @@ export default function News() {
             <TabsList className={`${styles.tabMenu}`}>
               <TabsTrigger
                 value="Local"
-                className={`w-full ${styles.tabDefault} ${tabState === "Local" ? styles.activeTab : ""
-                  }`}
+                className={`w-full ${styles.tabDefault} ${
+                  tabState === "Local" ? styles.activeTab : ""
+                }`}
               >
                 Local
               </TabsTrigger>
               <TabsTrigger
                 value="Regional"
-                className={`w-full ${styles.tabDefault} ${tabState === "Regional" ? styles.activeTab : ""
-                  }`}
+                className={`w-full ${styles.tabDefault} ${
+                  tabState === "Regional" ? styles.activeTab : ""
+                }`}
               >
                 Regional
               </TabsTrigger>
               <TabsTrigger
                 value="National"
-                className={`w-full ${styles.tabDefault} ${tabState === "National" ? styles.activeTab : ""
-                  }`}
+                className={`w-full ${styles.tabDefault} ${
+                  tabState === "National" ? styles.activeTab : ""
+                }`}
               >
                 National
               </TabsTrigger>
               <TabsTrigger
                 value="Global"
-                className={`w-full ${styles.tabDefault} ${tabState === "Global" ? styles.activeTab : ""
-                  }`}
+                className={`w-full ${styles.tabDefault} ${
+                  tabState === "Global" ? styles.activeTab : ""
+                }`}
               >
                 Global
               </TabsTrigger>
             </TabsList>
             <h2 className={`mt-3 ${styles.newsHeading}`}>{tabState}</h2>
             <TabsContent value={tabState}>
-              {loading && <p className={styles.loading}>Loading...</p>}
-              {error && <p className={styles.error}>Error: {error}</p>}
-
-              {!loading && !error && (
+              {loading ? (
+                <div className="flex justify-center items-center min-h-[200px]">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
+              ) : error ? (
+                <p className={styles.error}>Error: {error}</p>
+              ) : (
                 <>
-                  {/* Demo Articles */}
                   {(() => {
                     const demoArticles = getDemoArticles(tabState);
-                    const [highlighted, ...others] = demoArticles;
+                    const bingArticles = filterArticlesByCategory(tabState);
 
-                    return (
-                      <>
-                        {/* Highlighted Demo Article */}
-                        {highlighted && (
-                          <div
-                            className={`${styles.articleHighlight}`}
-                            onClick={() => handleDemoArticleClick(highlighted)}
-                          >
-                            <Image
-                              src={highlighted.image}
-                              alt={highlighted.imageDescription || highlighted.title}
-                              width={400}
-                              height={251}
-                              className={`rounded-lg ${styles.articleHighlightImage}`}
-                            />
-                            <div className="">
-                              <h5 className={`${styles.articleHighlightTitle} leading-6 text-xl font-bold m-auto p-3`}>
-                                {highlighted.title}
-                              </h5>
-                              <div className="flex p-3 text-[color:--l-grey]">
-                                <p className="pr-3">{highlighted.author}</p>
-                                <p>{highlighted.date}</p>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Other Demo Articles */}
-                        {others.map((article, index) => (
-                          <div
-                            key={`demo-${index}`}
-                            onClick={() => handleDemoArticleClick(article)}
-                          >
-                            <ArticleCard
-                              article={{
-                                id: `demo-${index}`,
-                                image: article.image,
-                                title: article.title,
-                                date: article.date,
-                                author: article.author,
-                              }}
-                            />
-                          </div>
-                        ))}
-                      </>
+                    // Bing 기사들을 날짜순으로 정렬 (최신순)
+                    const sortedBingArticles = [...bingArticles].sort(
+                      (a, b) =>
+                        new Date(b.datePublished).getTime() -
+                        new Date(a.datePublished).getTime()
                     );
-                  })()}
 
-                  {/* Bing News Articles */}
-                  {(() => {
-                    const { highlighted, others } =
-                      getHighlightedAndOthers(tabState);
+                    // 모든 기사를 하나의 배열로 합치기 (정렬된 Bing 기사 사용)
+                    const allArticles = [
+                      ...demoArticles.map((article) => ({
+                        isDemo: true as const,
+                        data: article,
+                      })),
+                      ...sortedBingArticles.map((article) => ({
+                        isDemo: false as const,
+                        data: article,
+                      })),
+                    ];
+
+                    // 첫 번째 기사는 하이라이트로, 나머지는 일반 카드로 표시
+                    const [firstArticle, ...otherArticles] = allArticles;
+
                     return (
                       <>
-                        {highlighted && (
+                        {/* 첫 번째 기사 하이라이트 */}
+                        {firstArticle && (
                           <div
                             className={`${styles.articleHighlight}`}
-                            onClick={() => handleArticleClick(highlighted.url)}
+                            onClick={() => {
+                              if (firstArticle.isDemo) {
+                                handleDemoArticleClick(firstArticle.data);
+                              } else {
+                                handleArticleClick(firstArticle.data.url);
+                              }
+                            }}
                           >
                             <Image
                               src={
-                                highlighted.image?.thumbnail?.contentUrl ||
-                                "/images/logo_Flare.png"
+                                firstArticle.isDemo
+                                  ? firstArticle.data.image
+                                  : firstArticle.data.image?.thumbnail
+                                      ?.contentUrl || "/images/logo_Flare.png"
                               }
-                              alt={highlighted.name}
+                              alt={
+                                firstArticle.isDemo
+                                  ? firstArticle.data.title
+                                  : firstArticle.data.name
+                              }
                               width={400}
                               height={251}
                               className={`rounded-lg ${styles.articleHighlightImage}`}
@@ -366,52 +356,77 @@ export default function News() {
                               <h5
                                 className={`${styles.articleHighlightTitle} text-xl font-bold m-auto p-3`}
                               >
-                                {highlighted.name}
+                                {firstArticle.isDemo
+                                  ? firstArticle.data.title
+                                  : firstArticle.data.name}
                               </h5>
                               <div className="flex p-3 text-[color:--l-grey]">
                                 <p className="pr-6">
-                                  {highlighted.provider[0]?.name ||
-                                    "Unknown Source"}
+                                  {firstArticle.isDemo
+                                    ? firstArticle.data.author
+                                    : firstArticle.data.provider[0]?.name ||
+                                      "Unknown Source"}
                                 </p>
                                 <p>
-                                  {isNaN(
-                                    new Date(highlighted.datePublished).getTime()
-                                  )
-                                    ? "Invalid Date"
-                                    : new Date(
-                                      highlighted.datePublished
-                                    ).toLocaleDateString()}
+                                  {new Date(
+                                    firstArticle.isDemo
+                                      ? firstArticle.data.date
+                                      : firstArticle.data.datePublished
+                                  ).toLocaleDateString()}
                                 </p>
                               </div>
                             </div>
                           </div>
                         )}
+
+                        {/* 나머지 기사들 */}
                         <div className={`mt-4 ${styles.articles}`}>
-                          {others.map((article, index) => {
-                            const transformedArticle = {
-                              id: index.toString(),
-                              image:
-                                article.image?.thumbnail?.contentUrl ||
-                                "/images/logo_Flare.png",
-                              title: article.name,
-                              date: article.datePublished,
-                              author:
-                                article.provider[0]?.name || "Unknown Author",
-                            };
-                            return (
-                              <div
-                                key={index}
-                                onClick={() => handleArticleClick(article.url)}
-                              >
-                                <ArticleCard article={transformedArticle} />
-                              </div>
-                            );
+                          {otherArticles.map((article, index) => {
+                            if (article.isDemo) {
+                              return (
+                                <div
+                                  key={`demo-${index}`}
+                                  onClick={() =>
+                                    handleDemoArticleClick(article.data)
+                                  }
+                                >
+                                  <ArticleCard
+                                    article={{
+                                      id: `demo-${index}`,
+                                      image: article.data.image,
+                                      title: article.data.title,
+                                      date: article.data.date,
+                                      author: article.data.author,
+                                    }}
+                                  />
+                                </div>
+                              );
+                            } else {
+                              return (
+                                <div
+                                  key={`bing-${index}`}
+                                  onClick={() =>
+                                    handleArticleClick(article.data.url)
+                                  }
+                                >
+                                  <ArticleCard
+                                    article={{
+                                      id: index.toString(),
+                                      image:
+                                        article.data.image?.thumbnail
+                                          ?.contentUrl ||
+                                        "/images/logo_Flare.png",
+                                      title: article.data.name,
+                                      date: article.data.datePublished,
+                                      author:
+                                        article.data.provider[0]?.name ||
+                                        "Unknown Author",
+                                    }}
+                                  />
+                                </div>
+                              );
+                            }
                           })}
-                          {others.length === 0 && (
-                            <p className={styles.noResults}>
-                              No {tabState.toLowerCase()} news articles found.
-                            </p>
-                          )}
                         </div>
                       </>
                     );
