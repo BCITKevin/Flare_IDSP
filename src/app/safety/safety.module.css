@@ -31,6 +31,11 @@
     justify-content: flex-end;
 }
 
+.understandBtn {
+    color: var(--white);
+    background-color: var(--orange);
+}
+
 .aiButton {
     display: flex;
     width: 192px;
@@ -43,10 +48,22 @@
     color: var(--white);
     background-color: var(--orange);
     border-radius: 999px;
+    border-color: var(--orange);
 
     position: absolute;
     bottom: 100px;
     z-index: 3;
+}
+
+.dialogContent {
+    position: absolute;
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.dialogTrigger {
+    border: none;
 }
 
 @media only screen and (max-width: 600px) {
