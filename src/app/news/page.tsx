@@ -140,29 +140,37 @@ export default function News() {
         `/api/article?url=${encodeURIComponent(url)}`
       );
 
-      if (!response.ok) {
-        throw new Error(
-          `Failed to fetch article: HTTP error! status: ${response.status}`
-        );
-      }
       const data = await response.json();
 
-      // localStorage에 저장할 때 모든 필요한 데이터를 포함
+      // Store article data regardless of protected status
       const articleData = {
         title: data.title,
         content: data.content,
-        date: new Date().toISOString(), // 또는 data.date
+        date: data.date || new Date().toISOString(),
         author: data.author || "Unknown",
         image: data.image || "",
         source: new URL(url).hostname,
-        isProtected: data.isProtected, // 추가
-        url: data.url, // 추가
+        isProtected: data.isProtected,
+        url: data.url,
       };
 
       localStorage.setItem("articleData", JSON.stringify(articleData));
       router.push("/article");
     } catch (error) {
       console.error("Error:", error);
+      // Show a user-friendly error message
+      const errorData = {
+        title: "Unable to Load Article",
+        content: "Sorry, we couldn't load this article. Please try visiting the original source.",
+        date: new Date().toISOString(),
+        author: "Error",
+        image: "",
+        source: new URL(url).hostname,
+        isProtected: true,
+        url: url,
+      };
+      localStorage.setItem("articleData", JSON.stringify(errorData));
+      router.push("/article");
     }
   };
 
@@ -319,7 +327,7 @@ export default function News() {
                       })),
                     ];
 
-                    // 첫 번째 기사는 하이라이트로, 나머지는 일반 카��로 표시
+                    // 첫 번째 기사는 하이라이트로, 나머지는 일반 카로 표시
                     const [firstArticle, ...otherArticles] = allArticles;
 
                     return (
