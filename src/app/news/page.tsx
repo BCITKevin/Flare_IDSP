@@ -218,7 +218,7 @@ export default function News() {
 
   return (
     <>
-      <div className="newsLayout h-full overflow-y-auto mb-44">
+      <div className="newsLayout h-full overflow-y-auto">
         <header>
           <h1 className={`${styles.newsHeading}`}>News</h1>
           {/* <h4 className={`${styles.newsSubHeading}`}>
@@ -319,7 +319,7 @@ export default function News() {
                       })),
                     ];
 
-                    // 첫 번째 기사는 하이라이트로, 나머지는 일반 카드로 표시
+                    // 첫 번째 기사는 하이라이트로, 나머지는 일반 카��로 표시
                     const [firstArticle, ...otherArticles] = allArticles;
 
                     return (
@@ -372,7 +372,7 @@ export default function News() {
                                     firstArticle.isDemo
                                       ? firstArticle.data.date
                                       : firstArticle.data.datePublished
-                                  ).toLocaleDateString()}
+                                  ).toLocaleDateString("en-US")}
                                 </p>
                               </div>
                             </div>

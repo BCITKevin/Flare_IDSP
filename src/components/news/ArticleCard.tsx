@@ -24,7 +24,7 @@ export default function articleCard({ article }: { article: Article }) {
         </h2>
         <div className={`flex justify-between space-x-0.5 ${styles.articleDescription}`}>
           <p>{article.author}   |</p>
-          <p>{new Date(article.date).toLocaleDateString()}</p>
+          <p>{new Date(article.date).toLocaleDateString('en-US')}</p>
         </div>
       </div>
     </div>
