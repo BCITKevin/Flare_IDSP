@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { demoArticles } from "@/data/demoArticles";
-import { Loader2 } from "lucide-react";
+//import { Loader2 } from "lucide-react";
 
 interface BingNewsArticle {
   name: string;
@@ -289,8 +289,8 @@ export default function News() {
             <h2 className={`mt-3 ${styles.newsHeading}`}>{tabState}</h2>
             <TabsContent value={tabState}>
               {loading ? (
-                <div className="flex justify-center items-center min-h-[200px]">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <div className={styles.loadingContainer}>
+                  <div className={styles.loadingWheel} />
                 </div>
               ) : error ? (
                 <p className={styles.error}>Error: {error}</p>
