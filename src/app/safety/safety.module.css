@@ -55,10 +55,14 @@
 }
 
 .dialogContent {
-    /* position: relative; */
+    position: absolute;
     background-color: white;
     border-radius: 8px;
     padding: 16px;
+}
+
+.dialogTrigger {
+    border: none;
 }
 
 @media only screen and (max-width: 600px) {

@@ -253,16 +253,26 @@ export default function Safety() {
                     </>
                 ) : null}
 
-                <div className={styles.buttonPosition}>
-                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                        <DialogTrigger asChild>
-                            <Button
-                                variant="outline"
-                                className={`${styles.aiButton} hover:bg-orange-500 hover:text-white`}
-                            >
-                                Flare Assistant
-                            </Button>
-                        </DialogTrigger>
+
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogTrigger 
+                    className={styles.dialogTrigger}
+                    asChild
+                    >
+                        <div className={styles.buttonPosition}>
+                            {
+                                !isDialogOpen &&
+                                <Button
+                                    variant="outline"
+                                    className={`${styles.aiButton} hover:bg-orange-500 hover:text-white`}
+                                >
+                                    Flare Assistant
+                                </Button>
+                            }
+                        </div>
+                    </DialogTrigger>
+                    {
+                        isDialogOpen &&
                         <DialogContent
                             className={`${styles.dialogContent} sm:max-w-[425px] shadow-lg`}
                         >
@@ -285,10 +295,10 @@ export default function Safety() {
                                 </Button>
                             </DialogFooter>
                         </DialogContent>
-                    </Dialog>
-                </div>
+                    }
+                </Dialog>
             </div>
             <BottomNavBar />
-        </body>
+        </body >
     )
 }
