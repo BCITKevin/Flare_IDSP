@@ -48,6 +48,7 @@
     color: var(--white);
     background-color: var(--orange);
     border-radius: 999px;
+    border-color: var(--orange);
 
     position: absolute;
     bottom: 100px;

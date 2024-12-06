@@ -255,9 +255,9 @@ export default function Safety() {
 
 
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                    <DialogTrigger 
-                    className={styles.dialogTrigger}
-                    asChild
+                    <DialogTrigger
+                        className={styles.dialogTrigger}
+                        asChild
                     >
                         <div className={styles.buttonPosition}>
                             {
