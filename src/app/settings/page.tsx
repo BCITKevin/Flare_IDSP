@@ -72,7 +72,7 @@ function Settings() {
           >App Preferences</h4>
 
           <Accordion type="single" collapsible>
-            <AccordionItem value="appearance">
+            {/* <AccordionItem value="appearance">
               <AccordionTrigger>
                 <div className="accordion-trigger">
                   <Sun className="icon-gray" />
@@ -85,7 +85,7 @@ function Settings() {
                   <Switch defaultChecked={false} />
                 </div>
               </AccordionContent>
-            </AccordionItem>
+            </AccordionItem> */}
 
             <AccordionItem value="notifications">
               <AccordionTrigger>
@@ -116,7 +116,7 @@ function Settings() {
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="language">
+            {/* <AccordionItem value="language">
               <AccordionTrigger>
                 <div className="accordion-trigger">
                   <Languages className="icon-gray" />
@@ -129,7 +129,7 @@ function Settings() {
                   <Combobox />
                 </div>
               </AccordionContent>
-            </AccordionItem>
+            </AccordionItem> */}
 
             <AccordionItem value="install">
               <AccordionTrigger>
@@ -177,9 +177,9 @@ function Settings() {
               <AccordionContent>
                 <div className="accordion-contentAbout">
                   <span>Version: 1.01</span>
-                  <span className="underlineSpan">Terms of Service</span>
-                  <span className="underlineSpan">Privacy Policy</span>
-                  <span className="underlineSpan">Contact Us</span>
+                  <a href="https://flare-wildfire-blog.vercel.app/legal" target="_blank" className="underlineSpan">Terms of Service</a>
+                  <a href="https://flare-wildfire-blog.vercel.app/legal" target="_blank" className="underlineSpan">Privacy Policy</a>
+                  <a href="https://flare-wildfire-blog.vercel.app/contact" target="_blank" className="underlineSpan">Contact Us</a>
                 </div>
               </AccordionContent>
             </AccordionItem>
