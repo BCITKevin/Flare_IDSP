@@ -11,7 +11,17 @@ import evacHero from "../public/images/EvacHero.png"
 import emergencyHero from "../public/images/EmergencyHero.png"
 import BottomNavBar from "@/components/BottomNavBar/BottomNavBar";
 import React from "react";
-
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
 import { useState } from "react";
 import Image from "next/image";
 
@@ -23,6 +33,7 @@ type Message = {
 // Card can be reformatted into a reusable component
 export default function Safety() {
     const [showChat, setShowChat] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('Prepare');
     const [prevMsg, setMsg] = useState<Message[]>([
         { text: "Hello! Is there anything about wildfires I could help you with today?", sender: 'bot' },
@@ -143,7 +154,9 @@ export default function Safety() {
 
 
     return (
-        <body className="">
+        <body style={{
+            boxSizing: 'content-box',
+        }}>
             <div className="safetyLayout overflow-y-auto">
                 <div className={styles.safetyHeading}>
                     <h1>
@@ -239,19 +252,53 @@ export default function Safety() {
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                     </>
                 ) : null}
-                <div>
-                    <div className={styles.buttonPosition}>
-                        <button
-                            className={`${styles.aiButton}`}
-                            onClick={() => setShowChat(true)}
+
+
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogTrigger
+                        className={styles.dialogTrigger}
+                        asChild
+                    >
+                        <div className={styles.buttonPosition}>
+                            {
+                                !isDialogOpen &&
+                                <Button
+                                    variant="outline"
+                                    className={`${styles.aiButton} hover:bg-orange-500 hover:text-white`}
+                                >
+                                    Flare Assistant
+                                </Button>
+                            }
+                        </div>
+                    </DialogTrigger>
+                    {
+                        isDialogOpen &&
+                        <DialogContent
+                            className={`${styles.dialogContent} sm:max-w-[425px] shadow-lg`}
                         >
-                            <img src="/icons/message-circle.svg" alt="chatbot icon" className="w-5 h-5 filter invert brightness-0" />
-                            <p>Flare Assistant</p>
-                        </button>
-                    </div>
-                </div>
+                            <DialogHeader>
+                                <DialogTitle>Flare Chatbot Warning</DialogTitle>
+                                <DialogDescription>
+                                    This is general advice only. <strong>ALWAYS</strong> follow official emergency instructions. Not a substitute for professional guidance.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter>
+                                <Button
+                                    className={`${styles.understandBtn} hover:bg-orange-500 hover:text-white`}
+                                    type="button"
+                                    onClick={() => {
+                                        setIsDialogOpen(false);
+                                        setShowChat(true);
+                                    }}
+                                >
+                                    I understand ✅
+                                </Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    }
+                </Dialog>
             </div>
             <BottomNavBar />
-        </body>
+        </body >
     )
 }

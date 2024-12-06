@@ -316,12 +316,12 @@ h5 {
 }
 */
 /* Customizing shadcn Popover for dark theme */
-[role="dialog"] {
+/* [role="dialog"] {
   background-color: #1a1a1a !important;
   border-color: #404040 !important;
 }
 
-/* 전역 스크롤바 스타일 추가 */
+/* 전역 스크롤바 숨기기 */
 * {
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
@@ -331,23 +331,10 @@ h5 {
   display: none !important;
 }
 
-/* newsLayout 클래스 수정 */
-.newsLayout {
-  height: 100vh;
-  padding: 20px;
-  background-color: var(--black);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-}
-
-.newsLayout::-webkit-scrollbar {
-  display: none !important;
-}
-
-/* html과 body 스타일 수정 */
-html, body {
+/* 스크롤 가능하지만 스크롤바는 숨김 */
+.newsLayout,
+html,
+body {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -355,6 +342,7 @@ html, body {
   -ms-overflow-style: none !important;
 }
 
+.newsLayout::-webkit-scrollbar,
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none !important;
