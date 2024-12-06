@@ -303,7 +303,7 @@ h5 {
 }
 */
 /* Customizing shadcn Popover for dark theme */
-[role="dialog"] {
+/* [role="dialog"] {
   background-color: #1a1a1a !important;
   border-color: #404040 !important;
-}
+} */
